@@ -1,0 +1,124 @@
+[07-Mar-2025 02:33:23 Europe/Berlin] DEBUG: add_activity - trip_id: undefined
+[07-Mar-2025 02:33:23 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[07-Mar-2025 02:33:23 Europe/Berlin] DEBUG: No matching trip found for trip_id=undefined and user_id=5
+[07-Mar-2025 06:32:16 Europe/Berlin] DEBUG: add_activity - trip_id: undefined
+[07-Mar-2025 06:32:16 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[07-Mar-2025 06:32:16 Europe/Berlin] DEBUG: No matching trip found for trip_id=undefined and user_id=5
+[07-Mar-2025 15:44:49 Europe/Berlin] DEBUG: add_activity - trip_id: undefined
+[07-Mar-2025 15:44:49 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[07-Mar-2025 15:44:49 Europe/Berlin] DEBUG: No matching trip found for trip_id=undefined and user_id=5
+[08-Mar-2025 01:31:32 Europe/Berlin] DEBUG: add_activity - trip_id: undefined
+[08-Mar-2025 01:31:32 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 01:31:32 Europe/Berlin] DEBUG: No matching trip found for trip_id=undefined and user_id=5
+[08-Mar-2025 01:40:43 Europe/Berlin] DEBUG: add_activity - trip_id: 996852
+[08-Mar-2025 01:40:43 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 01:40:43 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 996852
+    [user_id] => 5
+    [trip_name] => Trip to Paris
+    [destination] => 1
+    [hotel] => Hotel B
+    [adults_num] => 3232
+    [childs_num] => 23
+    [start_date] => 2025-03-19
+    [end_date] => 2025-03-21
+    [estimated_cost] => 4656
+)
+
+[08-Mar-2025 01:40:43 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"996852","name":"Running","type":"dining","start_time":"2025-03-14T08:44","cost":2132,"description":"32erger","location":"dsfasdf"}
+[08-Mar-2025 01:40:43 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => dining
+    [start_time] => 2025-03-14T08:44
+    [cost] => 2132.00
+    [description] => 32erger
+    [location] => dsfasdf
+)
+
+[08-Mar-2025 01:41:27 Europe/Berlin] DEBUG: add_activity - trip_id: 996852
+[08-Mar-2025 01:41:27 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 01:41:27 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 996852
+    [user_id] => 5
+    [trip_name] => Trip to Paris
+    [destination] => 1
+    [hotel] => Hotel B
+    [adults_num] => 3232
+    [childs_num] => 23
+    [start_date] => 2025-03-19
+    [end_date] => 2025-03-21
+    [estimated_cost] => 4656
+)
+
+[08-Mar-2025 01:41:27 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"996852","name":"Eating","type":"dining","start_time":"2025-02-27T10:41","cost":345324,"description":"asfsadfdsa","location":"sadfsaddaf"}
+[08-Mar-2025 01:41:27 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Eating
+    [type] => dining
+    [start_time] => 2025-02-27T10:41
+    [cost] => 345324.00
+    [description] => asfsadfdsa
+    [location] => sadfsaddaf
+)
+
+[08-Mar-2025 03:05:55 Europe/Berlin] DEBUG: add_activity - trip_id: 154623
+[08-Mar-2025 03:05:55 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 03:05:55 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 154623
+    [user_id] => 5
+    [trip_name] => Trip to Tokyo
+    [destination] => 3
+    [hotel] => Hotel H
+    [adults_num] => 2
+    [childs_num] => 2
+    [start_date] => 2025-03-12
+    [end_date] => 2025-03-19
+    [estimated_cost] => 2184
+)
+
+[08-Mar-2025 03:05:55 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"154623","name":"Running","type":"cultural","start_time":"2025-03-13T10:08","cost":8686,"description":"sdfsadf","location":"sdfasdf"}
+[08-Mar-2025 03:05:55 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => cultural
+    [start_time] => 2025-03-13T10:08
+    [cost] => 8686.00
+    [description] => sdfsadf
+    [location] => sdfasdf
+)
+
+[08-Mar-2025 03:07:04 Europe/Berlin] DEBUG: add_activity - trip_id: 697361
+[08-Mar-2025 03:07:04 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 03:07:04 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 697361
+    [user_id] => 5
+    [trip_name] => Trip to New York
+    [destination] => 2
+    [hotel] => Hotel F
+    [adults_num] => 1
+    [childs_num] => 1
+    [start_date] => 2025-02-09
+    [end_date] => 2025-03-16
+    [estimated_cost] => 9450
+)
+
+[08-Mar-2025 03:07:04 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"697361","name":"Running","type":"dining","start_time":"2025-03-05T10:09","cost":3232,"description":"asdfsfddas","location":"asdfdssdf"}
+[08-Mar-2025 03:07:04 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => dining
+    [start_time] => 2025-03-05T10:09
+    [cost] => 3232.00
+    [description] => asdfsfddas
+    [location] => asdfdssdf
+)
+

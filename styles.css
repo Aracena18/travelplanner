@@ -1,0 +1,15 @@
+*{
+    font-family: sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+
+.admin_page {
+    display: flex;
+}
+
+aside{
+    height: 100vh;
+    width: 250px;
+    background-color: aquamarine;
+}

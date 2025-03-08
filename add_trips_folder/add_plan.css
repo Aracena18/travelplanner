@@ -1,0 +1,199 @@
+/* Reset and box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+/* Hero (banner) area */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 220px; /* Adjust as needed */
+  margin-bottom: 2rem;
+}
+
+/* Background image overlay */
+.hero-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* Replace the URL below with your desired background image */
+  background: url('your-hero-image.jpg') center center / cover no-repeat;
+  filter: brightness(0.7); /* Darken for contrast */
+}
+
+/* Card-like container on top of the hero image */
+.hero-content {
+  position: relative; /* So it sits above the .hero-background */
+  max-width: 600px;   /* Constrain the width for readability */
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1.5rem 2rem;
+  margin: 2rem;       /* Move it away from edges */
+}
+
+.hero-content h1 {
+  margin-bottom: 0.75rem;
+  font-size: 1.8rem;
+}
+
+/* Button + avatar area */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* “Add trip dates” button */
+.add-trip-btn {
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.add-trip-btn:hover {
+  background-color: #ff4b4b;
+}
+
+/* Avatar / Profile icon */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Explore section */
+.explore-section {
+  margin-bottom: 2rem;
+  padding: 0 2rem; /* Match the hero-content side padding */
+  position: relative; /* So the "Browse all" button can float */
+}
+
+.explore-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* “Browse all” button */
+.browse-all-btn {
+  position: absolute;
+  top: 0;
+  right: 2rem;
+  background-color: #f3f3f3;
+  color: #333;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Cards container */
+.cards {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  /* If you have many cards, you could allow horizontal scroll:
+     overflow-x: auto; */
+}
+
+/* Individual card styling */
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  width: 200px; /* Adjust as needed */
+  overflow: hidden;
+  text-align: left; /* or center if you prefer */
+  flex-shrink: 0;   /* If you enable horizontal scrolling */
+}
+
+.card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.card h3 {
+  margin: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.card p {
+  margin: 0 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+
+  /* Make the body and html take full viewport height */
+  html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+
+  /* The container that holds both sections */
+  .layout {
+    display: flex;
+    flex-direction: row;
+    height: 100vh; /* Full viewport height */
+    width: 100vw;  /* Full viewport width */
+    overflow: hidden; /* Hide overflow on the main container */
+  }
+
+  /* Left side: scrollable planning area */
+  .planning-section {
+    flex: 1; /* Takes up half by default if the map side is also flex: 1 */
+    overflow-y: auto; /* Make this side scrollable */
+    background-color: #f9f9f9; /* Light background for contrast */
+    padding: 20px;
+  }
+
+  /* Right side: fixed map area */
+  .map-section {
+    flex: 1; /* Takes up the other half */
+    position: relative; /* So we can position the map container absolutely if needed */
+    background-color: #fff;
+  }
+
+  /* Map container - Leaflet will use this element's size */
+  #map {
+    position: absolute;  /* Fill the entire map-section */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  /* Example styling: heading, etc. */
+  .planning-section h1 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  .planning-section .section {
+    margin-bottom: 2rem;
+  }
+  .planning-section p {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  /* Optional: A small top bar or header, if you want a fixed top area */
+  /* .top-bar {
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+  } */
