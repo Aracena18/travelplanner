@@ -122,6 +122,17 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $transportations[] = $row;
     $total_cost += $row['transportation_cost'];
 }
+
+function convertTo12HourFormat($time)
+{
+    $timeParts = explode(':', $time);
+    $hours = (int)$timeParts[0];
+    $minutes = $timeParts[1];
+    $period = $hours >= 12 ? 'PM' : 'AM';
+    $hours = $hours % 12;
+    $hours = $hours ? $hours : 12; // the hour '0' should be '12'
+    return sprintf('%02d:%02d %s', $hours, $minutes, $period);
+}
 ?>
 
 <!-- Display Sub Plans -->
@@ -139,8 +150,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <p class="card-text">
                                 <strong>Start Date:</strong> <?= htmlspecialchars($activity['start_date']) ?><br>
                                 <strong>End Date:</strong> <?= htmlspecialchars($activity['end_date']) ?><br>
-                                <strong>Start Time:</strong> <?= htmlspecialchars($activity['start_time']) ?><br>
-                                <strong>End Time:</strong> <?= htmlspecialchars($activity['end_time']) ?><br>
+                                <strong>Start Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($activity['start_time'])) ?><br>
+                                <strong>End Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($activity['end_time'])) ?><br>
                                 <strong>Address:</strong> <?= htmlspecialchars($activity['address']) ?><br>
                                 <strong>Website:</strong> <?= htmlspecialchars($activity['website']) ?><br>
                                 <strong>Email:</strong> <?= htmlspecialchars($activity['email']) ?><br>
@@ -167,8 +180,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <p class="card-text">
                                 <strong>Start Date:</strong> <?= htmlspecialchars($car_rental['start_date']) ?><br>
                                 <strong>End Date:</strong> <?= htmlspecialchars($car_rental['end_date']) ?><br>
-                                <strong>Start Time:</strong> <?= htmlspecialchars($car_rental['start_time']) ?><br>
-                                <strong>End Time:</strong> <?= htmlspecialchars($car_rental['end_time']) ?><br>
+                                <strong>Start Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($car_rental['start_time'])) ?><br>
+                                <strong>End Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($car_rental['end_time'])) ?><br>
                                 <strong>Website:</strong> <?= htmlspecialchars($car_rental['website']) ?><br>
                                 <strong>Email:</strong> <?= htmlspecialchars($car_rental['email']) ?><br>
                                 <strong>Phone:</strong> <?= htmlspecialchars($car_rental['phone']) ?><br>
@@ -195,8 +210,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <p class="card-text">
                                 <strong>Start Date:</strong> <?= htmlspecialchars($concert['start_date']) ?><br>
                                 <strong>End Date:</strong> <?= htmlspecialchars($concert['end_date']) ?><br>
-                                <strong>Start Time:</strong> <?= htmlspecialchars($concert['start_time']) ?><br>
-                                <strong>End Time:</strong> <?= htmlspecialchars($concert['end_time']) ?><br>
+                                <strong>Start Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($concert['start_time'])) ?><br>
+                                <strong>End Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($concert['end_time'])) ?><br>
                                 <strong>Venue:</strong> <?= htmlspecialchars($concert['venue']) ?><br>
                                 <strong>Address:</strong> <?= htmlspecialchars($concert['address']) ?><br>
                                 <strong>Phone:</strong> <?= htmlspecialchars($concert['phone']) ?><br>
@@ -227,12 +244,16 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 <strong>Cost:</strong> $<?= htmlspecialchars($flight['cost']) ?><br>
                                 <strong>Departure Date:</strong> <?= htmlspecialchars($flight['departure_date']) ?><br>
                                 <strong>Start Date:</strong> <?= htmlspecialchars($flight['start_date']) ?><br>
-                                <strong>Start Time:</strong> <?= htmlspecialchars($flight['start_time']) ?><br>
+                                <strong>Start Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($flight['start_time'])) ?><br>
                                 <strong>End Date:</strong> <?= htmlspecialchars($flight['end_date']) ?><br>
-                                <strong>End Time:</strong> <?= htmlspecialchars($flight['end_time']) ?><br>
-                                <strong>Departure Time:</strong> <?= htmlspecialchars($flight['departure_time']) ?><br>
+                                <strong>End Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($flight['end_time'])) ?><br>
+                                <strong>Departure Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($flight['departure_time'])) ?><br>
                                 <strong>Arrival Date:</strong> <?= htmlspecialchars($flight['arrival_date']) ?><br>
-                                <strong>Arrival Time:</strong> <?= htmlspecialchars($flight['arrival_time']) ?>
+                                <strong>Arrival Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($flight['arrival_time'])) ?>
                             </p>
                             <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $flight['id'] ?>&type=flight"
                                 class="btn btn-danger btn-sm"
@@ -255,8 +276,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <p class="card-text">
                                 <strong>Start Date:</strong> <?= htmlspecialchars($meeting['start_date']) ?><br>
                                 <strong>End Date:</strong> <?= htmlspecialchars($meeting['end_date']) ?><br>
-                                <strong>Start Time:</strong> <?= htmlspecialchars($meeting['start_time']) ?><br>
-                                <strong>End Time:</strong> <?= htmlspecialchars($meeting['end_time']) ?><br>
+                                <strong>Start Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($meeting['start_time'])) ?><br>
+                                <strong>End Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($meeting['end_time'])) ?><br>
                                 <strong>Venue:</strong> <?= htmlspecialchars($meeting['venue']) ?><br>
                                 <strong>Address:</strong> <?= htmlspecialchars($meeting['address']) ?><br>
                                 <strong>Phone:</strong> <?= htmlspecialchars($meeting['phone']) ?><br>
@@ -284,8 +307,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <p class="card-text">
                                 <strong>Start Date:</strong> <?= htmlspecialchars($restaurant['start_date']) ?><br>
                                 <strong>End Date:</strong> <?= htmlspecialchars($restaurant['end_date']) ?><br>
-                                <strong>Start Time:</strong> <?= htmlspecialchars($restaurant['start_time']) ?><br>
-                                <strong>End Time:</strong> <?= htmlspecialchars($restaurant['end_time']) ?><br>
+                                <strong>Start Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($restaurant['start_time'])) ?><br>
+                                <strong>End Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($restaurant['end_time'])) ?><br>
                                 <strong>Address:</strong> <?= htmlspecialchars($restaurant['address']) ?><br>
                                 <strong>Phone:</strong> <?= htmlspecialchars($restaurant['phone']) ?><br>
                                 <strong>Website:</strong> <?= htmlspecialchars($restaurant['website']) ?><br>
@@ -314,9 +339,11 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                             <h5 class="card-title"><?= htmlspecialchars($transportation['vehicle_info']) ?></h5>
                             <p class="card-text">
                                 <strong>Departure Date:</strong> <?= htmlspecialchars($transportation['departure_date']) ?><br>
-                                <strong>Departure Time:</strong> <?= htmlspecialchars($transportation['departure_time']) ?><br>
+                                <strong>Departure Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($transportation['departure_time'])) ?><br>
                                 <strong>Arrival Date:</strong> <?= htmlspecialchars($transportation['arrival_date']) ?><br>
-                                <strong>Arrival Time:</strong> <?= htmlspecialchars($transportation['arrival_time']) ?><br>
+                                <strong>Arrival Time:</strong>
+                                <?= htmlspecialchars(convertTo12HourFormat($transportation['arrival_time'])) ?><br>
                                 <strong>Address:</strong> <?= htmlspecialchars($transportation['address']) ?><br>
                                 <strong>Location Name:</strong> <?= htmlspecialchars($transportation['location_name']) ?><br>
                                 <strong>Phone:</strong> <?= htmlspecialchars($transportation['phone']) ?><br>

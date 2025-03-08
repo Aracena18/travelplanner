@@ -76,6 +76,7 @@ foreach ($sub_plan_types as $type) {
     $stmt = $pdo->prepare("SELECT * FROM $type WHERE trip_id = ?");
     $stmt->execute([$trip_id]);
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $row['type'] = $type; // Add type to each sub plan
         $sub_plans[] = $row;
     }
 }
@@ -357,6 +358,49 @@ foreach ($sub_plan_types as $type) {
                     console.error('Error:', error);
                     alert('An error occurred while updating the trip.');
                 });
+        });
+
+        document.querySelectorAll('.edit-sub-plan').forEach(button => {
+            button.addEventListener('click', function() {
+                const subPlanItem = this.closest('.sub-plan-item');
+                const subPlanId = subPlanItem.getAttribute('data-id');
+                const subPlanType = subPlanItem.getAttribute('data-type');
+                redirectTo(`edit_${subPlanType}.php?id=${subPlanId}`);
+            });
+        });
+
+        document.querySelectorAll('.delete-sub-plan').forEach(button => {
+            button.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this sub plan?')) {
+                    const subPlanItem = this.closest('.sub-plan-item');
+                    const subPlanId = subPlanItem.getAttribute('data-id');
+                    const subPlanType = subPlanItem.getAttribute('data-type');
+
+                    fetch(`delete_sub_plan.php`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id: subPlanId,
+                                type: subPlanType
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                subPlanItem.remove();
+                                calculateEstimatedCost();
+                            } else {
+                                alert('Failed to delete the sub plan: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while deleting the sub plan.');
+                        });
+                }
+            });
         });
     </script>
 </body>
