@@ -73,11 +73,33 @@
         </div>
 
         <div class="form-step" data-step="2">
-          <div class="form-section">
-            <h3 class="section-title mb-4">
-              <i class="fas fa-hotel section-icon"></i>
-              Select Your Accommodation
-            </h3>
+          <div class="accommodation-section">
+            <div class="accommodation-header">
+              <div>
+                <h3 class="accommodation-title">
+                  <i class="fas fa-hotel section-icon"></i>
+                  Select Your Accommodation
+                </h3>
+                <p class="hotel-selection-info">Choose from our curated selection of premium hotels</p>
+              </div>
+              <button type="button" class="see-all-btn" data-bs-toggle="modal" data-bs-target="#allHotelsModal">
+                View All Hotels <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="hotel-filters">
+              <button type="button" class="filter-button active">All</button>
+              <button type="button" class="filter-button">
+                <i class="fas fa-star"></i> 5 Star
+              </button>
+              <button type="button" class="filter-button">
+                <i class="fas fa-dollar-sign"></i> Best Value
+              </button>
+              <button type="button" class="filter-button">
+                <i class="fas fa-map-marker-alt"></i> Near Center
+              </button>
+            </div>
+
             <div id="hotel-carousel" class="carousel slide mb-4" data-bs-ride="false">
               <div class="carousel-inner" id="hotel-cards"></div>
               <button class="carousel-control-prev" type="button" data-bs-target="#hotel-carousel"
@@ -213,6 +235,23 @@
     </div>
     <div class="map-section">
       <div id="map"></div>
+    </div>
+  </div>
+
+  <!-- All Hotels Modal -->
+  <div class="modal fade" id="allHotelsModal" tabindex="-1" aria-labelledby="allHotelsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="allHotelsModalLabel">All Available Hotels</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-4" id="allHotelsGrid">
+            <!-- Hotels will be dynamically populated here -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

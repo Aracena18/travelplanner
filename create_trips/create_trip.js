@@ -23,6 +23,13 @@ function loadHotelsForDestination(destination) {
                         <div class="card hotel-card">
                             <div class="hotel-image-wrapper">
                                 <img src="/travelplanner-master/assets/images/${hotel.image_name}" class="card-img-top hotel-image" alt="${hotel.name}">
+                                <div class="hotel-image-overlay">
+                                    <div class="hotel-features">
+                                        <span class="feature-tag"><i class="fas fa-wifi"></i> Free WiFi</span>
+                                        <span class="feature-tag"><i class="fas fa-swimming-pool"></i> Pool</span>
+                                        <span class="feature-tag"><i class="fas fa-parking"></i> Parking</span>
+                                    </div>
+                                </div>
                                 <div class="hotel-rating">
                                     ${Array(hotel.stars).fill('<i class="fas fa-star"></i>').join('')}
                                 </div>
@@ -56,11 +63,79 @@ function updateSelectedHotel() {
     }
 }
 
+// Function to populate all hotels in the modal
+function populateAllHotelsModal(destination) {
+    const allHotelsGrid = document.getElementById('allHotelsGrid');
+    allHotelsGrid.innerHTML = '';
+
+    if (hotels[destination]) {
+        hotels[destination].hotels.forEach((hotel) => {
+            const card = `
+                <div class="col-md-6 col-lg-4">
+                    <div class="card hotel-card" data-hotel="${hotel.name}" data-latitude="${hotel.latitude}" data-longitude="${hotel.longitude}">
+                        <div class="hotel-image-wrapper">
+                            <img src="/travelplanner-master/assets/images/${hotel.image_name}" class="card-img-top hotel-image" alt="${hotel.name}">
+                            <div class="hotel-rating">
+                                ${Array(hotel.stars).fill('<i class="fas fa-star"></i>').join('')}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">${hotel.name}</h5>
+                            <div class="price-tag">
+                                <span class="price-label">Per Night</span>
+                                <span class="price-amount">$${hotel.price}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            allHotelsGrid.innerHTML += card;
+        });
+
+        // Add click handlers for hotel selection
+        document.querySelectorAll('#allHotelsGrid .hotel-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const hotelName = this.dataset.hotel;
+                const latitude = this.dataset.latitude;
+                const longitude = this.dataset.longitude;
+                
+                // Update selected hotel
+                document.getElementById('hotel').value = hotelName;
+                updateMapMarker(latitude, longitude);
+                
+                // Update carousel to show selected hotel
+                const carouselItems = document.querySelectorAll('#hotel-cards .carousel-item');
+                carouselItems.forEach(item => {
+                    if (item.dataset.hotel === hotelName) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                // Visual feedback
+                document.querySelectorAll('#allHotelsGrid .hotel-card').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                
+                // Close modal after short delay
+                setTimeout(() => {
+                    bootstrap.Modal.getInstance(document.getElementById('allHotelsModal')).hide();
+                }, 500);
+                
+                calculateEstimatedCost();
+                centerCarousel();
+            });
+        });
+    }
+}
+
 // Listen for changes on the destination select.
 // When using Choices.js the underlying select element still fires a native change event.
 destinationSelect.addEventListener('change', function(e) {
     updateTripName();
     loadHotelsForDestination(e.target.value);
+    populateAllHotelsModal(e.target.value);
 });
 
 // Pure JavaScript carousel controls
