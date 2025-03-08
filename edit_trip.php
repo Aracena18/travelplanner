@@ -1,5 +1,5 @@
 <?php
-// filepath: /c:/xampp/htdocs/travelplanner-master/edit_trip.php
+// filepath: /c:/xampp/htdocs/travelplanner/edit_trip.php
 include 'db.php';
 session_start();
 
@@ -102,85 +102,121 @@ foreach ($sub_plan_types as $type) {
             font-size: 24px;
             margin-right: 8px;
         }
+
+        .form-container {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            margin-bottom: 20px;
+        }
+
+        .form-footer {
+            margin-top: 20px;
+        }
+
+        .estimated-cost-display {
+            margin-top: 20px;
+        }
+
+        #map {
+            height: 100%;
+            min-height: 400px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Edit Trip</h1>
-        <form id="edit-trip-form" class="bg-light p-4 rounded shadow-sm" style="max-width: 800px; margin: auto;">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label for="trip_name" class="form-label">Trip Name</label>
-                    <input type="text" id="trip_name" name="trip_name" class="form-control form-control-sm"
-                        value="<?= htmlspecialchars($trip['trip_name']) ?>" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="destination" class="form-label">Destination</label>
-                    <select id="destination" name="destination" class="form-select form-select-sm" required>
-                        <?php foreach ($destinations as $location_id => $location): ?>
-                            <option value="<?= $location_id ?>"
-                                <?= $location_id == $trip['destination'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($location['name']) ?> </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-container">
+                    <h1 class="text-center form-header">Edit Trip</h1>
+                    <form id="edit-trip-form">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="trip_name" class="form-label">Trip Name</label>
+                                <input type="text" id="trip_name" name="trip_name" class="form-control form-control-sm"
+                                    value="<?= htmlspecialchars($trip['trip_name']) ?>" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="destination" class="form-label">Destination</label>
+                                <select id="destination" name="destination" class="form-select form-select-sm" required>
+                                    <?php foreach ($destinations as $location_id => $location): ?>
+                                        <option value="<?= $location_id ?>"
+                                            <?= $location_id == $trip['destination'] ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($location['name']) ?> </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
 
-                <div id="hotel-carousel" class="carousel slide mb-3" data-bs-ride="false">
-                    <div class="carousel-inner" id="hotel-cards"></div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#hotel-carousel"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#hotel-carousel"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
+                            <div id="hotel-carousel" class="carousel slide mb-3" data-bs-ride="false">
+                                <div class="carousel-inner" id="hotel-cards"></div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#hotel-carousel"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#hotel-carousel"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
 
-                <div id="map" style="height: 400px;" class="mb-4"></div>
+                            <input type="hidden" id="hotel" name="hotel"
+                                value="<?= htmlspecialchars($trip['hotel']) ?>">
 
-                <input type="hidden" id="hotel" name="hotel" value="<?= htmlspecialchars($trip['hotel']) ?>">
+                            <div class="col-md-6">
+                                <label for="adults_num" class="form-label">No. of Adults</label>
+                                <input type="text" id="adults_num" name="adults_num"
+                                    class="form-control form-control-sm"
+                                    value="<?= htmlspecialchars($trip['adults_num']) ?>" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="childs_num" class="form-label">No. of Children</label>
+                                <input type="text" id="childs_num" name="childs_num"
+                                    class="form-control form-control-sm"
+                                    value="<?= htmlspecialchars($trip['childs_num']) ?>" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                <input type="date" id="start_date" name="start_date"
+                                    class="form-control form-control-sm"
+                                    value="<?= htmlspecialchars($trip['start_date']) ?>" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="end_date" class="form-label">End Date</label>
+                                <input type="date" id="end_date" name="end_date" class="form-control form-control-sm"
+                                    value="<?= htmlspecialchars($trip['end_date']) ?>" required>
+                            </div>
+                        </div>
 
-                <div class="col-md-6">
-                    <label for="adults_num" class="form-label">No. of Adults</label>
-                    <input type="text" id="adults_num" name="adults_num" class="form-control form-control-sm"
-                        value="<?= htmlspecialchars($trip['adults_num']) ?>" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="childs_num" class="form-label">No. of Children</label>
-                    <input type="text" id="childs_num" name="childs_num" class="form-control form-control-sm"
-                        value="<?= htmlspecialchars($trip['childs_num']) ?>" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="start_date" class="form-label">Start Date</label>
-                    <input type="date" id="start_date" name="start_date" class="form-control form-control-sm"
-                        value="<?= htmlspecialchars($trip['start_date']) ?>" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="end_date" class="form-label">End Date</label>
-                    <input type="date" id="end_date" name="end_date" class="form-control form-control-sm"
-                        value="<?= htmlspecialchars($trip['end_date']) ?>" required>
+                        <!-- Estimated Cost Display -->
+                        <div class="alert alert-info fs-5 fw-bold text-center estimated-cost-display"
+                            id="estimated-cost-display">Estimated Cost:
+                            $0.00</div>
+                        <input type="hidden" id="estimated_cost" name="estimated_cost" value="0.00">
+
+                        <?php
+                        include 'sub_plans_options.php';
+                        include 'sub_plans.php';
+                        ?>
+
+                        <div class="d-flex justify-content-between form-footer">
+                            <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                            <a href="index.php" class="btn btn-secondary btn-sm">Exit</a>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <!-- Estimated Cost Display -->
-            <div class="alert alert-info fs-5 fw-bold text-center mt-3" id="estimated-cost-display">Estimated Cost:
-                $0.00</div>
-            <input type="hidden" id="estimated_cost" name="estimated_cost" value="0.00">
-
-            <?php
-            include 'sub_plans_options.php';
-            include 'sub_plans.php';
-            ?>
-
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                <a href="index.php" class="btn btn-secondary btn-sm">Exit</a>
+            <div class="col-md-6">
+                <div id="map" class="mb-4"></div>
             </div>
-        </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
