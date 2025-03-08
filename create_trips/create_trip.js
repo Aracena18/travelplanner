@@ -272,3 +272,136 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+// Global object to store pending reservations until the trip is submitted
+const pendingReservations = {
+    flights: [],
+    lodging: [],
+    rentalCars: [],
+    restaurants: [],
+    attachments: [],
+    others: []
+};
+
+// Helper function to update the hidden field with pending reservations JSON
+function updatePendingReservationsField() {
+    document.getElementById('pendingReservations').value = JSON.stringify(pendingReservations);
+}
+
+// Flight booking: open flight modal and pre-fill arrival city
+document.querySelector('button[type="button"].btn-light i.fas.fa-plane').parentElement.addEventListener('click', function() {
+    const modal = new bootstrap.Modal(document.getElementById('flightModal'));
+    modal.show();
+    
+    // Pre-fill the arrival city with the selected destination
+    const destinationSelect = document.getElementById('destination');
+    const selectedDestination = destinationSelect.options[destinationSelect.selectedIndex].text;
+    document.getElementById('arrivalCity').value = selectedDestination;
+});
+
+// Flight search functionality
+document.getElementById('searchFlights').addEventListener('click', async function() {
+    const departure = document.getElementById('departureCity').value;
+    const arrival = document.getElementById('arrivalCity').value;
+    
+    if (!departure || !arrival) {
+        alert('Please enter both departure and arrival cities');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`flights.php?departure=${encodeURIComponent(departure)}&arrival=${encodeURIComponent(arrival)}`);
+        const data = await response.json();
+        
+        const flightsList = document.getElementById('flightsList');
+        flightsList.innerHTML = data.flights.map(flight => `
+            <div class="card flight-card mb-3" data-flight-id="${flight.id}" data-flight-type="${flight.type}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="airline-info">
+                            <h5 class="mb-0">${flight.airline}</h5>
+                            <span class="text-muted">Flight ${flight.id}</span>
+                        </div>
+                        <div class="flight-price">
+                            <h4 class="mb-0">$${flight.price}</h4>
+                        </div>
+                    </div>
+                    <div class="flight-details mt-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="departure">
+                                <div class="time">${flight.departureTime}</div>
+                                <div class="city">${flight.departure}</div>
+                            </div>
+                            <div class="flight-duration d-flex flex-column align-items-center">
+                                <div class="duration-time">${flight.duration}</div>
+                                <div class="flight-line">
+                                    <i class="fas fa-plane"></i>
+                                </div>
+                                <div class="flight-type">${flight.type === 'direct' ? 'Direct Flight' : 'With Stops'}</div>
+                            </div>
+                            <div class="arrival text-end">
+                                <div class="time">${flight.arrivalTime}</div>
+                                <div class="city">${flight.arrival}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Add click handlers to flight cards
+        document.querySelectorAll('.flight-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Gather flight details from the card and modal fields
+                const flightData = {
+                    flight_id: this.dataset.flightId,
+                    airline: this.querySelector('.airline-info h5').textContent.trim(),
+                    departure: document.getElementById('departureCity').value,
+                    arrival: document.getElementById('arrivalCity').value,
+                    departureTime: this.querySelector('.departure .time').textContent.trim(),
+                    arrivalTime: this.querySelector('.arrival .time').textContent.trim(),
+                    duration: this.querySelector('.flight-duration .duration-time').textContent.trim(),
+                    price: parseFloat(this.querySelector('.flight-price h4').textContent.replace('$', ''))
+                };
+
+                // Store the flight reservation locally
+                pendingReservations.flights.push(flightData);
+                updatePendingReservationsField();
+
+                console.log('Pending reservations:', pendingReservations);
+                // Visual feedback: mark this flight card as selected
+                this.classList.add('selected');
+                setTimeout(() => {
+                    bootstrap.Modal.getInstance(document.getElementById('flightModal')).hide();
+                    calculateEstimatedCost(); // update total cost if needed
+                }, 500);
+            });
+        });
+        
+    } catch (error) {
+        console.error('Error fetching flights:', error);
+    }
+});
+
+// Flight filters functionality
+document.querySelectorAll('.flight-filters .btn').forEach(button => {
+    button.addEventListener('click', function() {
+        document.querySelectorAll('.flight-filters .btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        const filter = this.dataset.filter;
+        const cards = document.querySelectorAll('.flight-card');
+        
+        cards.forEach(card => {
+            switch(filter) {
+                case 'direct':
+                    card.style.display = card.dataset.flightType === 'direct' ? '' : 'none';
+                    break;
+                case 'all':
+                    card.style.display = '';
+                    break;
+                // Add more filter cases as needed
+            }
+        });
+    });
+});
+
