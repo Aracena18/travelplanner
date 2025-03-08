@@ -18,6 +18,7 @@ include __DIR__ . '/../includes/header.php';
         </div>
 
         <div class="content-wrapper">
+            <!--
             <ul class="nav nav-pills mb-4" id="tripTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link <?= $activeTab === 'overview' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#overview">
@@ -30,14 +31,21 @@ include __DIR__ . '/../includes/header.php';
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <button class="nav-link <?= $activeTab === 'flights' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#flights">
+                        <i class="fas fa-plane"></i> Flights
+                        Flights
+                    </button>
+                </li>
+                <!--
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" data-bs-toggle="pill" data-bs-target="#activities">
                         <i class="fas fa-calendar-alt"></i> Activities
                     </button>
-                </li>
-            </ul>
+                </li>-->
+            </ul>-->
 
             <div class="tab-content flex-grow-1" id="tripTabContent">
-                <!-- Overview Tab -->
+                <!--Overview Tab -->
                 <div class="tab-pane fade <?= $activeTab === 'overview' ? 'show active' : '' ?>" id="overview" role="tabpanel">
                     <form id="edit-trip-form" class="needs-validation" novalidate>
                         <div class="progress-steps">
@@ -61,7 +69,7 @@ include __DIR__ . '/../includes/header.php';
 
                         <div class="form-steps-container">
                             <!-- Step 1: Overview -->
-                            <div class="form-step active" data-step="1">
+                             <div class="form-step active" data-step="1">
                                 <div class="trip-stats row g-4">
                                     <div class="col-md-3">
                                         <div class="stat-card">
@@ -179,6 +187,85 @@ include __DIR__ . '/../includes/header.php';
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flights Tab -->
+                <div class="tab-pane fade <?= $activeTab === 'flights' ? 'show active' : '' ?>" id="flights" role="tabpanel">
+                    <div class="flights-container">
+                        <div class="section-header d-flex justify-content-between align-items-center mb-4">
+                            <h3><i class="fas fa-plane me-2"></i>Flight Bookings</h3>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFlightModal">
+                                <i class="fas fa-plus me-2"></i>Add Flight
+                            </button>
+                        </div>
+
+                        <!-- Flight Cards Container -->
+                        <div class="flight-cards">
+                            <?php if (!empty($flights)): ?>
+                                <?php foreach ($flights as $flight): ?>
+                                    <div class="flight-card">
+                                        <div class="flight-card-header">
+                                            <div class="airline-info">
+                                                <img src="/travelplanner-master/assets/images/airlines/<?= strtolower($flight['airline']) ?>.png" alt="<?= $flight['airline'] ?>" class="airline-logo">
+                                                <span class="airline-name"><?= htmlspecialchars($flight['airline']) ?></span>
+                                            </div>
+                                            <div class="flight-price">$<?= number_format($flight['price'], 2) ?></div>
+                                        </div>
+                                        <div class="flight-card-body">
+                                            <div class="flight-route">
+                                                <div class="departure">
+                                                    <div class="city"><?= htmlspecialchars($flight['departure']) ?></div>
+                                                    <div class="time"><?= date('H:i', strtotime($flight['departure_time'])) ?></div>
+                                                    <div class="date"><?= date('M d, Y', strtotime($flight['departure_time'])) ?></div>
+                                                </div>
+                                                <div class="flight-line">
+                                                    <div class="line"></div>
+                                                    <i class="fas fa-plane"></i>
+                                                    <div class="duration"><?= $flight['duration'] ?></div>
+                                                </div>
+                                                <div class="arrival">
+                                                    <div class="city"><?= htmlspecialchars($flight['arrival']) ?></div>
+                                                    <div class="time"><?= date('H:i', strtotime($flight['arrival_time'])) ?></div>
+                                                    <div class="date"><?= date('M d, Y', strtotime($flight['arrival_time'])) ?></div>
+                                                </div>
+                                            </div>
+                                            <div class="flight-details mt-3">
+                                                <div class="detail-item">
+                                                    <i class="fas fa-suitcase"></i>
+                                                    <span>2 bags included</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-utensils"></i>
+                                                    <span>Meal included</span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <i class="fas fa-wifi"></i>
+                                                    <span>Wi-Fi available</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flight-card-footer">
+                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteFlight(<?= $flight['id'] ?>)">
+                                                <i class="fas fa-trash-alt me-1"></i>Remove
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-sm" onclick="editFlight(<?= $flight['id'] ?>)">
+                                                <i class="fas fa-edit me-1"></i>Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="no-flights-message">
+                                    <i class="fas fa-plane-slash mb-3"></i>
+                                    <h4>No Flights Added Yet</h4>
+                                    <p>Start by adding your flight details to your trip.</p>
+                                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addFlightModal">
+                                        <i class="fas fa-plus me-2"></i>Add Your First Flight
+                                    </button>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
