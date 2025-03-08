@@ -54,6 +54,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("INSERT INTO trips (trip_id, user_id, trip_name, destination, hotel, adults_num, childs_num, start_date, end_date, estimated_cost) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$trip_id, $user_id, $trip_name, $destination, $hotel, $adults_num, $childs_num, $start_date, $end_date, $estimated_cost]);
 
+    // Process pending reservations from the hidden field
+    $pendingJSON = $_POST['pendingReservations'] ?? '';
+    if (!empty($pendingJSON)) {
+        $pending = json_decode($pendingJSON, true);
+        if (!is_array($pending)) {
+            $pending = [];
+        }
+        require_once 'process_reservations.php';
+        processReservations($pdo, $trip_id, $pending);
+    }
+
     header("Location:/travelplanner-master/edit_trip.php?trip_id=$trip_id");
     exit;
 }
@@ -83,3 +94,4 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 // Include the HTML template (the view)
 include 'create_trip_template.php';
+?>
