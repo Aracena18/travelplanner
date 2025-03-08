@@ -318,7 +318,7 @@ ob_end_flush();
         function deleteTrip(event, tripId) {
             event.stopPropagation();
             if (confirm('Are you sure you want to delete this trip?')) {
-                window.location.href = `delete_trip.php?trip_id=${tripId}`;
+                window.location.href = `delete_trip.php?id=${tripId}`;
             }
         }
     </script>

@@ -31,7 +31,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto">
-          <button class="btn btn-light" onclick="window.location.href='dashboard.php'">
+          <button class="btn btn-light" onclick="window.location.href='index.php'">
             <i class="fas fa-arrow-left"></i> Back to Dashboard
           </button>
         </div>

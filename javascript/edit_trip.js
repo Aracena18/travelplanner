@@ -3,6 +3,10 @@
 let largeMap;
 let currentMarker;
 
+// Global variables for swipe handling
+let swipeStartX = 0;
+let swipeEndX = 0;
+
 document.addEventListener('DOMContentLoaded', function() {
     // Ensure that the global variables (trip, destinations, subPlans) exist
     if (typeof trip === 'undefined' || typeof destinations === 'undefined' || typeof subPlans === 'undefined') {
@@ -138,34 +142,36 @@ function loadHotelsForDestination(destination) {
                     <div class="carousel-item ${isActive}" data-hotel="${hotel.name}" 
                          data-latitude="${hotel.latitude}" data-longitude="${hotel.longitude}" 
                          data-price="${hotel.price}">
-                        <div class="hotel-card">
-                            <div class="hotel-image-container">
-                                <img src="assets/images/${hotel.image_name}" class="hotel-image" alt="${hotel.name}"
-                                     onerror="this.src='assets/images/default-hotel.jpg'">
-                                <div class="hotel-price-tag">
-                                    <span class="price-amount">$${hotel.price}</span>
-                                    <span class="price-period">per night</span>
-                                </div>
-                            </div>
-                            <div class="hotel-info">
-                                <div>
-                                    <h5 class="hotel-name">${hotel.name}</h5>
-                                    <div class="hotel-rating">
-                                        ${generateStarRating(hotel.stars)}
+                        <div class="d-flex justify-content-center">
+                            <div class="hotel-card">
+                                <div class="hotel-image-container">
+                                    <img src="assets/images/${hotel.image_name}" class="hotel-image" alt="${hotel.name}"
+                                         onerror="this.src='assets/images/default-hotel.jpg'">
+                                    <div class="hotel-price-tag">
+                                        <span class="price-amount">$${hotel.price}</span>
+                                        <span class="price-period">per night</span>
                                     </div>
-                                    <div class="hotel-amenities">
-                                        ${amenities.map(a => `
-                                            <i class="fas fa-${a.icon}" title="${a.title}"></i>
-                                        `).join('')}
-                                    </div>
-                                    <p class="hotel-description">
-                                        ${hotel.description || 'Experience luxury and comfort at our premium location with top-notch amenities and exceptional service.'}
-                                    </p>
                                 </div>
-                                <button class="btn btn-select-hotel ${isSelected ? 'selected' : ''}" 
-                                        onclick="selectHotel(this.closest('.carousel-item'))">
-                                    ${isSelected ? '<i class="fas fa-check"></i>Selected' : '<i class="fas fa-check-circle"></i>Select Hotel'}
-                                </button>
+                                <div class="hotel-info">
+                                    <div>
+                                        <h5 class="hotel-name">${hotel.name}</h5>
+                                        <div class="hotel-rating">
+                                            ${generateStarRating(hotel.stars)}
+                                        </div>
+                                        <div class="hotel-amenities">
+                                            ${amenities.map(a => `
+                                                <i class="fas fa-${a.icon}" title="${a.title}"></i>
+                                            `).join('')}
+                                        </div>
+                                        <p class="hotel-description">
+                                            ${hotel.description || 'Experience luxury and comfort at our premium location with top-notch amenities and exceptional service.'}
+                                        </p>
+                                    </div>
+                                    <button class="btn btn-select-hotel ${isSelected ? 'selected' : ''}" 
+                                            onclick="selectHotel(this.closest('.carousel-item'))">
+                                        ${isSelected ? '<i class="fas fa-check"></i>Selected' : '<i class="fas fa-check-circle"></i>Select Hotel'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>`;
@@ -210,19 +216,17 @@ function initializeCarousel() {
 
     // Enhanced touch support with animation
     const carouselElement = document.getElementById('hotel-carousel');
-    let touchStartX = 0;
-    let touchEndX = 0;
     let isDragging = false;
 
     carouselElement.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
+        swipeStartX = e.changedTouches[0].screenX;
         isDragging = true;
     }, { passive: true });
 
     carouselElement.addEventListener('touchmove', e => {
         if (!isDragging) return;
         const currentX = e.changedTouches[0].screenX;
-        const diff = currentX - touchStartX;
+        const diff = currentX - swipeStartX;
         const activeItem = carouselElement.querySelector('.carousel-item.active');
         if (activeItem) {
             activeItem.style.transform = `translateX(${diff}px) scale(0.98)`;
@@ -231,7 +235,7 @@ function initializeCarousel() {
 
     carouselElement.addEventListener('touchend', e => {
         isDragging = false;
-        touchEndX = e.changedTouches[0].screenX;
+        swipeEndX = e.changedTouches[0].screenX;
         handleSwipe();
         const activeItem = carouselElement.querySelector('.carousel-item.active');
         if (activeItem) {
@@ -240,6 +244,22 @@ function initializeCarousel() {
     }, { passive: true });
 
     return carousel;
+}
+
+function handleSwipe() {
+    const diff = swipeEndX - swipeStartX;
+    const threshold = 50; // pixels threshold to consider a swipe
+    console.debug("handleSwipe: diff =", diff);
+    if (Math.abs(diff) > threshold) {
+        // If swipe right (diff positive), go to previous slide; otherwise, next slide.
+        if (diff > 0) {
+            bootstrap.Carousel.getInstance(document.getElementById('hotel-carousel')).prev();
+            console.debug("handleSwipe: Swiped right, moving to previous slide.");
+        } else {
+            bootstrap.Carousel.getInstance(document.getElementById('hotel-carousel')).next();
+            console.debug("handleSwipe: Swiped left, moving to next slide.");
+        }
+    }
 }
 
 function updateHotelDetails(hotelItem) {

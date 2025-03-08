@@ -122,3 +122,115 @@
     [location] => asdfdssdf
 )
 
+[08-Mar-2025 04:46:35 Europe/Berlin] DEBUG: add_activity - trip_id: 420950
+[08-Mar-2025 04:46:35 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 04:46:35 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 420950
+    [user_id] => 5
+    [trip_name] => Trip to Paris
+    [destination] => 1
+    [hotel] => Hotel B
+    [adults_num] => 3
+    [childs_num] => 3
+    [start_date] => 2025-03-11
+    [end_date] => 2025-03-10
+    [estimated_cost] => 408
+)
+
+[08-Mar-2025 04:46:35 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"420950","name":"Running","type":"adventure","start_time":"2025-03-20T11:48","cost":3,"description":"sdfsadfd","location":"sdfassd"}
+[08-Mar-2025 04:46:35 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => adventure
+    [start_time] => 2025-03-20T11:48
+    [cost] => 3.00
+    [description] => sdfsadfd
+    [location] => sdfassd
+)
+
+[08-Mar-2025 05:44:26 Europe/Berlin] DEBUG: add_activity - trip_id: 461930
+[08-Mar-2025 05:44:26 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 05:44:26 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 461930
+    [user_id] => 5
+    [trip_name] => Trip to Tokyo
+    [destination] => 3
+    [hotel] => Hotel I
+    [adults_num] => 1
+    [childs_num] => 1
+    [start_date] => 2025-03-13
+    [end_date] => 2025-03-22
+    [estimated_cost] => 2268
+)
+
+[08-Mar-2025 05:44:26 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"461930","name":"asldjfdfs","type":"dining","start_time":"2025-03-18T12:48","cost":3223,"description":"sdfsdfads","location":"sadfdfsa"}
+[08-Mar-2025 05:44:26 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => asldjfdfs
+    [type] => dining
+    [start_time] => 2025-03-18T12:48
+    [cost] => 3223.00
+    [description] => sdfsdfads
+    [location] => sadfdfsa
+)
+
+[08-Mar-2025 05:44:47 Europe/Berlin] DEBUG: add_activity - trip_id: 461930
+[08-Mar-2025 05:44:47 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 05:44:47 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 461930
+    [user_id] => 5
+    [trip_name] => Trip to Tokyo
+    [destination] => 3
+    [hotel] => Hotel I
+    [adults_num] => 1
+    [childs_num] => 1
+    [start_date] => 2025-03-13
+    [end_date] => 2025-03-22
+    [estimated_cost] => 2268
+)
+
+[08-Mar-2025 05:44:47 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"461930","name":"asdfsdafsad","type":"entertainment","start_time":"2025-04-02T12:47","cost":32,"description":"sadfsadfsad","location":"sdfsdaf"}
+[08-Mar-2025 05:44:47 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => asdfsdafsad
+    [type] => entertainment
+    [start_time] => 2025-04-02T12:47
+    [cost] => 32.00
+    [description] => sadfsadfsad
+    [location] => sdfsdaf
+)
+
+[08-Mar-2025 05:45:19 Europe/Berlin] DEBUG: add_activity - trip_id: 461930
+[08-Mar-2025 05:45:19 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[08-Mar-2025 05:45:19 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 461930
+    [user_id] => 5
+    [trip_name] => Trip to Tokyo
+    [destination] => 3
+    [hotel] => Hotel I
+    [adults_num] => 1
+    [childs_num] => 1
+    [start_date] => 2025-03-13
+    [end_date] => 2025-03-22
+    [estimated_cost] => 2268
+)
+
+[08-Mar-2025 05:45:19 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"461930","name":"gjkgjf","type":"tour","start_time":"2025-03-08T00:45","cost":344,"description":"sdfsasdf","location":"asdfsd"}
+[08-Mar-2025 05:45:19 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => gjkgjf
+    [type] => tour
+    [start_time] => 2025-03-08T00:45
+    [cost] => 344.00
+    [description] => sdfsasdf
+    [location] => asdfsd
+)
+

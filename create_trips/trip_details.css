@@ -251,10 +251,14 @@
 }
 
 .carousel-inner {
-  border-radius: 1rem;
-  overflow: hidden;
-  padding: 1rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.5s ease-in-out;
+  overflow: visible;
+  position: relative;
 }
+
 
 .carousel-inner .card {
   height: 100%;
@@ -611,13 +615,7 @@
   object-fit: cover;
 }
 
-.carousel-inner {
-  display: flex;
-  justify-content: center; /* This centers the carousel items horizontally */
-  border-radius: 1rem;
-  overflow: hidden;
-  padding: 1rem 0.5rem;
-}
+
 
 /* Activity Timeline Styles */
 .timeline {
