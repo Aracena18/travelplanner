@@ -259,57 +259,81 @@
     </div>
   </div>
 
-  <!-- Flight Booking Modal -->
-  <div class="modal fade" id="flightModal" tabindex="-1" aria-labelledby="flightModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="flightModalLabel">
-            <i class="fas fa-plane"></i> Book Your Flight
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="flight-search-container mb-4">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="departureCity" placeholder="From">
-                  <label for="departureCity">Departure City</label>
-                </div>
+<!-- Flight Booking Modal -->
+<div class="modal fade" id="flightModal" tabindex="-1" aria-labelledby="flightModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="flightModalLabel">
+          <i class="fas fa-plane"></i> Book Your Flight
+        </h5>
+        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Flight search container includes a data attribute for the API endpoint -->
+        <div class="flight-search-container mb-4" data-api-endpoint="https://booking-com15.p.rapidapi.com/api/v1/flights/">
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="departureCity" placeholder="From">
+                <label for="departureCity">Departure City</label>
               </div>
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="arrivalCity" placeholder="To">
-                  <label for="arrivalCity">Arrival City</label>
-                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="arrivalCity" placeholder="To">
+                <label for="arrivalCity">Arrival City</label>
               </div>
-              <div class="col-12">
-                <button class="btn btn-primary w-100" id="searchFlights">
-                  <i class="fas fa-search"></i> Search Flights
-                </button>
+            </div>
+            <!-- Departure Date -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="flightDepartureDate" placeholder="Departure Date">
+                <label for="flightDepartureDate">Departure Date</label>
               </div>
+            </div>
+            <!-- Return Date (optional) -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="flightReturnDate" placeholder="Return Date">
+                <label for="flightReturnDate">Return Date</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary w-100" id="searchFlights">
+                <i class="fas fa-search"></i> Search Flights
+              </button>
             </div>
           </div>
-          
-          <div class="flight-results">
-            <div class="flight-filters mb-3">
-              <div class="btn-group" role="group" aria-label="Flight filters">
-                <button type="button" class="btn btn-outline-primary active" data-filter="all">All Flights</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="direct">Direct Only</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="cheapest">Cheapest</button>
-                <button type="button" class="btn btn-outline-primary" data-filter="fastest">Fastest</button>
-              </div>
+        </div>
+        <!-- Loading indicator -->
+        <div id="flightLoading" class="d-none text-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <!-- Error message container -->
+        <div id="flightError" class="alert alert-danger d-none" role="alert"></div>
+        
+        <div class="flight-results">
+          <div class="flight-filters mb-3">
+            <div class="btn-group" role="group" aria-label="Flight filters">
+              <button type="button" class="btn btn-outline-primary active" data-filter="all">All Flights</button>
+              <button type="button" class="btn btn-outline-primary" data-filter="direct">Direct Only</button>
+              <button type="button" class="btn btn-outline-primary" data-filter="cheapest">Cheapest</button>
+              <button type="button" class="btn btn-outline-primary" data-filter="fastest">Fastest</button>
             </div>
-            
-            <div id="flightsList" class="flight-list">
-              <!-- Flights will be dynamically populated here -->
-            </div>
+          </div>
+          <div id="flightsList" class="flight-list">
+            <!-- Flight cards will be dynamically populated here -->
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- External JS libraries -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

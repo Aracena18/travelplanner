@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/travelplanner-master/create_trips/create_trip.css">
   <link rel="stylesheet" href="/travelplanner-master/create_trips/trip_details.css">
   <link rel="stylesheet" href="/travelplanner-master/create_trips/flights.css">
+  <link rel="stylesheet" href="/travelplanner-master/css/edit_trip.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
   <style>
       .map-overlay {

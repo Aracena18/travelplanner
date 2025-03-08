@@ -3,48 +3,60 @@
 include __DIR__ . '/../includes/header.php';
 ?>
 
+<!-- Add this in the header section -->
+<link rel="stylesheet" href="/travelplanner-master/css/edit_trip.css">
+
 <!-- Page Content -->
 <div class="layout-container">
     <div class="planning-section">
-        <div class="header-banner">
-            <h1 class="display-4 fw-bold">
-                <i class="fas fa-globe-americas me-3"></i>
-                <?= htmlspecialchars($trip['trip_name']) ?>
-            </h1>
-            <p class="lead">
-                <i class="fas fa-map-marker-alt me-2"></i>
-                <?= htmlspecialchars($destinations[$trip['destination']]['name']) ?>
-            </p>
+        <div class="header-banner position-relative">
+            <div class="banner-content">
+                <h1 class="display-4 fw-bold">
+                    <i class="fas fa-globe-americas me-3"></i>
+                    <?= htmlspecialchars($trip['trip_name']) ?>
+                </h1>
+                <div class="trip-metadata d-flex align-items-center flex-wrap">
+                    <span class="location">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        <?= htmlspecialchars($destinations[$trip['destination']]['name']) ?>
+                    </span>
+                    <span class="separator mx-3">•</span>
+                    <span class="dates">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        <?= date('M j', strtotime($trip['start_date'])) ?> - <?= date('M j, Y', strtotime($trip['end_date'])) ?>
+                    </span>
+                </div>
+            </div>
+            <div class="banner-overlay"></div>
         </div>
 
         <div class="content-wrapper">
-            <!--
-            <ul class="nav nav-pills mb-4" id="tripTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link <?= $activeTab === 'overview' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#overview">
-                        <i class="fas fa-info-circle"></i> Overview
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link <?= $activeTab === 'accommodation' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#accommodation">
-                        <i class="fas fa-hotel"></i> Accommodation
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link <?= $activeTab === 'flights' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#flights">
-                        <i class="fas fa-plane"></i> Flights
-                        Flights
-                    </button>
-                </li>
-                <!--
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#activities">
-                        <i class="fas fa-calendar-alt"></i> Activities
-                    </button>
-                </li>-->
-            </ul>-->
+            <nav class="trip-nav">
+                <ul class="nav nav-pills mb-4" id="tripTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $activeTab === 'overview' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#overview">
+                            <i class="fas fa-info-circle"></i> Overview
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $activeTab === 'accommodation' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#accommodation">
+                            <i class="fas fa-hotel"></i> Accommodation
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <?= $activeTab === 'reservations' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#reservations">
+                            <i class="fas fa-calendar-check"></i> Reservations
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#activities">
+                            <i class="fas fa-calendar-alt"></i> Activities
+                        </button>
+                    </li>
+                </ul>
+            </nav>
 
-            <div class="tab-content flex-grow-1" id="tripTabContent">
+            <div class="tab-content" id="tripTabContent">
                 <!--Overview Tab -->
                 <div class="tab-pane fade <?= $activeTab === 'overview' ? 'show active' : '' ?>" id="overview" role="tabpanel">
                     <form id="edit-trip-form" class="needs-validation" novalidate>
@@ -69,7 +81,7 @@ include __DIR__ . '/../includes/header.php';
 
                         <div class="form-steps-container">
                             <!-- Step 1: Overview -->
-                             <div class="form-step active" data-step="1">
+                            <div class="form-step active" data-step="1">
                                 <div class="trip-stats row g-4">
                                     <div class="col-md-3">
                                         <div class="stat-card">
@@ -169,7 +181,7 @@ include __DIR__ . '/../includes/header.php';
                             <button class="filter-chip">Beach Access</button>
                         </div>
                     </div>
-
+                    
                     <div class="hotel-showcase">
                         <h3 class="section-title mb-4">
                             <i class="fas fa-hotel me-2"></i>Available Hotels
@@ -191,81 +203,78 @@ include __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
 
-                <!-- Flights Tab -->
-                <div class="tab-pane fade <?= $activeTab === 'flights' ? 'show active' : '' ?>" id="flights" role="tabpanel">
-                    <div class="flights-container">
-                        <div class="section-header d-flex justify-content-between align-items-center mb-4">
-                            <h3><i class="fas fa-plane me-2"></i>Flight Bookings</h3>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFlightModal">
-                                <i class="fas fa-plus me-2"></i>Add Flight
-                            </button>
-                        </div>
-
-                        <!-- Flight Cards Container -->
-                        <div class="flight-cards">
-                            <?php if (!empty($flights)): ?>
-                                <?php foreach ($flights as $flight): ?>
-                                    <div class="flight-card">
-                                        <div class="flight-card-header">
-                                            <div class="airline-info">
-                                                <img src="/travelplanner-master/assets/images/airlines/<?= strtolower($flight['airline']) ?>.png" alt="<?= $flight['airline'] ?>" class="airline-logo">
-                                                <span class="airline-name"><?= htmlspecialchars($flight['airline']) ?></span>
-                                            </div>
-                                            <div class="flight-price">$<?= number_format($flight['price'], 2) ?></div>
-                                        </div>
-                                        <div class="flight-card-body">
-                                            <div class="flight-route">
-                                                <div class="departure">
-                                                    <div class="city"><?= htmlspecialchars($flight['departure']) ?></div>
-                                                    <div class="time"><?= date('H:i', strtotime($flight['departure_time'])) ?></div>
-                                                    <div class="date"><?= date('M d, Y', strtotime($flight['departure_time'])) ?></div>
-                                                </div>
-                                                <div class="flight-line">
-                                                    <div class="line"></div>
-                                                    <i class="fas fa-plane"></i>
-                                                    <div class="duration"><?= $flight['duration'] ?></div>
-                                                </div>
-                                                <div class="arrival">
-                                                    <div class="city"><?= htmlspecialchars($flight['arrival']) ?></div>
-                                                    <div class="time"><?= date('H:i', strtotime($flight['arrival_time'])) ?></div>
-                                                    <div class="date"><?= date('M d, Y', strtotime($flight['arrival_time'])) ?></div>
-                                                </div>
-                                            </div>
-                                            <div class="flight-details mt-3">
-                                                <div class="detail-item">
-                                                    <i class="fas fa-suitcase"></i>
-                                                    <span>2 bags included</span>
-                                                </div>
-                                                <div class="detail-item">
-                                                    <i class="fas fa-utensils"></i>
-                                                    <span>Meal included</span>
-                                                </div>
-                                                <div class="detail-item">
-                                                    <i class="fas fa-wifi"></i>
-                                                    <span>Wi-Fi available</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flight-card-footer">
-                                            <button class="btn btn-outline-danger btn-sm" onclick="deleteFlight(<?= $flight['id'] ?>)">
-                                                <i class="fas fa-trash-alt me-1"></i>Remove
-                                            </button>
-                                            <button class="btn btn-outline-primary btn-sm" onclick="editFlight(<?= $flight['id'] ?>)">
-                                                <i class="fas fa-edit me-1"></i>Edit
-                                            </button>
-                                        </div>
+                <!-- Enhanced Reservations Tab -->
+                <div class="tab-pane fade <?= $activeTab === 'reservations' ? 'show active' : '' ?>" id="reservations" role="tabpanel">
+                    <div class="reservations-container">
+                        <div class="section-header">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="header-left">
+                                    <h3 class="mb-0">
+                                        <i class="fas fa-calendar-check me-2 text-primary"></i>
+                                        Trip Reservations
+                                    </h3>
+                                    <p class="text-muted mb-0">Manage your travel arrangements and bookings</p>
+                                </div>
+                                <div class="header-right">
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-plus me-2"></i>Add Reservation
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#flightModal">
+                                                    <i class="fas fa-plane me-2"></i>Flight
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item">
+                                                    <i class="fas fa-hotel me-2"></i>Lodging
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item">
+                                                    <i class="fas fa-car me-2"></i>Rental Car
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item">
+                                                    <i class="fas fa-utensils me-2"></i>Restaurant
+                                                </button>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <button class="dropdown-item">
+                                                    <i class="fas fa-paperclip me-2"></i>Attachment
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="no-flights-message">
-                                    <i class="fas fa-plane-slash mb-3"></i>
-                                    <h4>No Flights Added Yet</h4>
-                                    <p>Start by adding your flight details to your trip.</p>
-                                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addFlightModal">
-                                        <i class="fas fa-plus me-2"></i>Add Your First Flight
+                                </div>
+                            </div>
+
+                            <div class="reservation-categories mb-4">
+                                <div class="category-filters d-flex gap-2">
+                                    <button class="category-btn active" data-category="all">
+                                        <i class="fas fa-border-all"></i> All
+                                    </button>
+                                    <button class="category-btn" data-category="flights">
+                                        <i class="fas fa-plane"></i> Flights
+                                    </button>
+                                    <button class="category-btn" data-category="lodging">
+                                        <i class="fas fa-hotel"></i> Lodging
+                                    </button>
+                                    <button class="category-btn" data-category="cars">
+                                        <i class="fas fa-car"></i> Cars
+                                    </button>
+                                    <button class="category-btn" data-category="dining">
+                                        <i class="fas fa-utensils"></i> Dining
                                     </button>
                                 </div>
-                            <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <div id="reservationsTimeline" class="reservations-timeline">
+                            <!-- Dynamic content will be loaded here -->
                         </div>
                     </div>
                 </div>
@@ -330,17 +339,20 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 
-    <!-- Map Section -->
+    <!-- Enhanced Map Section -->
     <div class="map-section">
         <div class="sticky-map-container">
             <div id="map-large"></div>
             <div class="map-overlay">
                 <div class="selected-destination-info">
                     <h4><?= htmlspecialchars($destinations[$trip['destination']]['name']) ?></h4>
-                    <p class="mb-0"><i class="fas fa-hotel me-2"></i><?= htmlspecialchars($trip['hotel']) ?></p>
-                    <div class="trip-route mt-3">
-                        <div class="route-points">
-                            <!-- Dynamic route points will be added here -->
+                    <p class="mb-0">
+                        <i class="fas fa-hotel me-2"></i>
+                        <?= htmlspecialchars($trip['hotel']) ?>
+                    </p>
+                    <div class="trip-timeline mt-3">
+                        <div class="timeline-points">
+                            <!-- Timeline points will be dynamically added here -->
                         </div>
                     </div>
                 </div>
