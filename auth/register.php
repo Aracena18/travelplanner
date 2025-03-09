@@ -33,69 +33,120 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <style>
-    body {
-        margin: 0;
-        padding: 0;
-        background-image: url('../assets/images/auth.png');
-        /* Replace with your image path */
-        background-size: cover;
-        /* Ensures the image covers the whole page */
-        background-position: center;
-        /* Centers the image */
-        background-repeat: no-repeat;
-        /* Prevents repeating the image */
-        height: 100vh;
-        /* Full viewport height */
-    }
-    </style>
+    <title>TravelPlanner - Register</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/travelplanner-master/css/auth.css">
 </head>
-
 <body>
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-sm" style="width: 25rem;">
-            <div class="card-body">
-                <h5 class="card-title text-center mb-4">Register</h5>
-                <form action="" method="POST">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Enter your password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                            placeholder="Confirm your password" required>
-                    </div>
-                    <button type="submit" id="reg" class="btn btn-primary w-100">Register</button>
-                </form>
-                <div class="text-center mt-3">
-                    <p>Already have an account? <a href="login.php" class="text-decoration-none">Login here</a></p>
+    <div class="bg-elements">
+        <div class="bg-element element-1"></div>
+        <div class="bg-element element-2"></div>
+        <div class="bg-element element-3"></div>
+    </div>
+
+    <div class="current-time">
+        <i class="fas fa-clock"></i> <?php echo date('Y-m-d H:i:s'); ?>
+    </div>
+
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class="fas fa-user-plus"></i>
                 </div>
+                <h1>Join Our Community!</h1>
+                <p>Create an account to start planning your next adventure</p>
             </div>
+
+            <form action="" method="POST">
+                <?php if (isset($error)): ?>
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <?php echo $error; ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="form-group">
+                    <label class="form-label" for="name">Full Name</label>
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            class="form-input"
+                            placeholder="Enter your full name"
+                            required
+                        >
+                        <i class="input-icon fas fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email address</label>
+                    <div class="input-group">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input"
+                            placeholder="name@example.com"
+                            required
+                        >
+                        <i class="input-icon fas fa-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-group">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input"
+                            placeholder="••••••••"
+                            required
+                        >
+                        <i class="input-icon fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirm_password">Confirm Password</label>
+                    <div class="input-group">
+                        <input 
+                            type="password" 
+                            id="confirm_password" 
+                            name="confirm_password" 
+                            class="form-input"
+                            placeholder="••••••••"
+                            required
+                        >
+                        <i class="input-icon fas fa-lock-keyhole"></i>
+                    </div>
+                </div>
+
+                <div class="buttons-container">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                    
+                    <a href="login.php" class="btn btn-secondary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </div>
+
+                <div class="footer-link">
+                    <p>Already have an account? <a href="login.php">Sign in here</a></p>
+                </div>
+            </form>
         </div>
     </div>
 
-    <script class="s">
-    const btn = document.getElementById('reg');
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
