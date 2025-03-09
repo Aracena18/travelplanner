@@ -3,332 +3,161 @@ include 'db.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arc Travel - Your Journey Begins Here</title>
+    <title>Arc Travel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
     <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #475569;
-            --accent: #10b981;
-            --background: #f8fafc;
-            --text: #1e293b;
-            --white: #ffffff;
-            --transition: all 0.3s ease-in-out;
-        }
+    /* Transparent Header Styling */
+    .transparent-header {
+        background-color: rgba(0, 0, 0, 0.3);
+        /* Transparent black */
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    .navbar-nav {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background-color: var(--background);
-        }
+    .nav-link {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-transform: uppercase;
+    }
 
-        /* Header Styles */
-        .header {
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            transition: var(--transition);
-        }
+    .nav-link:hover {
+        color: #FFD700;
+    }
 
-        .header.scrolled {
-            background: rgba(0, 0, 0, 0.9);
-        }
+    .background-image {
+        background: url("assets/images/background.jpg") no-repeat center center;
+        background-size: cover;
+        min-height: 100vh;
+    }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    body {
+        padding-top: 80px;
+        /* Avoid overlap with the fixed header */
+    }
 
-        .logo {
-            color: var(--white);
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-decoration: none;
-        }
+    .custom-heading {
+        color: white;
+        font-size: 7rem;
+        font-weight: 100;
+        font-family: 'Roboto', sans-serif;
+    }
 
-        .nav-menu {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
+    .custom-search {
+        border-radius: 200px;
+        font-size: 3rem;
+        background-color: transparent;
+        color: white;
+    }
 
-        .nav-link {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: var(--transition);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .btn-outline {
-            border: 2px solid var(--white);
-            color: var(--white);
-        }
-
-        .btn-solid {
-            background: var(--white);
-            color: var(--text);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-                        url("assets/images/background.jpg") no-repeat center/cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--white);
-        }
-
-        .hero-content {
-            max-width: 800px;
-            padding: 2rem;
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        /* Destinations Section */
-        .destinations {
-            padding: 5rem 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .destinations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 0 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .destination-card {
-            background: var(--white);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
-        }
-
-        .destination-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .card-image {
-            height: 200px;
-            width: 100%;
-            object-fit: cover;
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Mobile Menu */
-        .menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            color: var(--white);
-            cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(0, 0, 0, 0.9);
-                padding: 1rem;
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .destinations-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+    .custom-button {
+        border-radius: 200px;
+        font-size: 2rem;
+        background-color: orange;
+        color: white;
+        margin-top: 20px;
+    }
     </style>
-</head>
-<body>
-    <header class="header">
-        <nav class="nav-container">
-            <a href="welcome.php" class="logo">Arc Travel</a>
-            <div class="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="welcome.php" class="nav-link">Home</a></li>
-                <li><a href="#destinations" class="nav-link">Destinations</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+</head>;
+
+<body class="background-image">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg transparent-header">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Centered Navigation Links -->
+            <ul class="navbar-nav mx-auto d-flex flex-row gap-4">
+                <li class="nav-item">
+                    <a class="nav-link" href="welcome.php">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#welcome-destinations">Destinations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact Us</a>
+                </li>
             </ul>
-            <div class="auth-buttons">
-                <a href="auth/login.php" class="btn btn-outline">Login</a>
-                <a href="auth/register.php" class="btn btn-solid">Register</a>
-            </div>
-        </nav>
-    </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">Your Journey Starts Here</h1>
-            <p class="hero-subtitle">Discover extraordinary destinations and create unforgettable memories.</p>
-            <a href="auth/login.php" class="btn btn-solid">Start Your Journey</a>
+            <!-- Buttons on the Far Right -->
+            <div class="d-flex gap-2">
+                <a href="auth/login.php" class="btn btn-secondary">Login</a>
+                <a href="auth/register.php" class="btn btn-secondary">Register</a>
+            </div>
+        </div>
+    </nav>
+    <section class="d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+        <h1 class="custom-heading">Your Journey Starts Here</h1>
+
+        <!-- Journey Button -->
+        <div class="d-flex justify-content-center align-items-center mb-3">
+            <a href=" auth/login.php" class="btn btn-secondary custom-button">Start Your Journey</a>
         </div>
     </section>
+    <section class="bg-light py-5" id="welcome-destinations">
+        <div class="container text-center">
+            <h2 class="display-5">Explore Our Exclusive Offers</h2>
+            <p class="lead text-muted">We bring you the best destinations at the best prices.</p>
 
-    <section class="destinations" id="destinations">
-        <div class="section-title">
-            <h2>Explore Our Exclusive Offers</h2>
-            <p>We bring you the best destinations at the best prices.</p>
-        </div>
-        <div class="destinations-grid">
-            <div class="destination-card">
-                <img src="assets/images/destination1.png" class="card-image" alt="Tokyo">
-                <div class="card-content">
-                    <h3 class="card-title">Tokyo</h3>
-                    <p>Explore the dynamic blend of modernity and tradition in Japan's capital.</p>
-                    <a href="auth/login.php" class="btn btn-solid">Discover More <i class="fas fa-arrow-right ms-2"></i></a>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <img src="assets/images/destination1.png" class="card-img-top" alt="Destination 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Tokyo</h5>
+                            <p class="card-text">Explore the famous capital of Japan with it's magnificent modernist
+                                cityscape and magnificent Culture</p>
+                            <a href="auth/login.php" class="btn btn-primary">Discover More</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="destination-card">
-                <img src="assets/images/destination2.jpeg" class="card-image" alt="Berlin">
-                <div class="card-content">
-                    <h3 class="card-title">Berlin</h3>
-                    <p>Immerse yourself in the innovative culture and rich history of Germany's capital.</p>
-                    <a href="auth/login.php" class="btn btn-solid">Discover More <i class="fas fa-arrow-right ms-2"></i></a>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <img src="assets/images/destination2.jpeg" class="card-img-top" alt="Destination 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Berlin</h5>
+                            <p class="card-text">Marvel at Famous Gothic Architecture in Germany's capital. Live through
+                                the mix of medieval fantasy in the comforts of modern lodgings</p>
+                            <a href="auth/login.php" class="btn btn-primary">Discover More</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="destination-card">
-                <img src="assets/images/destination3.jpg" class="card-image" alt="Bangkok">
-                <div class="card-content">
-                    <h3 class="card-title">Bangkok</h3>
-                    <p>Experience the vibrant mix of cultural heritage and modern city life in Thailand.</p>
-                    <a href="auth/login.php" class="btn btn-solid">Discover More <i class="fas fa-arrow-right ms-2"></i></a>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <img src="assets/images/destination3.jpg" class="card-img-top" alt="Destination 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Bangkok</h5>
+                            <p class="card-text">Experience vibrant asian city life with endless attractions in
+                                Thailand. Home to exotic animals and exotic Culture.</p>
+                            <a href="auth/login.php" class="btn btn-primary">Discover More</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="bg-light py-5" id="about">
-        <div class="container">
-            <h2 class="text-center text-dark mb-4" data-aos="fade-up">About Us</h2>
-            <p class="text-center text-muted" data-aos="fade-up">Crafting unique travel experiences is our passion.</p>
-        </div>
     </section>
 
-    <section class="bg-light py-5" id="contact">
-        <div class="container">
-            <h2 class="text-center text-dark mb-4" data-aos="fade-up">Contact Us</h2>
-            <p class="text-center text-muted" data-aos="fade-up">Have a question? Reach out to us to learn more.</p>
-        </div>
-    </section>
-
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-
-        menuToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
