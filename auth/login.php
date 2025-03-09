@@ -44,58 +44,93 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-image: url('../assets/images/auth.png');
-            /* Replace with your image path */
-            background-size: cover;
-            /* Ensures the image covers the whole page */
-            background-position: center;
-            /* Centers the image */
-            background-repeat: no-repeat;
-            /* Prevents repeating the image */
-            height: 100vh;
-            /* Full viewport height */
-        }
-    </style>
+    <title>TravelPlanner - Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/travelplanner-master/css/auth.css">
 </head>
 
 <body>
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-sm" style="width: 22rem;">
-            <div class="card-body">
-                <h5 class="card-title text-center mb-4">Login</h5>
-                <form action="" method="POST">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password"
-                            placeholder="Enter your password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-                <div class="text-center mt-3">
-                    <a href="register.php" class="btn btn-secondary w-100">Register</a>
-                </div>
-            </div>
-        </div>
+    <div class="bg-elements">
+        <div class="bg-element element-1"></div>
+        <div class="bg-element element-2"></div>
+        <div class="bg-element element-3"></div>
     </div>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="current-time">
+        <i class="fas fa-clock"></i> <?php echo date('Y-m-d H:i:s'); ?>
+    </div>
 
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <h1>Welcome Explorer!</h1>
+                <p>Sign in to discover amazing destinations and plan your perfect journey</p>
+            </div>
+            
+            <form action="" method="POST">
+                <?php if (isset($error)): ?>
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <?php echo $error; ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email address</label>
+                    <div class="input-group">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input"
+                            placeholder="name@example.com"
+                            required
+                            autocomplete="email"
+                        >
+                        <i class="input-icon fas fa-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-group">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input"
+                            placeholder="••••••••"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <i class="input-icon fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div class="buttons-container">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                    
+                    <a href="register.php" class="btn btn-secondary">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </div>
+
+                <div class="footer-link">
+                    <a href="forgot-password.php">
+                        <i class="fas fa-key"></i> Forgot password?
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
-
 </html>

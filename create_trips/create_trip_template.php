@@ -263,77 +263,195 @@
 <div class="modal fade" id="flightModal" tabindex="-1" aria-labelledby="flightModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="flightModalLabel">
-          <i class="fas fa-plane"></i> Book Your Flight
-        </h5>
-        <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title fw-bold" id="flightModalLabel">
+          <i class="fas fa-plane-departure text-primary me-2"></i>Find Your Perfect Flight
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Flight search container includes a data attribute for the API endpoint -->
-        <div class="flight-search-container mb-4" data-api-endpoint="https://booking-com15.p.rapidapi.com/api/v1/flights/">
-
-          <div class="row g-3">
+        <div class="flight-search-container">
+          <div class="row g-4">
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="departureCity" placeholder="From">
-                <label for="departureCity">Departure City</label>
+                <input type="text" class="form-control" id="departureCity" placeholder="From"
+                       list="departureCities" autocomplete="off">
+                <label for="departureCity">
+                  <i class="fas fa-plane-departure text-primary me-2"></i>From
+                </label>
+              </div>
+              <datalist id="departureCities">
+                <!-- Will be populated dynamically -->
+              </datalist>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="arrivalCity" placeholder="To"
+                       list="arrivalCities" autocomplete="off">
+                <label for="arrivalCity">
+                  <i class="fas fa-plane-arrival text-primary me-2"></i>To
+                </label>
+              </div>
+              <datalist id="arrivalCities">
+                <!-- Will be populated dynamically -->
+              </datalist>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="date" class="form-control" id="flightDepartureDate">
+                <label for="flightDepartureDate">
+                  <i class="far fa-calendar-alt text-primary me-2"></i>Departure Date
+                </label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-floating">
-                <input type="text" class="form-control" id="arrivalCity" placeholder="To">
-                <label for="arrivalCity">Arrival City</label>
-              </div>
-            </div>
-            <!-- Departure Date -->
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input type="date" class="form-control" id="flightDepartureDate" placeholder="Departure Date">
-                <label for="flightDepartureDate">Departure Date</label>
-              </div>
-            </div>
-            <!-- Return Date (optional) -->
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input type="date" class="form-control" id="flightReturnDate" placeholder="Return Date">
-                <label for="flightReturnDate">Return Date</label>
+                <input type="date" class="form-control" id="flightReturnDate">
+                <label for="flightReturnDate">
+                  <i class="far fa-calendar-alt text-primary me-2"></i>Return Date (Optional)
+                </label>
               </div>
             </div>
             <div class="col-12">
-              <button class="btn btn-primary w-100" id="searchFlights">
-                <i class="fas fa-search"></i> Search Flights
+              <button class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2" 
+                      id="searchFlights">
+                <i class="fas fa-search"></i>
+                <span>Search Flights</span>
               </button>
             </div>
           </div>
         </div>
-        <!-- Loading indicator -->
-        <div id="flightLoading" class="d-none text-center">
-          <div class="spinner-border" role="status">
+
+        <div class="flight-filters">
+          <button class="filter-chip active" data-filter="all">All Flights</button>
+          <button class="filter-chip" data-filter="direct">Direct Only</button>
+          <button class="filter-chip" data-filter="cheapest">Best Price</button>
+          <button class="filter-chip" data-filter="fastest">Fastest</button>
+          <button class="filter-chip" data-filter="recommended">Recommended</button>
+        </div>
+
+        <!-- Loading State -->
+        <div id="flightLoading" class="text-center py-5 d-none">
+          <div class="spinner-grow text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
+          <p class="text-muted mt-3">Searching for the best flights...</p>
         </div>
-        <!-- Error message container -->
-        <div id="flightError" class="alert alert-danger d-none" role="alert"></div>
-        
-        <div class="flight-results">
-          <div class="flight-filters mb-3">
-            <div class="btn-group" role="group" aria-label="Flight filters">
-              <button type="button" class="btn btn-outline-primary active" data-filter="all">All Flights</button>
-              <button type="button" class="btn btn-outline-primary" data-filter="direct">Direct Only</button>
-              <button type="button" class="btn btn-outline-primary" data-filter="cheapest">Cheapest</button>
-              <button type="button" class="btn btn-outline-primary" data-filter="fastest">Fastest</button>
-            </div>
-          </div>
-          <div id="flightsList" class="flight-list">
-            <!-- Flight cards will be dynamically populated here -->
-          </div>
+
+        <!-- Error State -->
+        <div id="flightError" class="alert alert-danger d-none" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          <span class="error-message"></span>
         </div>
+
+        <!-- Results Container -->
+        <div id="flightsList" class="flight-results mt-4">
+          <!-- Flight cards will be populated here -->
+        </div>
+
       </div>
     </div>
   </div>
 </div>
 
+<!-- Flight Card Template -->
+<template id="flightCardTemplate">
+  <div class="flight-card">
+    <div class="flight-header">
+      <div class="airline-info">
+        <img src="" alt="" class="airline-logo">
+        <div>
+          <h5 class="airline-name mb-0"></h5>
+          <small class="text-muted flight-number"></small>
+          <div class="price-comparison"></div>
+        </div>
+      </div>
+      <div class="price-section">
+        <button class="price-alert" title="Set Price Alert">
+          <i class="far fa-bell"></i>
+        </button>
+        <span class="price-amount"></span>
+        <small class="price-label">per person</small>
+      </div>
+    </div>
+    
+    <div class="flight-details">
+      <div class="flight-route">
+        <div class="route-point departure">
+          <div class="city-code"></div>
+          <div class="city-name"></div>
+          <div class="time"></div>
+          <div class="date"></div>
+        </div>
+        <div class="flight-path">
+          <div class="duration-bar">
+            <div class="duration-progress"></div>
+            <div class="layover-indicator"></div>
+          </div>
+          <i class="fas fa-plane path-icon"></i>
+        </div>
+        <div class="route-point arrival">
+          <div class="city-code"></div>
+          <div class="city-name"></div>
+          <div class="time"></div>
+          <div class="date"></div>
+        </div>
+      </div>
+      
+      <div class="flight-features">
+        <span class="feature-tag baggage-info">
+          <i class="fas fa-suitcase"></i>
+          <span></span>
+        </span>
+        <span class="feature-tag seat-info">
+          <i class="fas fa-chair"></i>
+          <span></span>
+        </span>
+        <span class="feature-tag meal-info">
+          <i class="fas fa-utensils"></i>
+          <span></span>
+        </span>
+      </div>
+    </div>
+
+    <div class="flight-info">
+      <div class="info-item">
+        <i class="fas fa-clock"></i>
+        <span class="duration"></span>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-exchange-alt"></i>
+        <span class="stops"></span>
+      </div>
+      <button class="flight-details-toggle">
+        <span>Show Details</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+    </div>
+
+    <div class="flight-details-expand">
+      <!-- Expanded flight details will be populated here -->
+    </div>
+
+    <button class="select-flight-btn">
+      <i class="fas fa-check me-2"></i>
+      Select This Flight
+    </button>
+  </div>
+</template>
+
+<!-- Add Skeleton Loading Template -->
+<template id="flightSkeletonTemplate">
+  <div class="flight-card skeleton">
+    <div class="flight-header">
+      <div class="skeleton-loading" style="width: 200px; height: 24px;"></div>
+      <div class="skeleton-loading" style="width: 100px; height: 32px;"></div>
+    </div>
+    <div class="flight-details">
+      <div class="skeleton-loading" style="width: 100%; height: 120px;"></div>
+    </div>
+  </div>
+</template>
 
   <!-- External JS libraries -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
