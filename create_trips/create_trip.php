@@ -1,5 +1,5 @@
-<?php 
-include 'db.php';
+<?php
+include '../db.php';
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -94,4 +94,3 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
 // Include the HTML template (the view)
 include 'create_trip_template.php';
-?>
