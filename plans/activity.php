@@ -21,15 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $start_time = $_POST['start_time'];
     $end_date = $_POST['end_date'];
     $end_time = $_POST['end_time'];
-    $venue = $_POST['venue'];
+    $name = $_POST['name'];
     $address = $_POST['address'];
     $website = $_POST['website'];
     $email = $_POST['email'];
     $cost = $_POST['cost'];
 
     // Insert activity details into the database
-    $stmt = $pdo->prepare("INSERT INTO activity (trip_id, start_date, start_time, end_date, end_time, venue, address, website, email, cost, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute([$trip_id, $start_date, $start_time, $end_date, $end_time, $venue, $address, $website, $email, $cost]);
+    $stmt = $pdo->prepare("INSERT INTO activity (trip_id, start_date, start_time, end_date, end_time, name, address, website, email, cost, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$trip_id, $start_date, $start_time, $end_date, $end_time, $name, $address, $website, $email, $cost]);
 
     header("Location: ../edit_trip.php?trip_id=$trip_id");
     exit;
@@ -67,8 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="time" id="end_time" name="end_time" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="venue" class="form-label">Venue</label>
-                <input type="text" id="venue" name="venue" class="form-control" required>
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>

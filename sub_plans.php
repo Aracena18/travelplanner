@@ -135,228 +135,245 @@ function convertTo12HourFormat($time)
 }
 ?>
 
-<!-- Display Sub Plans -->
-<div class="text-center mt-4">
-    <h2 class="mb-4">Sub Plans</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-    <?php if (!empty($activities)): ?>
-        <h3>Activities</h3>
-        <div class="row justify-content-start">
-            <?php foreach ($activities as $activity): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-start">
-                            <h5 class="card-title"><?= htmlspecialchars($activity['venue']) ?></h5>
-                            <p class="card-text">
-                                <strong>Start Date:</strong> <?= htmlspecialchars($activity['start_date']) ?><br>
-                                <strong>End Date:</strong> <?= htmlspecialchars($activity['end_date']) ?><br>
-                                <strong>Start Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($activity['start_time'])) ?><br>
-                                <strong>End Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($activity['end_time'])) ?><br>
-                                <strong>Address:</strong> <?= htmlspecialchars($activity['address']) ?><br>
-                                <strong>Website:</strong> <?= htmlspecialchars($activity['website']) ?><br>
-                                <strong>Email:</strong> <?= htmlspecialchars($activity['email']) ?><br>
-                                <strong>Cost:</strong> $<?= htmlspecialchars($activity['cost']) ?>
-                            </p>
-                            <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $activity['id'] ?>&type=activity"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this activity?');">Delete</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sub Plans</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center">Sub Plans</h2>
+
+        <?php if (!empty($activities)): ?>
+            <h3>Activities</h3>
+            <div class="row justify-content-start">
+                <?php foreach ($activities as $activity): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><?= htmlspecialchars($activity['name']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Start Date:</strong> <?= htmlspecialchars($activity['start_date']) ?><br>
+                                    <strong>End Date:</strong> <?= htmlspecialchars($activity['end_date']) ?><br>
+                                    <strong>Start Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($activity['start_time'])) ?><br>
+                                    <strong>End Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($activity['end_time'])) ?><br>
+                                    <strong>Address:</strong> <?= htmlspecialchars($activity['address']) ?><br>
+                                    <strong>Website:</strong> <?= htmlspecialchars($activity['website']) ?><br>
+                                    <strong>Email:</strong> <?= htmlspecialchars($activity['email']) ?><br>
+                                    <strong>Cost:</strong> $<?= htmlspecialchars($activity['cost']) ?>
+                                </p>
+                                <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $activity['id'] ?>&type=activity"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this activity?');">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!empty($car_rentals)): ?>
-        <h3>Car Rentals</h3>
-        <div class="row justify-content-start">
-            <?php foreach ($car_rentals as $car_rental): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-start">
-                            <h5 class="card-title"><?= htmlspecialchars($car_rental['rental_agency']) ?></h5>
-                            <p class="card-text">
-                                <strong>Start Date:</strong> <?= htmlspecialchars($car_rental['start_date']) ?><br>
-                                <strong>End Date:</strong> <?= htmlspecialchars($car_rental['end_date']) ?><br>
-                                <strong>Start Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($car_rental['start_time'])) ?><br>
-                                <strong>End Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($car_rental['end_time'])) ?><br>
-                                <strong>Website:</strong> <?= htmlspecialchars($car_rental['website']) ?><br>
-                                <strong>Email:</strong> <?= htmlspecialchars($car_rental['email']) ?><br>
-                                <strong>Phone:</strong> <?= htmlspecialchars($car_rental['phone']) ?><br>
-                                <strong>Cost:</strong> $<?= htmlspecialchars($car_rental['cost']) ?>
-                            </p>
-                            <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $car_rental['id'] ?>&type=car_rental"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this car rental?');">Delete</a>
+        <?php if (!empty($car_rentals)): ?>
+            <h3>Car Rentals</h3>
+            <div class="row justify-content-start">
+                <?php foreach ($car_rentals as $car_rental): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><?= htmlspecialchars($car_rental['rental_agency']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Start Date:</strong> <?= htmlspecialchars($car_rental['start_date']) ?><br>
+                                    <strong>End Date:</strong> <?= htmlspecialchars($car_rental['end_date']) ?><br>
+                                    <strong>Start Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($car_rental['start_time'])) ?><br>
+                                    <strong>End Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($car_rental['end_time'])) ?><br>
+                                    <strong>Website:</strong> <?= htmlspecialchars($car_rental['website']) ?><br>
+                                    <strong>Email:</strong> <?= htmlspecialchars($car_rental['email']) ?><br>
+                                    <strong>Phone:</strong> <?= htmlspecialchars($car_rental['phone']) ?><br>
+                                    <strong>Cost:</strong> $<?= htmlspecialchars($car_rental['cost']) ?>
+                                </p>
+                                <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $car_rental['id'] ?>&type=car_rental"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this car rental?');">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!empty($concerts)): ?>
-        <h3>Concerts</h3>
-        <div class="row justify-content-start">
-            <?php foreach ($concerts as $concert): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-start">
-                            <h5 class="card-title"><?= htmlspecialchars($concert['event_name']) ?></h5>
-                            <p class="card-text">
-                                <strong>Start Date:</strong> <?= htmlspecialchars($concert['start_date']) ?><br>
-                                <strong>End Date:</strong> <?= htmlspecialchars($concert['end_date']) ?><br>
-                                <strong>Start Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($concert['start_time'])) ?><br>
-                                <strong>End Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($concert['end_time'])) ?><br>
-                                <strong>Venue:</strong> <?= htmlspecialchars($concert['venue']) ?><br>
-                                <strong>Address:</strong> <?= htmlspecialchars($concert['address']) ?><br>
-                                <strong>Phone:</strong> <?= htmlspecialchars($concert['phone']) ?><br>
-                                <strong>Website:</strong> <?= htmlspecialchars($concert['website']) ?><br>
-                                <strong>Email:</strong> <?= htmlspecialchars($concert['email']) ?>
-                            </p>
-                            <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $concert['id'] ?>&type=concert"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this concert?');">Delete</a>
+        <?php if (!empty($concerts)): ?>
+            <h3>Concerts</h3>
+            <div class="row justify-content-start">
+                <?php foreach ($concerts as $concert): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><?= htmlspecialchars($concert['event_name']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Start Date:</strong> <?= htmlspecialchars($concert['start_date']) ?><br>
+                                    <strong>End Date:</strong> <?= htmlspecialchars($concert['end_date']) ?><br>
+                                    <strong>Start Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($concert['start_time'])) ?><br>
+                                    <strong>End Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($concert['end_time'])) ?><br>
+                                    <strong>Venue:</strong> <?= htmlspecialchars($concert['venue']) ?><br>
+                                    <strong>Address:</strong> <?= htmlspecialchars($concert['address']) ?><br>
+                                    <strong>Phone:</strong> <?= htmlspecialchars($concert['phone']) ?><br>
+                                    <strong>Website:</strong> <?= htmlspecialchars($concert['website']) ?><br>
+                                    <strong>Email:</strong> <?= htmlspecialchars($concert['email']) ?>
+                                </p>
+                                <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $concert['id'] ?>&type=concert"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this concert?');">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!empty($flights)): ?>
-        <h3>Flights</h3>
-        <div class="row justify-content-start">
-            <?php foreach ($flights as $flight): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-start">
-                            <h5 class="card-title"><?= htmlspecialchars($flight['airline']) ?></h5>
-                            <p class="card-text">
-                                <strong>Flight:</strong> <?= htmlspecialchars($flight['flight']) ?><br>
-                                <strong>Location ID:</strong> <?= htmlspecialchars($flight['location_id']) ?><br>
-                                <strong>Cost:</strong> $<?= htmlspecialchars($flight['cost']) ?><br>
-                                <strong>Departure Date:</strong> <?= htmlspecialchars($flight['departure_date']) ?><br>
-                                <strong>Departure Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($flight['departure_time'])) ?><br>
-                                <strong>Arrival Date:</strong> <?= htmlspecialchars($flight['arrival_date']) ?><br>
-                                <strong>Arrival Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($flight['arrival_time'])) ?>
-                            </p>
-                            <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $flight['id'] ?>&type=flight"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this flight?');">Delete</a>
+        <?php if (!empty($flights)): ?>
+            <h3>Flights</h3>
+            <div class="row justify-content-start">
+                <?php foreach ($flights as $flight): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><?= htmlspecialchars($flight['airline']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Flight:</strong> <?= htmlspecialchars($flight['flight']) ?><br>
+                                    <strong>Location ID:</strong> <?= htmlspecialchars($flight['location_id']) ?><br>
+                                    <strong>Cost:</strong> $<?= htmlspecialchars($flight['cost']) ?><br>
+                                    <strong>Departure Date:</strong> <?= htmlspecialchars($flight['departure_date']) ?><br>
+                                    <strong>Departure Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($flight['departure_time'])) ?><br>
+                                    <strong>Arrival Date:</strong> <?= htmlspecialchars($flight['arrival_date']) ?><br>
+                                    <strong>Arrival Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($flight['arrival_time'])) ?>
+                                </p>
+                                <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $flight['id'] ?>&type=flight"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this flight?');">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!empty($meetings)): ?>
-        <h3>Meetings</h3>
-        <div class="row justify-content-start">
-            <?php foreach ($meetings as $meeting): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-start">
-                            <h5 class="card-title"><?= htmlspecialchars($meeting['event_name']) ?></h5>
-                            <p class="card-text">
-                                <strong>Start Date:</strong> <?= htmlspecialchars($meeting['start_date']) ?><br>
-                                <strong>End Date:</strong> <?= htmlspecialchars($meeting['end_date']) ?><br>
-                                <strong>Start Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($meeting['start_time'])) ?><br>
-                                <strong>End Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($meeting['end_time'])) ?><br>
-                                <strong>Venue:</strong> <?= htmlspecialchars($meeting['venue']) ?><br>
-                                <strong>Address:</strong> <?= htmlspecialchars($meeting['address']) ?><br>
-                                <strong>Phone:</strong> <?= htmlspecialchars($meeting['phone']) ?><br>
-                                <strong>Website:</strong> <?= htmlspecialchars($meeting['website']) ?><br>
-                                <strong>Email:</strong> <?= htmlspecialchars($meeting['email']) ?>
-                            </p>
-                            <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $meeting['id'] ?>&type=meeting"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this meeting?');">Delete</a>
+        <?php if (!empty($meetings)): ?>
+            <h3>Meetings</h3>
+            <div class="row justify-content-start">
+                <?php foreach ($meetings as $meeting): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><?= htmlspecialchars($meeting['event_name']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Start Date:</strong> <?= htmlspecialchars($meeting['start_date']) ?><br>
+                                    <strong>End Date:</strong> <?= htmlspecialchars($meeting['end_date']) ?><br>
+                                    <strong>Start Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($meeting['start_time'])) ?><br>
+                                    <strong>End Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($meeting['end_time'])) ?><br>
+                                    <strong>Venue:</strong> <?= htmlspecialchars($meeting['venue']) ?><br>
+                                    <strong>Address:</strong> <?= htmlspecialchars($meeting['address']) ?><br>
+                                    <strong>Phone:</strong> <?= htmlspecialchars($meeting['phone']) ?><br>
+                                    <strong>Website:</strong> <?= htmlspecialchars($meeting['website']) ?><br>
+                                    <strong>Email:</strong> <?= htmlspecialchars($meeting['email']) ?>
+                                </p>
+                                <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $meeting['id'] ?>&type=meeting"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this meeting?');">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!empty($restaurants)): ?>
-        <h3>Restaurants</h3>
-        <div class="row justify-content-start">
-            <?php foreach ($restaurants as $restaurant): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-start">
-                            <h5 class="card-title"><?= htmlspecialchars($restaurant['cuisine']) ?></h5>
-                            <p class="card-text">
-                                <strong>Start Date:</strong> <?= htmlspecialchars($restaurant['start_date']) ?><br>
-                                <strong>End Date:</strong> <?= htmlspecialchars($restaurant['end_date']) ?><br>
-                                <strong>Start Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($restaurant['start_time'])) ?><br>
-                                <strong>End Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($restaurant['end_time'])) ?><br>
-                                <strong>Address:</strong> <?= htmlspecialchars($restaurant['address']) ?><br>
-                                <strong>Phone:</strong> <?= htmlspecialchars($restaurant['phone']) ?><br>
-                                <strong>Website:</strong> <?= htmlspecialchars($restaurant['website']) ?><br>
-                                <strong>Email:</strong> <?= htmlspecialchars($restaurant['email']) ?><br>
-                                <strong>Party Size:</strong> <?= htmlspecialchars($restaurant['party_size']) ?><br>
-                                <strong>Dress Code:</strong> <?= htmlspecialchars($restaurant['dress_code']) ?><br>
-                                <strong>Price:</strong> $<?= htmlspecialchars($restaurant['price']) ?>
-                            </p>
-                            <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $restaurant['id'] ?>&type=restaurant"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this restaurant?');">Delete</a>
+        <?php if (!empty($restaurants)): ?>
+            <h3>Restaurants</h3>
+            <div class="row justify-content-start">
+                <?php foreach ($restaurants as $restaurant): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><?= htmlspecialchars($restaurant['cuisine']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Start Date:</strong> <?= htmlspecialchars($restaurant['start_date']) ?><br>
+                                    <strong>End Date:</strong> <?= htmlspecialchars($restaurant['end_date']) ?><br>
+                                    <strong>Start Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($restaurant['start_time'])) ?><br>
+                                    <strong>End Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($restaurant['end_time'])) ?><br>
+                                    <strong>Address:</strong> <?= htmlspecialchars($restaurant['address']) ?><br>
+                                    <strong>Phone:</strong> <?= htmlspecialchars($restaurant['phone']) ?><br>
+                                    <strong>Website:</strong> <?= htmlspecialchars($restaurant['website']) ?><br>
+                                    <strong>Email:</strong> <?= htmlspecialchars($restaurant['email']) ?><br>
+                                    <strong>Party Size:</strong> <?= htmlspecialchars($restaurant['party_size']) ?><br>
+                                    <strong>Dress Code:</strong> <?= htmlspecialchars($restaurant['dress_code']) ?><br>
+                                    <strong>Price:</strong> $<?= htmlspecialchars($restaurant['price']) ?>
+                                </p>
+                                <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $restaurant['id'] ?>&type=restaurant"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this restaurant?');">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if (!empty($transportations)): ?>
-        <h3>Transportations</h3>
-        <div class="row justify-content-start">
-            <?php foreach ($transportations as $transportation): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-body text-start">
-                            <h5 class="card-title"><?= htmlspecialchars($transportation['vehicle_info']) ?></h5>
-                            <p class="card-text">
-                                <strong>Departure Date:</strong> <?= htmlspecialchars($transportation['departure_date']) ?><br>
-                                <strong>Departure Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($transportation['departure_time'])) ?><br>
-                                <strong>Arrival Date:</strong> <?= htmlspecialchars($transportation['arrival_date']) ?><br>
-                                <strong>Arrival Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($transportation['arrival_time'])) ?><br>
-                                <strong>Address:</strong> <?= htmlspecialchars($transportation['address']) ?><br>
-                                <strong>Location Name:</strong> <?= htmlspecialchars($transportation['location_name']) ?><br>
-                                <strong>Phone:</strong> <?= htmlspecialchars($transportation['phone']) ?><br>
-                                <strong>Website:</strong> <?= htmlspecialchars($transportation['website']) ?><br>
-                                <strong>Email:</strong> <?= htmlspecialchars($transportation['email']) ?><br>
-                                <strong>Vehicle Description:</strong>
-                                <?= htmlspecialchars($transportation['vehicle_description']) ?><br>
-                                <strong>Number of Passengers:</strong>
-                                <?= htmlspecialchars($transportation['number_of_passengers']) ?><br>
-                                <strong>Transportation Cost:</strong>
-                                $<?= htmlspecialchars($transportation['transportation_cost']) ?>
-                            </p>
-                            <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $transportation['id'] ?>&type=transportation"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to delete this transportation?');">Delete</a>
+        <?php if (!empty($transportations)): ?>
+            <h3>Transportations</h3>
+            <div class="row justify-content-start">
+                <?php foreach ($transportations as $transportation): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card">
+                            <div class="card-body text-start">
+                                <h5 class="card-title"><?= htmlspecialchars($transportation['vehicle_info']) ?></h5>
+                                <p class="card-text">
+                                    <strong>Departure Date:</strong>
+                                    <?= htmlspecialchars($transportation['departure_date']) ?><br>
+                                    <strong>Departure Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($transportation['departure_time'])) ?><br>
+                                    <strong>Arrival Date:</strong> <?= htmlspecialchars($transportation['arrival_date']) ?><br>
+                                    <strong>Arrival Time:</strong>
+                                    <?= htmlspecialchars(convertTo12HourFormat($transportation['arrival_time'])) ?><br>
+                                    <strong>Address:</strong> <?= htmlspecialchars($transportation['address']) ?><br>
+                                    <strong>Location Name:</strong>
+                                    <?= htmlspecialchars($transportation['location_name']) ?><br>
+                                    <strong>Phone:</strong> <?= htmlspecialchars($transportation['phone']) ?><br>
+                                    <strong>Website:</strong> <?= htmlspecialchars($transportation['website']) ?><br>
+                                    <strong>Email:</strong> <?= htmlspecialchars($transportation['email']) ?><br>
+                                    <strong>Vehicle Description:</strong>
+                                    <?= htmlspecialchars($transportation['vehicle_description']) ?><br>
+                                    <strong>Number of Passengers:</strong>
+                                    <?= htmlspecialchars($transportation['number_of_passengers']) ?><br>
+                                    <strong>Transportation Cost:</strong>
+                                    $<?= htmlspecialchars($transportation['transportation_cost']) ?>
+                                </p>
+                                <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $transportation['id'] ?>&type=transportation"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this transportation?');">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-</div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

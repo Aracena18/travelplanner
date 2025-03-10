@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+if (!isset($_GET['trip_id']) || !is_numeric($_GET['trip_id'])) {
     die("Invalid trip ID");
 }
 
