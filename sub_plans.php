@@ -243,12 +243,6 @@ function convertTo12HourFormat($time)
                                 <strong>Location ID:</strong> <?= htmlspecialchars($flight['location_id']) ?><br>
                                 <strong>Cost:</strong> $<?= htmlspecialchars($flight['cost']) ?><br>
                                 <strong>Departure Date:</strong> <?= htmlspecialchars($flight['departure_date']) ?><br>
-                                <strong>Start Date:</strong> <?= htmlspecialchars($flight['start_date']) ?><br>
-                                <strong>Start Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($flight['start_time'])) ?><br>
-                                <strong>End Date:</strong> <?= htmlspecialchars($flight['end_date']) ?><br>
-                                <strong>End Time:</strong>
-                                <?= htmlspecialchars(convertTo12HourFormat($flight['end_time'])) ?><br>
                                 <strong>Departure Time:</strong>
                                 <?= htmlspecialchars(convertTo12HourFormat($flight['departure_time'])) ?><br>
                                 <strong>Arrival Date:</strong> <?= htmlspecialchars($flight['arrival_date']) ?><br>
