@@ -168,7 +168,7 @@
                       <button type="button" class="btn btn-light">
                         <i class="fas fa-hotel"></i> Lodging
                       </button>
-                      <button type="button" class="btn btn-light">
+                      <button type="button" id="carRentalBtn" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#carRentalModal">
                         <i class="fas fa-car"></i> Rental car
                       </button>
                       <button type="button" class="btn btn-light">
@@ -453,6 +453,127 @@
   </div>
 </template>
 
+<!-- Car Rental Modal -->
+<div class="modal fade" id="carRentalModal" tabindex="-1" aria-labelledby="carRentalModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h4 class="modal-title fw-bold" id="carRentalModalLabel">
+          <i class="fas fa-car text-primary me-2"></i>Find Your Perfect Rental Car
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="car-search-container">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="pickupLocation" placeholder="Pickup Location">
+                <label for="pickupLocation">
+                  <i class="fas fa-map-marker-alt text-primary me-2"></i>Pickup Location
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="dropoffLocation" placeholder="Drop-off Location">
+                <label for="dropoffLocation">
+                  <i class="fas fa-map-marker-alt text-primary me-2"></i>Drop-off Location
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="datetime-local" class="form-control" id="pickupDateTime">
+                <label for="pickupDateTime">
+                  <i class="far fa-calendar-alt text-primary me-2"></i>Pickup Date & Time
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="datetime-local" class="form-control" id="dropoffDateTime">
+                <label for="dropoffDateTime">
+                  <i class="far fa-calendar-alt text-primary me-2"></i>Drop-off Date & Time
+                </label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="car-filters mb-4">
+                <div class="btn-group" role="group" aria-label="Car type filters">
+                  <input type="radio" class="btn-check" name="carType" id="allCars" value="all" checked>
+                  <label class="btn btn-outline-primary" for="allCars">All Cars</label>
+
+                  <input type="radio" class="btn-check" name="carType" id="economy" value="economy">
+                  <label class="btn btn-outline-primary" for="economy">Economy</label>
+
+                  <input type="radio" class="btn-check" name="carType" id="luxury" value="luxury">
+                  <label class="btn btn-outline-primary" for="luxury">Luxury</label>
+
+                  <input type="radio" class="btn-check" name="carType" id="suv" value="suv">
+                  <label class="btn btn-outline-primary" for="suv">SUV</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <button class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2" 
+                      id="searchCars">
+                <i class="fas fa-search"></i>
+                <span>Search Available Cars</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="carLoading" class="text-center py-5 d-none">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-muted mt-3">Searching for available cars...</p>
+        </div>
+
+        <!-- Cars List Container -->
+        <div id="carsList" class="car-results mt-4">
+          <!-- Car cards will be populated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Car Card Template -->
+<template id="carCardTemplate">
+  <div class="car-card">
+    <div class="car-image">
+      <img src="" alt="Car Image" class="img-fluid">
+      <span class="car-type-badge"></span>
+    </div>
+    <div class="car-details">
+      <h5 class="car-name"></h5>
+      <div class="car-features">
+        <span class="feature"><i class="fas fa-users"></i> <span class="seats"></span></span>
+        <span class="feature"><i class="fas fa-suitcase"></i> <span class="bags"></span></span>
+        <span class="feature"><i class="fas fa-cog"></i> <span class="transmission"></span></span>
+        <span class="feature"><i class="fas fa-snowflake"></i> <span class="ac"></span></span>
+      </div>
+      <div class="rental-company">
+        <img src="" alt="Rental Company Logo" class="company-logo">
+        <span class="company-name"></span>
+      </div>
+      <div class="price-section">
+        <div class="price-details">
+          <span class="price-amount"></span>
+          <span class="price-period">per day</span>
+        </div>
+        <button class="btn btn-primary select-car-btn">Select</button>
+      </div>
+    </div>
+  </div>
+</template>
+
   <!-- External JS libraries -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -500,7 +621,8 @@
   </script>
 
   <!-- Custom JS file -->
-  <script src="create_trip.js"></script>
+  <script type="module" src="/travelplanner-master/javascript/create_trips_folder/main.js"></script>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
