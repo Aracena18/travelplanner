@@ -133,7 +133,19 @@ foreach ($sub_plan_types as $type) {
 <body>
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-6">
+            <!-- First Column: Sub Plans -->
+            <div class="col-md-4">
+                <h3>Sub Plans</h3>
+                <div id="sub-plans-list">
+                    <?php
+                    include 'sub_plans_options.php';
+                    include 'sub_plans.php';
+                    ?>
+                </div>
+            </div>
+
+            <!-- Second Column: Edit Trip Form -->
+            <div class="col-md-4">
                 <div class="form-container">
                     <h1 class="text-center form-header">Edit Trip</h1>
                     <form id="edit-trip-form">
@@ -202,11 +214,6 @@ foreach ($sub_plan_types as $type) {
                             $0.00</div>
                         <input type="hidden" id="estimated_cost" name="estimated_cost" value="0.00">
 
-                        <?php
-                        include 'sub_plans_options.php';
-                        include 'sub_plans.php';
-                        ?>
-
                         <div class="d-flex justify-content-between form-footer">
                             <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
                             <a href="index.php" class="btn btn-secondary btn-sm">Exit</a>
@@ -214,7 +221,9 @@ foreach ($sub_plan_types as $type) {
                     </form>
                 </div>
             </div>
-            <div class="col-md-6">
+
+            <!-- Third Column: Map -->
+            <div class="col-md-4">
                 <div id="map" class="mb-4"></div>
             </div>
         </div>
