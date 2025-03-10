@@ -262,3 +262,31 @@
     [location] => sdfgdf
 )
 
+[09-Mar-2025 15:26:30 Europe/Berlin] DEBUG: add_activity - trip_id: 927700
+[09-Mar-2025 15:26:30 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[09-Mar-2025 15:26:30 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 927700
+    [user_id] => 5
+    [trip_name] => Trip to Tokyo
+    [destination] => 3
+    [hotel] => Hotel G
+    [adults_num] => 5
+    [childs_num] => 4
+    [start_date] => 2025-03-11
+    [end_date] => 2025-03-21
+    [estimated_cost] => 6300
+)
+
+[09-Mar-2025 15:26:30 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"927700","name":"Running","type":"dining","start_time":"2025-03-14T22:29","cost":0,"description":"khh","location":""}
+[09-Mar-2025 15:26:30 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => dining
+    [start_time] => 2025-03-14T22:29
+    [cost] => 0.00
+    [description] => khh
+    [location] => 
+)
+
