@@ -27,10 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = $_POST['phone'] ?? null;
     $website = $_POST['website'] ?? null;
     $email = $_POST['email'] ?? null;
+    $cost = $_POST['cost'];
 
     // Insert concert details into the database
-    $stmt = $pdo->prepare("INSERT INTO concert (trip_id, event_name, start_date, end_date, start_time, end_time, venue, address, phone, website, email, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute([$trip_id, $event_name, $start_date, $end_date, $start_time, $end_time, $venue, $address, $phone, $website, $email]);
+    $stmt = $pdo->prepare("INSERT INTO concert (trip_id, event_name, start_date, end_date, start_time, end_time, venue, address, phone, website, email, cost, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$trip_id, $event_name, $start_date, $end_date, $start_time, $end_time, $venue, $address, $phone, $website, $email, $cost]);
 
     header('Location: ../edit_trip.php?trip_id=' . $trip_id);
     exit;
@@ -90,6 +91,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" id="email" name="email" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="cost" class="form-label">Cost $</label>
+                <input type="number" step="0.01" id="cost" name="cost" class="form-control" required>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Add Concert</button>

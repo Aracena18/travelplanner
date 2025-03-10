@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="airline" name="airline" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="flight_cost" class="form-label">Flight Cost</label>
+                <label for="flight_cost" class="form-label">Flight Cost $</label>
                 <input type="number" step="0.01" id="flight_cost" name="flight_cost" class="form-control" required>
             </div>
             <div class="d-flex justify-content-between">

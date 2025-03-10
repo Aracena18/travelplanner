@@ -30,10 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $vehicle_description = $_POST['vehicle_description'] ?? null;
     $number_of_passengers = $_POST['number_of_passengers'];
     $transportation_cost = $_POST['transportation_cost'];
+    $cost = $_POST['cost'];
 
     // Insert transportation details into the database
-    $stmt = $pdo->prepare("INSERT INTO transportation (trip_id, departure_date, departure_time, arrival_date, arrival_time, address, location_name, phone, website, email, vehicle_info, vehicle_description, number_of_passengers, transportation_cost, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute([$trip_id, $departure_date, $departure_time, $arrival_date, $arrival_time, $address, $location_name, $phone, $website, $email, $vehicle_info, $vehicle_description, $number_of_passengers, $transportation_cost]);
+    $stmt = $pdo->prepare("INSERT INTO transportation (trip_id, departure_date, departure_time, arrival_date, arrival_time, address, location_name, phone, website, email, vehicle_info, vehicle_description, number_of_passengers, transportation_cost, cost, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$trip_id, $departure_date, $departure_time, $arrival_date, $arrival_time, $address, $location_name, $phone, $website, $email, $vehicle_info, $vehicle_description, $number_of_passengers, $transportation_cost, $cost]);
 
     header("Location: ../edit_trip.php?trip_id=$trip_id");
     exit;
@@ -107,6 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="transportation_cost" class="form-label">Transportation Cost</label>
                 <input type="number" step="0.01" id="transportation_cost" name="transportation_cost"
                     class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="cost" class="form-label">Cost</label>
+                <input type="number" step="0.01" id="cost" name="cost" class="form-control" required>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Add Transportation</button>

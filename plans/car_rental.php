@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="dropoff_location" name="dropoff_location" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="cost" class="form-label">Cost</label>
+                <label for="cost" class="form-label">Cost $</label>
                 <input type="number" step="0.01" id="cost" name="cost" class="form-control" required>
             </div>
             <div class="mb-3">
