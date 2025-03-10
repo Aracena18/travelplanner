@@ -17,6 +17,7 @@ if (!isset($_GET['trip_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $rental_agency = $_POST['rental_agency'];
     $start_date = $_POST['start_date'];
     $start_time = $_POST['start_time'];
     $end_date = $_POST['end_date'];
@@ -25,10 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pickup_location = $_POST['pickup_location'];
     $dropoff_location = $_POST['dropoff_location'];
     $cost = $_POST['cost'];
+    $email = $_POST['email'];
+    $website = $_POST['website'];
+    $phone = $_POST['phone'];
 
     // Insert car rental details into the database
-    $stmt = $pdo->prepare("INSERT INTO car_rental (trip_id, start_date, start_time, end_date, end_time, car_type, pickup_location, dropoff_location, cost, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute([$trip_id, $start_date, $start_time, $end_date, $end_time, $car_type, $pickup_location, $dropoff_location, $cost]);
+    $stmt = $pdo->prepare("INSERT INTO car_rental (trip_id, rental_agency, start_date, start_time, end_date, end_time, car_type, pickup_location, dropoff_location, cost, email, website, phone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$trip_id, $rental_agency, $start_date, $start_time, $end_date, $end_time, $car_type, $pickup_location, $dropoff_location, $cost, $email, $website, $phone]);
 
     header("Location: ../edit_trip.php?trip_id=$trip_id");
     exit;
@@ -49,6 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container mt-5">
         <h1 class="text-center mb-4">Add Car Rental</h1>
         <form method="POST" class="bg-light p-4 rounded shadow-sm" style="max-width: 600px; margin: auto;">
+            <div class="mb-3">
+                <label for="rental_agency" class="form-label">Rental Agency</label>
+                <input type="text" id="rental_agency" name="rental_agency" class="form-control" required>
+            </div>
             <div class="mb-3">
                 <label for="start_date" class="form-label">Start Date</label>
                 <input type="date" id="start_date" name="start_date" class="form-control" required>
@@ -80,6 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="mb-3">
                 <label for="cost" class="form-label">Cost</label>
                 <input type="number" step="0.01" id="cost" name="cost" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="website" class="form-label">Website</label>
+                <input type="url" id="website" name="website" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" id="phone" name="phone" class="form-control" required>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Add Car Rental</button>
