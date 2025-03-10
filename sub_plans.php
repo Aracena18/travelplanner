@@ -169,6 +169,8 @@ function convertTo12HourFormat($time)
                                     <strong>Email:</strong> <?= htmlspecialchars($activity['email']) ?><br>
                                     <strong>Cost:</strong> $<?= htmlspecialchars($activity['cost']) ?>
                                 </p>
+                                <button class="btn btn-warning btn-sm edit-sub-plan" data-id="<?= $activity['id'] ?>"
+                                    data-type="activity">Edit</button>
                                 <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $activity['id'] ?>&type=activity"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this activity?');">Delete</a>
@@ -199,6 +201,8 @@ function convertTo12HourFormat($time)
                                     <strong>Phone:</strong> <?= htmlspecialchars($car_rental['phone']) ?><br>
                                     <strong>Cost:</strong> $<?= htmlspecialchars($car_rental['cost']) ?>
                                 </p>
+                                <button class="btn btn-warning btn-sm edit-sub-plan" data-id="<?= $car_rental['id'] ?>"
+                                    data-type="car_rental">Edit</button>
                                 <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $car_rental['id'] ?>&type=car_rental"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this car rental?');">Delete</a>
@@ -230,6 +234,8 @@ function convertTo12HourFormat($time)
                                     <strong>Website:</strong> <?= htmlspecialchars($concert['website']) ?><br>
                                     <strong>Email:</strong> <?= htmlspecialchars($concert['email']) ?>
                                 </p>
+                                <button class="btn btn-warning btn-sm edit-sub-plan" data-id="<?= $concert['id'] ?>"
+                                    data-type="concert">Edit</button>
                                 <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $concert['id'] ?>&type=concert"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this concert?');">Delete</a>
@@ -259,6 +265,8 @@ function convertTo12HourFormat($time)
                                     <strong>Arrival Time:</strong>
                                     <?= htmlspecialchars(convertTo12HourFormat($flight['arrival_time'])) ?>
                                 </p>
+                                <button class="btn btn-warning btn-sm edit-sub-plan" data-id="<?= $flight['id'] ?>"
+                                    data-type="flight">Edit</button>
                                 <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $flight['id'] ?>&type=flight"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this flight?');">Delete</a>
@@ -290,6 +298,8 @@ function convertTo12HourFormat($time)
                                     <strong>Website:</strong> <?= htmlspecialchars($meeting['website']) ?><br>
                                     <strong>Email:</strong> <?= htmlspecialchars($meeting['email']) ?>
                                 </p>
+                                <button class="btn btn-warning btn-sm edit-sub-plan" data-id="<?= $meeting['id'] ?>"
+                                    data-type="meeting">Edit</button>
                                 <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $meeting['id'] ?>&type=meeting"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this meeting?');">Delete</a>
@@ -323,6 +333,8 @@ function convertTo12HourFormat($time)
                                     <strong>Dress Code:</strong> <?= htmlspecialchars($restaurant['dress_code']) ?><br>
                                     <strong>Price:</strong> $<?= htmlspecialchars($restaurant['price']) ?>
                                 </p>
+                                <button class="btn btn-warning btn-sm edit-sub-plan" data-id="<?= $restaurant['id'] ?>"
+                                    data-type="restaurant">Edit</button>
                                 <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $restaurant['id'] ?>&type=restaurant"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this restaurant?');">Delete</a>
@@ -362,6 +374,8 @@ function convertTo12HourFormat($time)
                                     <strong>Transportation Cost:</strong>
                                     $<?= htmlspecialchars($transportation['transportation_cost']) ?>
                                 </p>
+                                <button class="btn btn-warning btn-sm edit-sub-plan" data-id="<?= $transportation['id'] ?>"
+                                    data-type="transportation">Edit</button>
                                 <a href="sub_plans.php?trip_id=<?= $trip_id ?>&delete=<?= $transportation['id'] ?>&type=transportation"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Are you sure you want to delete this transportation?');">Delete</a>
@@ -371,9 +385,138 @@ function convertTo12HourFormat($time)
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+
+        <!-- Edit Sub Plan Modal -->
+        <div class="modal fade" id="editSubPlanModal" tabindex="-1" aria-labelledby="editSubPlanModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSubPlanModalLabel">Edit Sub Plan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-sub-plan-form">
+                            <input type="hidden" id="sub_plan_id" name="sub_plan_id">
+                            <input type="hidden" id="sub_plan_type" name="sub_plan_type">
+                            <div class="mb-3">
+                                <label for="sub_plan_name" class="form-label">Name</label>
+                                <input type="text" id="sub_plan_name" name="sub_plan_name" class="form-control"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_start_date" class="form-label">Start Date</label>
+                                <input type="date" id="sub_plan_start_date" name="sub_plan_start_date"
+                                    class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_end_date" class="form-label">End Date</label>
+                                <input type="date" id="sub_plan_end_date" name="sub_plan_end_date" class="form-control"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_start_time" class="form-label">Start Time</label>
+                                <input type="time" id="sub_plan_start_time" name="sub_plan_start_time"
+                                    class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_end_time" class="form-label">End Time</label>
+                                <input type="time" id="sub_plan_end_time" name="sub_plan_end_time" class="form-control"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_address" class="form-label">Address</label>
+                                <input type="text" id="sub_plan_address" name="sub_plan_address" class="form-control"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_website" class="form-label">Website</label>
+                                <input type="url" id="sub_plan_website" name="sub_plan_website" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_email" class="form-label">Email</label>
+                                <input type="email" id="sub_plan_email" name="sub_plan_email" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_phone" class="form-label">Phone</label>
+                                <input type="tel" id="sub_plan_phone" name="sub_plan_phone" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sub_plan_cost" class="form-label">Cost</label>
+                                <input type="number" step="0.01" id="sub_plan_cost" name="sub_plan_cost"
+                                    class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const tripId = <?= json_encode($trip_id); ?>;
+
+        document.querySelectorAll('.edit-sub-plan').forEach(button => {
+            button.addEventListener('click', function() {
+                const subPlanId = this.getAttribute('data-id');
+                const subPlanType = this.getAttribute('data-type');
+
+                // Fetch sub plan details using AJAX
+                fetch(`get_sub_plan.php?trip_id=${tripId}&id=${subPlanId}&type=${subPlanType}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const subPlan = data.data;
+                            // Populate the form with sub plan details
+                            document.getElementById('sub_plan_id').value = subPlanId;
+                            document.getElementById('sub_plan_type').value = subPlanType;
+                            document.getElementById('sub_plan_name').value = subPlan.name;
+                            document.getElementById('sub_plan_start_date').value = subPlan.start_date;
+                            document.getElementById('sub_plan_end_date').value = subPlan.end_date;
+                            document.getElementById('sub_plan_start_time').value = subPlan.start_time;
+                            document.getElementById('sub_plan_end_time').value = subPlan.end_time;
+                            document.getElementById('sub_plan_address').value = subPlan.address;
+                            document.getElementById('sub_plan_website').value = subPlan.website;
+                            document.getElementById('sub_plan_email').value = subPlan.email;
+                            document.getElementById('sub_plan_phone').value = subPlan.phone;
+                            document.getElementById('sub_plan_cost').value = subPlan.cost;
+
+                            // Show the modal
+                            const editSubPlanModal = new bootstrap.Modal(document.getElementById(
+                                'editSubPlanModal'));
+                            editSubPlanModal.show();
+                        } else {
+                            alert('Failed to fetch sub plan details: ' + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching sub plan details:', error));
+            });
+        });
+
+        document.getElementById('edit-sub-plan-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            // Update sub plan details using AJAX
+            fetch('update_sub_plan.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Sub plan updated successfully!');
+                        location.reload();
+                    } else {
+                        alert('Failed to update sub plan: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error updating sub plan:', error));
+        });
+    </script>
 </body>
 
 </html>
