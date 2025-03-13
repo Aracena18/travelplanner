@@ -541,7 +541,14 @@
                     Use the search boxes or map pins to set your locations
                   </div>
                 </div>
-                <div class="route-info-panel"></div>
+                <!-- Add this new route info section -->
+                <div class="route-summary mt-3">
+                  <div class="route-info-panel">
+                    <div class="route-stats-container">
+                      <!-- Route stats will be populated here -->
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="col-md-6">

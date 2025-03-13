@@ -406,7 +406,8 @@ function initializeLocationSearch(type, provider) {
             item.className = 'search-result-item';
             item.innerHTML = `<i class="fas fa-map-marker-alt"></i>${result.label}`;
             item.addEventListener('click', () => {
-              setLocation({ lat: result.y, lng: result.x }, type);
+              const latlng = { lat: result.y, lng: result.x };
+              setLocation(latlng, type);
               input.value = result.label;
               resultsContainer.style.display = 'none';
             });
@@ -435,6 +436,8 @@ async function setLocation(latlng, type) {
   if (type === 'dropoff' && dropoffMarker) {
     dropoffMarker.remove();
   }
+  
+  // Create the marker
   const newMarker = L.marker(latlng, {
     icon: L.divIcon({
       className: `location-marker ${type}`,
@@ -444,16 +447,33 @@ async function setLocation(latlng, type) {
       popupAnchor: [0, -40]
     })
   }).addTo(rentalMap);
+
+  // Set the marker reference
   if (type === 'pickup') {
     pickupMarker = newMarker;
   } else {
     dropoffMarker = newMarker;
   }
+
+  // Pan to the new location with animation
+  panToLocation(latlng);
+
   const address = await reverseGeocode(latlng);
   input.value = address;
+
   if (pickupMarker && dropoffMarker) {
     drawRoute(pickupMarker.getLatLng(), dropoffMarker.getLatLng());
   }
+}
+
+// Add this new helper function
+function panToLocation(latlng) {
+  const zoomLevel = 13; // Adjust this value as needed
+  rentalMap.setView(latlng, zoomLevel, {
+    animate: true,
+    duration: 1, // Animation duration in seconds
+    easeLinearity: 0.25
+  });
 }
 
 let routeLayer = null;
@@ -469,6 +489,19 @@ async function drawRoute(start, end) {
     const data = await response.json();
     if (data.routes && data.routes.length > 0) {
       const route = data.routes[0];
+      
+      // Add gradient route background
+      const routeBackground = L.geoJSON(route.geometry, {
+        style: {
+          color: '#e2e8f0',
+          weight: 6,
+          opacity: 1,
+          lineCap: 'round',
+          lineJoin: 'round'
+        }
+      }).addTo(rentalMap);
+
+      // Add animated dashed line
       routeLayer = L.geoJSON(route.geometry, {
         style: {
           color: '#2563eb',
@@ -476,9 +509,41 @@ async function drawRoute(start, end) {
           opacity: 0.8,
           lineCap: 'round',
           lineJoin: 'round',
-          dashArray: '8,12'
+          dashArray: '10,15',
+          className: 'animated-route'
         }
       }).addTo(rentalMap);
+
+      // Add direction arrows
+      const decorator = L.polylineDecorator(routeLayer, {
+        patterns: [
+          {
+            offset: '5%',
+            repeat: '10%',
+            symbol: L.Symbol.arrowHead({
+              pixelSize: 12,
+              polygon: false,
+              pathOptions: {
+                color: '#2563eb',
+                fillOpacity: 1,
+                weight: 2
+              }
+            })
+          }
+        ]
+      }).addTo(rentalMap);
+
+      // Add route highlights at endpoints
+      const routeHighlights = L.geoJSON(route.geometry, {
+        style: {
+          color: 'rgba(37, 99, 235, 0.3)',
+          weight: 12,
+          opacity: 1,
+          lineCap: 'round',
+          lineJoin: 'round'
+        }
+      }).addTo(rentalMap);
+
       rentalMap.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
       updateRouteInfo(route);
     }
@@ -488,19 +553,32 @@ async function drawRoute(start, end) {
 }
 
 function updateRouteInfo(route) {
-  const routeInfoPanel = document.querySelector('.route-info-panel');
+  const routeStatsContainer = document.querySelector('.route-stats-container');
   const distance = (route.distance / 1000).toFixed(1);
   const duration = Math.round(route.duration / 60);
-  routeInfoPanel.innerHTML = `
-    <h5 class="mb-3">Route Information</h5>
-    <div class="route-stats">
-      <div class="route-stat-item">
-        <div class="stat-value">${distance} km</div>
-        <div class="stat-label">Distance</div>
+  const hours = Math.floor(duration / 60);
+  const minutes = duration % 60;
+  const formattedDuration = hours > 0 
+    ? `${hours}h ${minutes}m` 
+    : `${minutes}m`;
+
+  routeStatsContainer.innerHTML = `
+    <div class="route-stat-box">
+      <div class="stat-icon">
+        <i class="fas fa-road"></i>
       </div>
-      <div class="route-stat-item">
-        <div class="stat-value">${duration} min</div>
-        <div class="stat-label">Est. Drive Time</div>
+      <div class="stat-info">
+        <div class="stat-label">Total Distance</div>
+        <div class="stat-value">${distance} km</div>
+      </div>
+    </div>
+    <div class="route-stat-box">
+      <div class="stat-icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="stat-info">
+        <div class="stat-label">Estimated Drive Time</div>
+        <div class="stat-value">${formattedDuration}</div>
       </div>
     </div>
   `;
