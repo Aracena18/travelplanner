@@ -1,0 +1,443 @@
+.selected-reservations {
+    margin: 2rem 0;
+}
+
+/* Base Card Styles */
+.reservation-card {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.reservation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(13, 110, 253, 0.12);
+    border-color: #0d6efd;
+}
+
+/* Flight Card Specific */
+.flight-card {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+.airline-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.airline-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.flight-route {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    padding: 0 1rem;
+}
+
+.flight-path {
+    position: relative;
+    height: 4px;
+    background: linear-gradient(90deg, #e2e8f0 50%, transparent 50%);
+    background-size: 8px 4px;
+}
+
+/* Enhanced Flight Card Styles */
+.airline-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.flight-main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.flight-details {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px dashed #e2e8f0;
+    margin-top: 1rem;
+}
+
+.duration-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1);
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.875rem;
+    color: #0d6efd;
+    white-space: nowrap;
+}
+
+.route-point {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(13, 110, 253, 0.03);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.city-code {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.5px;
+}
+
+.city-name {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+/* Car Rental Card Specific */
+.car-rental-card {
+    display: grid;
+    grid-template-columns: 160px 1fr auto;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    gap: 0;
+}
+
+.car-thumbnail {
+    position: relative;
+    width: 160px;
+    height: 100%;
+    min-height: 160px;
+    overflow: hidden;
+    background: linear-gradient(45deg, #f1f5f9, #e2e8f0);
+}
+
+.car-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.car-rental-card:hover .car-thumbnail img {
+    transform: scale(1.05);
+}
+
+.car-type-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #0d6efd;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+.car-info {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+}
+
+.car-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px dashed #e5e7eb;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.car-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.rental-company {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    background: rgba(13, 110, 253, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(13, 110, 253, 0.1);
+}
+
+.company-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.company-name {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.rental-details {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.75rem;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.rental-point {
+    position: relative;
+    padding: 0.75rem;
+    background: rgba(13, 110, 253, 0.02);
+    border-radius: 12px;
+    border: 1px solid rgba(13, 110, 253, 0.05);
+}
+
+.rental-duration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #0d6efd;
+    font-weight: 500;
+    position: relative;
+}
+
+.rental-duration::before,
+.rental-duration::after {
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 40px;
+    background: #e5e7eb;
+    left: -1rem;
+}
+
+.rental-duration::after {
+    left: auto;
+    right: -1rem;
+}
+
+.car-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.feature-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 25px;
+    font-size: 0.8125rem;
+    color: #64748b;
+    transition: all 0.2s ease;
+}
+
+.feature-badge:hover {
+    background: rgba(13, 110, 253, 0.05);
+    border-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+    transform: translateY(-1px);
+}
+
+.price-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem;
+    background: rgba(13, 110, 253, 0.02);
+    border-left: 1px dashed #e5e7eb;
+    min-width: 160px;
+}
+
+.price-tag {
+    text-align: center;
+    padding: 0.75rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.price-period {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.daily-rate {
+    display: block;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #0d6efd;
+    font-weight: 500;
+}
+
+@media (max-width: 992px) {
+    .car-rental-card {
+        grid-template-columns: 1fr;
+    }
+
+    .car-thumbnail {
+        width: 100%;
+        height: 200px;
+    }
+
+    .price-section {
+        border-left: none;
+        border-top: 1px dashed #e5e7eb;
+    }
+}
+
+.point-time {
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0.25rem 0;
+}
+
+.point-location {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.price-details {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.remove-reservation {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #ef4444;
+    padding: 0.5rem;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.reservation-card:hover .remove-reservation {
+    opacity: 1;
+}
+
+.remove-reservation:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.1);
+}
+
+/* Common Elements */
+.status-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-confirmed { background: #dcfce7; color: #16a34a; }
+.status-pending { background: #fef3c7; color: #d97706; }
+
+.price-tag {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0d6efd;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.price-period {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+/* Common Price Section Styles */
+.price-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: rgba(13, 110, 253, 0.02);
+    border-left: 1px dashed #e5e7eb;
+    min-width: 180px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .flight-card, .car-rental-card {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .car-thumbnail {
+        width: 100%;
+        height: 160px;
+    }
+    
+    .price-tag {
+        text-align: left;
+    }
+}

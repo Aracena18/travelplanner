@@ -462,3 +462,106 @@
   font-size: 24px;
   color: #0d6efd;
 }
+
+/* Selected Cars Display Improvements */
+.selected-car-item {
+  background: linear-gradient(to right, #ffffff, #f8fafc);
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.selected-car-item:hover {
+  transform: translateY(-2px);
+  border-color: #0d6efd;
+  box-shadow: 0 8px 24px rgba(13, 110, 253, 0.08);
+}
+
+.car-info-compact {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.car-image-badge {
+  width: 120px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.car-details-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.car-name-badge {
+  background: linear-gradient(135deg, #e8f0fe, #f3f8ff);
+  border: 1px solid rgba(13, 110, 253, 0.1);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  color: #0d6efd;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rental-period {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.period-point {
+  position: relative;
+  padding: 0.5rem 1rem;
+}
+
+.period-point::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -1rem;
+  width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, #e9ecef 50%, transparent 50%);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+}
+
+.period-point:last-child::after {
+  display: none;
+}
+
+.period-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.period-time {
+  font-weight: 600;
+  color: #2d3748;
+}

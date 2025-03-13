@@ -1,0 +1,202 @@
+.selected-reservations {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    overflow: hidden;
+    margin: 1.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.selected-reservations:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+
+.reservation-header {
+    padding: 1.5rem;
+    background: linear-gradient(145deg, #f8f9fa, #ffffff);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.reservation-header h5 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #2d3436;
+    font-weight: 600;
+}
+
+.selected-items-list {
+    padding: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.selected-flight-item {
+    background: linear-gradient(to right, #ffffff, #f8fafc);
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    margin-bottom: 1.25rem;
+    padding: 1.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.selected-flight-item:hover {
+    transform: translateY(-2px);
+    border-color: #0d6efd;
+    box-shadow: 0 8px 24px rgba(13, 110, 253, 0.08);
+}
+
+.flight-info-compact {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.airline-info {
+    min-width: 140px;
+}
+
+.airline-badge {
+    background: linear-gradient(135deg, #e8f0fe, #f3f8ff);
+    border: 1px solid rgba(13, 110, 253, 0.1);
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+}
+
+.flight-route-compact {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 3rem;
+}
+
+.flight-path-line {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: linear-gradient(to right, #e9ecef 50%, transparent 50%);
+    background-size: 8px 1px;
+    background-repeat: repeat-x;
+    z-index: 1;
+}
+
+.flight-path-plane {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 0.75rem;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.15);
+    color: #0d6efd;
+    transform: rotate(90deg);
+    animation: floatPlane 3s infinite ease-in-out;
+}
+
+.route-point {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 0.75rem;
+    min-width: 120px;
+    text-align: center;
+}
+
+.route-point .city-code {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.25rem;
+}
+
+.route-point .time {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.empty-state {
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #adb5bd;
+}
+
+.empty-state p {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.remove-flight {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #dc3545;
+    padding: 0.5rem;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.selected-flight-item:hover .remove-flight {
+    opacity: 1;
+}
+
+.remove-flight:hover {
+    background: rgba(220, 53, 69, 0.1);
+    transform: scale(1.1);
+}
+
+/* Add these new styles for the animation */
+.animate__animated {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(20px); }
+}
+
+.animate__fadeIn {
+    animation-name: fadeIn;
+}
+
+.animate__fadeOut {
+    animation-name: fadeOut;
+}
+
+/* Reservations Summary Styles */
+.reservations-summary {
+    margin: 2rem 0;
+}
+
+.reservation-count {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 20px;
+}

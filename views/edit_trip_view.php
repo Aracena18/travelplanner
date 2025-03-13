@@ -5,6 +5,7 @@ include __DIR__ . '/../includes/header.php';
 
 <!-- Add this in the header section -->
 <link rel="stylesheet" href="/travelplanner-master/css/edit_trip.css">
+<link rel="stylesheet" href="/travelplanner-master/css/reservation-cards.css">
 
 <!-- Page Content -->
 <div class="layout-container">
@@ -273,7 +274,7 @@ include __DIR__ . '/../includes/header.php';
                         </div>
 
                         <div id="reservationsTimeline" class="reservations-timeline">
-                            <!-- Reservations will be loaded here -->
+                            <!-- Reservations will be dynamically populated here using the new card styles -->
                             <div class="loading-state text-center py-5">
                                 <div class="spinner-border text-primary" role="status">
                                     <span class="visually-hidden">Loading...</span>

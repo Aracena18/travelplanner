@@ -16,7 +16,7 @@ class Activity {
     public static function getSubPlansByTripId($trip_id) {
         global $pdo;
         $sub_plans = [];
-        $sub_plan_types = ['activity', 'concert', 'flights', 'meeting', 'restaurant', 'transportation'];
+        $sub_plan_types = ['activity', 'concert','meeting', 'restaurant', 'transportation'];
         foreach ($sub_plan_types as $type) {
             $stmt = $pdo->prepare("SELECT * FROM $type WHERE trip_id = ?");
             $stmt->execute([$trip_id]);

@@ -27,7 +27,7 @@ try {
     $pdo->beginTransaction();
 
     // Delete related records in child tables
-    $tables = ['car_rental', 'activity', 'concert', 'flights', 'meeting', 'restaurant', 'transportation'];
+    $tables = ['car_rentals', 'activity', 'concert', 'flights', 'meeting', 'restaurant', 'transportation'];
     foreach ($tables as $table) {
         $stmt = $pdo->prepare("DELETE FROM $table WHERE trip_id = ?");
         $stmt->execute([$trip_id]);

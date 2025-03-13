@@ -24,11 +24,13 @@ class ReservationManager {
             // Use flights if available or fallback to reservations
             const flights = flightData.flights || flightData.reservations || [];
             console.log("Number of flights retrieved:", flights.length);
-            // Normalize flights to ensure type "flight"
+            // Normalize flights to ensure type "flight" and standardize the identifier to 'id'
             const normalizedFlights = flights.map(flight => ({
                 ...flight,
+                id: flight.flight_id, // Use flight_id as the standard identifier
                 type: 'flight'
             }));
+            
             console.log("Normalized flights:", normalizedFlights);
 
             // Fetch car rental reservations
@@ -47,9 +49,10 @@ class ReservationManager {
                 cars = [];
             }
             console.log("Number of car rentals retrieved:", cars.length);
-            // Normalize car rentals using pickup and dropoff date fields
+            // Normalize car rentals using pickup and dropoff date fields and standardize the identifier to 'id'
             const normalizedCars = cars.map(car => ({
                 ...car,
+                id: car.rental_id, // Use rental_id as the standard identifier
                 type: 'rentalCar',
                 start_time: car.pickup_datetime,
                 end_time: car.dropoff_datetime
@@ -71,6 +74,71 @@ class ReservationManager {
             console.error('Error loading reservations:', error);
             this.showError(`Failed to load reservations: ${error.message}`);
         }
+    }
+
+    async removeReservation(id, type) {
+        try {
+            const formData = new FormData();
+            formData.append('id', id);
+            formData.append('type', type);
+
+            const response = await fetch('/travelplanner-master/handlers/delete_reservation.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                // Remove the reservation from the array using the standardized 'id'
+                this.reservations = this.reservations.filter(r => 
+                    !(r.id === id && r.type === (type === 'car' ? 'rentalCar' : 'flight'))
+                );
+                
+                // Re-render the reservations
+                this.renderReservations();
+                this.updateFilterCounts();
+                
+                // Show success message
+                this.showToast('Reservation removed successfully', 'success');
+            } else {
+                throw new Error(data.error || 'Failed to remove reservation');
+            }
+        } catch (error) {
+            console.error('Error removing reservation:', error);
+            this.showToast(error.message, 'error');
+        }
+    }
+
+    showToast(message, type = 'info') {
+        const toastContainer = document.createElement('div');
+        toastContainer.className = `toast-container position-fixed bottom-0 end-0 p-3`;
+        toastContainer.style.zIndex = '1050';
+
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type === 'error' ? 'danger' : 'success'} border-0`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+        document.body.appendChild(toastContainer);
+
+        const bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+
+        toast.addEventListener('hidden.bs.toast', () => {
+            document.body.removeChild(toastContainer);
+        });
     }
 
     renderReservations() {
@@ -101,124 +169,145 @@ class ReservationManager {
     }
 
     createReservationCard(reservation) {
-        const startDate = new Date(reservation.start_time);
-        const endDate = reservation.end_time ? new Date(reservation.end_time) : null;
-        
-        let title = reservation.title || '';
-        if (!title) {
-            if (reservation.type === 'flight') {
-                title = `${reservation.airline} Flight`;
-            } else if (reservation.type === 'rentalCar') {
-                title = reservation.name;
-            }
+        if (reservation.type === 'flight') {
+            return this.createFlightCard(reservation);
+        } else if (reservation.type === 'rentalCar') {
+            return this.createCarRentalCard(reservation);
         }
-        console.log("Creating card for reservation:", title, "Type:", reservation.type);
-        
+    }
+
+    createFlightCard(flight) {
         return `
-            <div class="reservation-card ${reservation.type}" data-id="${reservation.id}">
-                <div class="reservation-timeline-dot">
-                    <i class="fas ${this.getIconForType(reservation.type)}"></i>
-                </div>
-                <div class="reservation-content">
-                    <div class="reservation-header">
-                        <h4>${this.escapeHtml(title)}</h4>
-                        ${reservation.status ? `<span class="badge bg-${this.getStatusColor(reservation.status)}">${reservation.status}</span>` : ''}
+            <div class="reservation-card flight-card" data-id="${flight.id}">
+                <div class="airline-info">
+                    <img src="${this.escapeHtml(flight.airline_logo)}" alt="${this.escapeHtml(flight.airline)}" class="airline-logo">
+                    <div class="airline-details">
+                        <div class="airline-name">${this.escapeHtml(flight.airline)}</div>
+                        <div class="flight-number">Flight ${this.escapeHtml(flight.flight_number)}</div>
                     </div>
-                    ${this.getReservationDetails(reservation, startDate, endDate)}
+                    <div class="status-badge status-${flight.status || 'pending'}">${flight.status || 'Pending'}</div>
                 </div>
-            </div>
-        `;
-    }
-
-    getReservationDetails(reservation, startDate, endDate) {
-        return `
-            <div class="reservation-details">
-                <div class="time-location">
-                    <i class="far fa-clock"></i> 
-                    ${this.formatDateTime(startDate)}
-                    ${endDate ? ` - ${this.formatDateTime(endDate)}` : ''}
-                </div>
-                ${this.getTypeSpecificDetails(reservation)}
-                <div class="reservation-actions mt-3">
-                    <button class="btn btn-sm btn-outline-primary" onclick="editReservation(${reservation.id})">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteReservation(${reservation.id})">
-                        <i class="fas fa-trash"></i> Delete
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    getTypeSpecificDetails(reservation) {
-        switch (reservation.type) {
-            case 'flight':
-                return `
-                    <div class="flight-details">
-                        <div class="airline-info">
-                            ${reservation.airline_logo ?
-                                `<img src="${this.escapeHtml(reservation.airline_logo)}" alt="${this.escapeHtml(reservation.airline)}" class="airline-logo">` :
-                                '<i class="fas fa-plane"></i>'
-                            }
-                            <span class="airline-name">${this.escapeHtml(reservation.airline)}</span>
+                <div class="flight-main-info">
+                    <div class="flight-route">
+                        <div class="route-point departure">
+                            <div class="city-code">${this.escapeHtml(flight.departure_code)}</div>
+                            <div class="city-name">${this.escapeHtml(flight.departure_city)}</div>
+                            <div class="time-info">${new Date(flight.start_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                            <div class="date-info">${new Date(flight.start_time).toLocaleDateString([], {month: 'short', day: 'numeric'})}</div>
                         </div>
-                        <div class="flight-route">
-                            <div class="departure">
-                                <span class="city">${this.escapeHtml(reservation.departure_city)}</span>
-                                <span class="time">${new Date(reservation.start_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                            </div>
-                            <div class="flight-duration">
+                        <div class="flight-path">
+                            <div class="duration-info">
                                 <i class="fas fa-plane"></i>
-                                <span>${this.escapeHtml(reservation.duration)}</span>
-                            </div>
-                            <div class="arrival">
-                                <span class="city">${this.escapeHtml(reservation.arrival_city)}</span>
-                                <span class="time">${new Date(reservation.end_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                <span>${this.calculateDuration(new Date(flight.start_time), new Date(flight.end_time))}</span>
                             </div>
                         </div>
-                        <div class="flight-price">
-                            <strong>$${parseFloat(reservation.cost).toFixed(2)}</strong>
-                        </div>
-                    </div>
-                `;
-            case 'rentalCar':
-                return `
-                    <div class="car-rental-details">
-                        <div class="car-info">
-                            ${reservation.image ?
-                                `<img src="${this.escapeHtml(reservation.image)}" alt="${this.escapeHtml(reservation.name)}" class="car-image">` :
-                                '<i class="fas fa-car"></i>'
-                            }
-                            <div class="car-specs">
-                                <h5>${this.escapeHtml(reservation.name)}</h5>
-                                <div class="specs-grid">
-                                    <span><i class="fas fa-cog"></i> ${this.escapeHtml(reservation.transmission)}</span>
-                                    <span><i class="fas fa-users"></i> ${reservation.number_of_seats} seats</span>
-                                    <span><i class="fas fa-suitcase"></i> ${parseInt(reservation.big_suitcases || 0) + parseInt(reservation.small_suitcases || 0)} bags</span>
-                                    ${reservation.air_conditioning ? '<span><i class="fas fa-snowflake"></i> A/C</span>' : ''}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="rental-period">
-                            <div class="pickup">
-                                <strong>Pickup:</strong> ${this.formatDateTime(new Date(reservation.pickup_datetime))}
-                                <div class="location">${this.escapeHtml(reservation.pickup)}</div>
-                            </div>
-                            <div class="dropoff">
-                                <strong>Drop-off:</strong> ${this.formatDateTime(new Date(reservation.dropoff_datetime))}
-                                <div class="location">${this.escapeHtml(reservation.dropoff)}</div>
-                            </div>
-                        </div>
-                        <div class="rental-price">
-                            <strong>$${parseFloat(reservation.price).toFixed(2)}</strong>
-                            <span class="duration">${this.calculateDuration(new Date(reservation.pickup_datetime), new Date(reservation.dropoff_datetime))}</span>
+                        <div class="route-point arrival">
+                            <div class="city-code">${this.escapeHtml(flight.arrival_code)}</div>
+                            <div class="city-name">${this.escapeHtml(flight.arrival_city)}</div>
+                            <div class="time-info">${new Date(flight.end_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                            <div class="date-info">${new Date(flight.end_time).toLocaleDateString([], {month: 'short', day: 'numeric'})}</div>
                         </div>
                     </div>
-                `;
-            default:
-                return '';
-        }
+                    <div class="flight-details">
+                        <div class="feature-badge">
+                            <i class="fas fa-suitcase"></i>
+                            <span>${flight.baggage_allowance || '1 Carry-on'}</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-chair"></i>
+                            <span>${flight.seat_type || 'Economy'}</span>
+                        </div>
+                        <div class="feature-badge">
+                            <i class="fas fa-utensils"></i>
+                            <span>${flight.meal_service ? 'Meal Included' : 'No Meal'}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="price-section">
+                    <div class="price-tag">
+                        <div class="price-amount">$${parseFloat(flight.cost).toFixed(2)}</div>
+                        <div class="price-period">per person</div>
+                    </div>
+                    <button class="btn btn-outline-danger btn-sm mt-2" 
+                         onclick="reservationManager.removeReservation('${flight.id}', 'flight')"
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    createCarRentalCard(car) {
+        return `
+            <div class="reservation-card car-rental-card" data-id="${car.rental_id}">
+                <div class="car-thumbnail">
+                    <img src="${this.escapeHtml(car.image)}" alt="${this.escapeHtml(car.name)}">
+                    <span class="car-type-badge">
+                        <i class="fas fa-car me-1"></i>${car.category || 'Standard'}
+                    </span>
+                </div>
+                <div class="car-info">
+                    <div class="car-header">
+                        <h4 class="car-name">${this.escapeHtml(car.name)}</h4>
+                        <div class="rental-company">
+                            <img src="${this.escapeHtml(car.company_logo)}" alt="" class="company-logo">
+                            <span class="company-name">${this.escapeHtml(car.company_name)}</span>
+                        </div>
+                    </div>
+                    <div class="rental-details">
+                        <div class="rental-point">
+                            <i class="fas fa-map-marker-alt text-success me-2"></i>
+                            <div class="point-time">${new Date(car.pickup_datetime).toLocaleString([], {
+                                month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'
+                            })}</div>
+                            <div class="point-location">${this.escapeHtml(car.pickup)}</div>
+                        </div>
+                        <div class="rental-duration">
+                            <i class="fas fa-clock"></i>
+                            ${this.calculateDuration(new Date(car.pickup_datetime), new Date(car.dropoff_datetime))}
+                        </div>
+                        <div class="rental-point">
+                            <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                            <div class="point-time">${new Date(car.dropoff_datetime).toLocaleString([], {
+                                month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit'
+                            })}</div>
+                            <div class="point-location">${this.escapeHtml(car.dropoff)}</div>
+                        </div>
+                    </div>
+                    <div class="car-features">
+                        ${this.createFeatureBadges(car)}
+                    </div>
+                </div>
+                <div class="price-section">
+                    <div class="price-tag">
+                        <div class="price-amount">$${parseFloat(car.price).toFixed(2)}</div>
+                        <div class="daily-rate">$${(parseFloat(car.price) / this.calculateDays(car.pickup_datetime, car.dropoff_datetime)).toFixed(2)}/day</div>
+                    </div>
+                    <button class="btn btn-outline-danger btn-sm mt-2 w-100" 
+                            onclick="reservationManager.removeReservation(${car.id}, 'car')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    createFeatureBadges(car) {
+        const features = [
+            { icon: 'cog', text: car.transmission },
+            { icon: 'users', text: `${car.number_of_seats} seats` },
+            { icon: 'suitcase', text: `${parseInt(car.big_suitcases) + parseInt(car.small_suitcases)} bags` },
+            car.air_conditioning && { icon: 'snowflake', text: 'A/C' },
+            car.gps && { icon: 'satellite-dish', text: 'GPS' },
+            car.unlimited_mileage && { icon: 'infinity', text: 'Unlimited miles' }
+        ].filter(Boolean);
+
+        return features.map(feature => `
+            <span class="feature-badge">
+                <i class="fas fa-${feature.icon}"></i>
+                ${feature.text}
+            </span>
+        `).join('');
     }
 
     calculateDuration(start, end) {
@@ -226,6 +315,11 @@ class ReservationManager {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         return days > 0 ? `${days}d ${hours}h` : `${hours}h`;
+    }
+
+    calculateDays(start, end) {
+        const diff = Math.abs(new Date(end) - new Date(start));
+        return Math.ceil(diff / (1000 * 60 * 60 * 24));
     }
 
     initializeEventListeners() {
@@ -329,6 +423,9 @@ class ReservationManager {
     }
 }
 
+// Make reservationManager globally available
+let reservationManager;
+
 // Initialize the reservation manager when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded. Initializing ReservationManager.");
@@ -336,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timelineContainer = document.getElementById('reservationsTimeline');
     if (timelineContainer) {
         console.log("Found reservationsTimeline container:", timelineContainer);
-        const reservationManager = new ReservationManager(timelineContainer);
+        reservationManager = new ReservationManager(timelineContainer);
         if (window.currentTripId) {
             console.log("Loading reservations for trip:", window.currentTripId);
             reservationManager.loadReservations(window.currentTripId);
