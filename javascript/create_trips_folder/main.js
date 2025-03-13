@@ -4,7 +4,7 @@ import { bindCostCalculationEvents, calculateEstimatedCost } from '/travelplanne
 import { centerCarousel, loadHotelsForDestination, populateAllHotelsModal, updateSelectedHotel, updateTripName } from '/travelplanner-master/javascript/create_trips_folder/hotels.js';
 
 // Import modules that run their own initialization code.
-import '/travelplanner-master/javascript/create_trips_folder/carRental.js';
+import '/travelplanner-master/javascript/car_rental/carRental1.js';
 import '/travelplanner-master/javascript/create_trips_folder/flight.js';
 import '/travelplanner-master/javascript/create_trips_folder/map.js';
 import '/travelplanner-master/javascript/create_trips_folder/show_flights.js';

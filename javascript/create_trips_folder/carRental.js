@@ -1,4 +1,4 @@
-// src/carRental.js
+// Location: ../javascript/create_trips_folder/carRental.js
 
 import { calculateEstimatedCost } from '/travelplanner-master/javascript/create_trips_folder/cost.js';
 import { pendingReservations, updatePendingReservationsField } from '/travelplanner-master/javascript/create_trips_folder/reservations.js';
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
       carsListContainer.innerHTML = '';
 
       if (resultData.status && resultData.data && resultData.data.search_results) {
-        // Extract the search_key from the search response for later use.
+        // Extract the search_key from the search response (if needed for other purposes).
         const searchKey = resultData.data.search_key;
         const searchResults = resultData.data.search_results;
 
@@ -119,36 +119,32 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
           `;
 
-          // Bind select button event to fetch detailed info.
-          carCard.querySelector('.select-car-btn').addEventListener('click', async function() {
+          // Bind select button event to use available search result data.
+          carCard.querySelector('.select-car-btn').addEventListener('click', function() {
             const carId = this.dataset.carId;
             if (pendingReservations.rentalCars.some(c => c.car_id === carId)) {
               alert('This car is already added to your reservation.');
               return;
             }
 
-            // Fetch detailed car info using the vehicleDetails API.
-            const carDetails = await fetchCarDetails(carId, searchKey);
-            console.log('Vehicle Details:', carDetails);
-
-            // Build the reservation data with detailed info if available.
+            // Use the available search result data without calling fetchCarDetails.
             const carData = {
               car_id: carId,
-              name: carDetails && carDetails.carName ? carDetails.carName : carName,
-              image: carDetails && carDetails.carImage ? carDetails.carImage : carImage,
-              transmission: carDetails && carDetails.transmission ? carDetails.transmission : transmission,
-              mileage: carDetails && carDetails.mileage ? carDetails.mileage : mileage,
-              fuelPolicy: carDetails && carDetails.fuelPolicy ? carDetails.fuelPolicy : 'N/A',
-              numberOfDoors: carDetails && carDetails.numberOfDoors ? carDetails.numberOfDoors : doors,
-              smallSuitcases: carDetails && carDetails.smallSuitcases ? carDetails.smallSuitcases : suitcasesSmall,
-              bigSuitcases: carDetails && carDetails.bigSuitcases ? carDetails.bigSuitcases : suitcasesBig,
-              numberOfSeats: carDetails && carDetails.numberOfSeats ? carDetails.numberOfSeats : seats,
-              airConditioning: carDetails && carDetails.airConditioning ? carDetails.airConditioning : 'N/A',
-              carClass: carDetails && carDetails.carClass ? carDetails.carClass : 'N/A',
+              name: carName,
+              image: carImage,
+              transmission: transmission,
+              mileage: mileage,
+              fuelPolicy: 'N/A',            // Not available from search result
+              numberOfDoors: doors,
+              smallSuitcases: suitcasesSmall,
+              bigSuitcases: suitcasesBig,
+              numberOfSeats: seats,
+              airConditioning: 'N/A',       // Not available from search result
+              carClass: 'N/A',              // Not available from search result
               company: companyName,
-              price: carDetails && carDetails.priceValue ? carDetails.priceValue : price,
-              currency: carDetails && carDetails.currency ? carDetails.currency : currency,
-              details: carDetails,  // Store all detailed info.
+              price: price,
+              currency: currency,
+              details: resultItem,          // Optionally store full search result details
               pickup: pickupLocation,
               dropoff: dropoffLocation,
               pickupDateTime: pickupDateTime,
@@ -159,8 +155,10 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePendingReservationsField();
             calculateEstimatedCost();
 
-            // Close modal.
+            // Close modal and update the selected cars display.
             bootstrap.Modal.getInstance(document.getElementById('carRentalModal')).hide();
+            updateSelectedCarsDisplay(carData);
+            calculateEstimatedCost();
           });
 
           carsListContainer.appendChild(carCard);
@@ -178,11 +176,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Fetch detailed information for a vehicle.
- * @param {string} vehicleId - The vehicle_id from the search result.
- * @param {string} searchKey - The search_key from the search response.
- * @returns {Promise<object|null>} - The extracted vehicle details or null on error.
- */
+ * (Optional) You can remove or comment out the fetchCarDetails function below if it is no longer needed.
+ *
 async function fetchCarDetails(vehicleId, searchKey) {
   const url = `https://booking-com15.p.rapidapi.com/api/v1/cars/vehicleDetails?` +
     `vehicle_id=${vehicleId}&search_key=${encodeURIComponent(searchKey)}` +
@@ -239,7 +234,7 @@ async function fetchCarDetails(vehicleId, searchKey) {
     return null;
   }
 }
-
+*/
 
 // --------------------------
 // Map & Location functions (unchanged)
@@ -595,4 +590,137 @@ async function reverseGeocode(latlng) {
     console.error('Reverse geocoding error:', error);
     return `${latlng.lat}, ${latlng.lng}`;
   }
+}
+
+// Add this new function for updating the selected cars display
+function updateSelectedCarsDisplay(carData) {
+  const selectedCarsContainer = document.getElementById('selectedCarsContainer');
+  const selectedCarsList = document.getElementById('selectedCarsList');
+  const reservationCount = document.querySelector('#selectedCarsContainer .reservation-count');
+  
+  // Show the container
+  selectedCarsContainer.style.display = 'block';
+  
+  // Remove empty state if present
+  const emptyState = selectedCarsList.querySelector('.empty-state');
+  if (emptyState) {
+    emptyState.remove();
+  }
+
+  const carElement = document.createElement('div');
+  carElement.className = 'selected-car-item animate__animated animate__fadeIn';
+  carElement.dataset.carId = carData.car_id;
+  
+  const pickupDate = new Date(carData.pickupDateTime);
+  const dropoffDate = new Date(carData.dropoffDateTime);
+  
+  const totalPrice = calculateTotalPrice(
+    carData.price, 
+    carData.pickupDateTime, 
+    carData.dropoffDateTime
+  );
+  
+  console.log(carData.price);
+  carElement.innerHTML = `
+    <div class="car-info-compact">
+      <div class="car-image-badge">
+        ${carData.image ? `<img src="${carData.image}" alt="${carData.name}" style="width: 60px; height: 60px; object-fit: contain;">` : 
+        '<i class="fas fa-car fa-2x text-primary"></i>'}
+      </div>
+      <div class="car-details-compact">
+        <div class="car-name-badge">
+          <i class="fas fa-car"></i>
+          ${carData.name}
+        </div>
+        <div class="rental-period">
+          <div class="period-point">
+            <span class="period-label">Pickup</span>
+            <span class="period-time">${pickupDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            <span class="period-date">${pickupDate.toLocaleDateString()}</span>
+          </div>
+          <div class="rental-duration">
+            <i class="fas fa-arrow-right"></i>
+            <span>${calculateDuration(pickupDate, dropoffDate)}</span>
+          </div>
+          <div class="period-point">
+            <span class="period-label">Drop-off</span>
+            <span class="period-time">${dropoffDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+            <span class="period-date">${dropoffDate.toLocaleDateString()}</span>
+          </div>
+        </div>
+      </div>
+      <div class="price-section">
+        <div class="price-details">
+          <span class="price-amount">$${totalPrice}</span>
+          <span class="price-period">total</span>
+          <div class="price-breakdown text-muted">
+            <small>$${carData.price} × ${Math.ceil((dropoffDate - pickupDate) / (1000 * 60 * 60 * 24))} days</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="remove-car" onclick="removeSelectedCar('${carData.car_id}')">
+      <i class="fas fa-times"></i>
+    </button>
+  `;
+
+  selectedCarsList.appendChild(carElement);
+
+  // Update reservation count
+  reservationCount.textContent = `${pendingReservations.rentalCars.length} ${
+    pendingReservations.rentalCars.length === 1 ? 'Car' : 'Cars'
+  }`;
+}
+
+function calculateDuration(start, end) {
+  const diff = Math.abs(end - start);
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  
+  if (days > 0) {
+    return `${days}d ${hours}h`;
+  }
+  return `${hours}h`;
+}
+
+// Add this function to window scope for the onclick handler
+window.removeSelectedCar = function(carId) {
+  const index = pendingReservations.rentalCars.findIndex(c => c.car_id === carId);
+  if (index !== -1) {
+    pendingReservations.rentalCars.splice(index, 1);
+    updatePendingReservationsField();
+    
+    const carElement = document.querySelector(`.selected-car-item[data-car-id="${carId}"]`);
+    if (carElement) {
+      carElement.classList.add('animate__fadeOut');
+      setTimeout(() => {
+        carElement.remove();
+        
+        // Hide container if no cars
+        if (pendingReservations.rentalCars.length === 0) {
+          const selectedCarsContainer = document.getElementById('selectedCarsContainer');
+          selectedCarsContainer.style.display = 'none';
+          const selectedCarsList = document.getElementById('selectedCarsList');
+          selectedCarsList.innerHTML = `
+            <div class="empty-state text-center py-4">
+              <i class="fas fa-car text-muted"></i>
+              <p class="text-muted mb-0">No rental cars selected yet</p>
+            </div>
+          `;
+        } else {
+          // Update count
+          const reservationCount = document.querySelector('#selectedCarsContainer .reservation-count');
+          reservationCount.textContent = `${pendingReservations.rentalCars.length} ${
+            pendingReservations.rentalCars.length === 1 ? 'Car' : 'Cars'
+          }`;
+        }
+      }, 300);
+    }
+    calculateEstimatedCost();
+  }
+};
+
+function calculateTotalPrice(price, startDate, endDate) {
+  const days = Math.ceil((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24));
+  return (parseFloat(price) * days).toFixed(2);
 }

@@ -317,3 +317,148 @@
 .location-marker.dropoff::after {
   background: rgba(239, 68, 68, 0.1);
 }
+
+/* Selected Cars Display */
+.selected-car-item {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem;
+  background: linear-gradient(to right, #ffffff, #f8f9fa);
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.selected-car-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.1);
+  border-color: #0d6efd;
+}
+
+.car-info-compact {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: center;
+}
+
+.car-details-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.car-name-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(13, 110, 253, 0.1);
+  border-radius: 25px;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.rental-period {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.period-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.period-label {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.period-time {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.rental-duration {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0d6efd;
+  font-size: 0.875rem;
+}
+
+.rental-duration::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  right: -30px;
+  height: 2px;
+  background: #e9ecef;
+  z-index: 0;
+}
+
+.rental-duration i {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  padding: 0.5rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selected-car-item .remove-car {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #dc3545;
+  padding: 0.5rem;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.selected-car-item:hover .remove-car {
+  opacity: 1;
+}
+
+.selected-car-item .remove-car:hover {
+  background: rgba(220, 53, 69, 0.1);
+  transform: scale(1.1);
+}
+
+.car-image-badge {
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.car-image-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.car-image-badge i {
+  font-size: 24px;
+  color: #0d6efd;
+}
