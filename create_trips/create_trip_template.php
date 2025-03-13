@@ -156,20 +156,36 @@
                 </div>
               </div>
 
-              <!-- 
-              <div id="selectedFlightsContainer" class="selected-reservations mb-4">
-                <div class="reservation-header">
-                  <h5 class="mb-0">
-                    <i class="fas fa-plane text-primary me-2"></i>Selected Flights
-                  </h5>
-                </div>
-                <div id="selectedFlightsList" class="selected-items-list">
-                  <div class="empty-state text-center py-4">
-                    <i class="fas fa-plane-departure text-muted"></i>
-                    <p class="text-muted mb-0">No flights selected yet</p>
+              <!-- Enhanced Reservations Section -->
+              <div class="col-12">
+                <div class="reservations-summary">
+                  <!-- Flights Section -->
+                  <div id="selectedFlightsContainer" class="selected-reservations mb-4" style="display: none;">
+                    <div class="reservation-header d-flex justify-content-between align-items-center">
+                      <h5 class="mb-0">
+                        <i class="fas fa-plane text-primary me-2"></i>Flight Reservations
+                      </h5>
+                      <span class="reservation-count text-muted"></span>
+                    </div>
+                    <div id="selectedFlightsList" class="selected-items-list">
+                      <!-- Flights will be populated here -->
+                    </div>
+                  </div>
+
+                  <!-- Car Rentals Section -->
+                  <div id="selectedCarsContainer" class="selected-reservations mb-4" style="display: none;">
+                    <div class="reservation-header d-flex justify-content-between align-items-center">
+                      <h5 class="mb-0">
+                        <i class="fas fa-car text-primary me-2"></i>Car Rentals
+                      </h5>
+                      <span class="reservation-count text-muted"></span>
+                    </div>
+                    <div id="selectedCarsList" class="selected-items-list">
+                      <!-- Car rentals will be populated here -->
+                    </div>
                   </div>
                 </div>
-              </div>-->
+              </div>
 
               <!-- Reservations and Attachments -->
               <div class="col-12 mt-4">

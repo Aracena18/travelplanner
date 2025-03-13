@@ -139,6 +139,7 @@ document.getElementById('searchFlights').addEventListener('click', async functio
           alert('This flight is already added to your reservation.');
           return;
         }
+        
         const flightData = {
           flight_id: flightId,
           airline: this.querySelector('.airline-info h5').textContent.trim(),
@@ -147,10 +148,13 @@ document.getElementById('searchFlights').addEventListener('click', async functio
           departureTime: this.querySelector('.departure .time').textContent.trim(),
           arrivalTime: this.querySelector('.arrival .time').textContent.trim(),
           duration: this.querySelector('.flight-duration .duration-time').textContent.trim(),
-          price: parseFloat(this.querySelector('.flight-price h4').textContent.replace('$', ''))
+          price: parseFloat(this.querySelector('.flight-price h4').textContent.replace('$', '')),
+          airlineLogo: this.querySelector('.airline-info img')?.src || ''
         };
+        
         pendingReservations.flights.push(flightData);
         updatePendingReservationsField();
+        updateSelectedFlightsDisplay(flightData);
         this.classList.add('selected');
         setTimeout(() => {
           bootstrap.Modal.getInstance(document.getElementById('flightModal')).hide();
@@ -158,6 +162,102 @@ document.getElementById('searchFlights').addEventListener('click', async functio
         }, 500);
       });
     });
+
+    // Add this new function for updating the display
+    function updateSelectedFlightsDisplay(flightData) {
+      const selectedFlightsContainer = document.getElementById('selectedFlightsContainer');
+      const selectedFlightsList = document.getElementById('selectedFlightsList');
+      const reservationCount = document.querySelector('#selectedFlightsContainer .reservation-count');
+      
+      // Show the container
+      selectedFlightsContainer.style.display = 'block';
+      
+      // Remove empty state if present
+      const emptyState = selectedFlightsList.querySelector('.empty-state');
+      if (emptyState) {
+        emptyState.remove();
+      }
+    
+      const flightElement = document.createElement('div');
+      flightElement.className = 'selected-flight-item animate__animated animate__fadeIn';
+      flightElement.dataset.flightId = flightData.flight_id;
+      
+      flightElement.innerHTML = `
+        <div class="flight-info-compact">
+          <div class="airline-info">
+            ${flightData.airlineLogo ? `<img src="${flightData.airlineLogo}" alt="${flightData.airline} Logo" style=" margin-right:8px;">` : ''}
+            <div class="airline-badge">
+              <i class="fas fa-plane"></i>
+              ${flightData.airline}
+            </div>
+          </div>
+          <div class="flight-route-compact">
+            <div class="flight-path-line"></div>
+            <div class="route-point">
+              <div class="compact-city-code">${flightData.departure}</div>
+              <div class="compact-time">${flightData.departureTime}</div>
+            </div>
+            <div class="flight-path-plane">
+              <i class="fas fa-plane"></i>
+            </div>
+            <div class="route-point">
+              <div class="compact-city-code">${flightData.arrival}</div>
+              <div class="compact-time">${flightData.arrivalTime}</div>
+            </div>
+          </div>
+          <div class="price-section">
+            <span class="price-amount">$${flightData.price}</span>
+          </div>
+        </div>
+        <button class="remove-flight" onclick="removeSelectedFlight('${flightData.flight_id}')">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+    
+      selectedFlightsList.appendChild(flightElement);
+
+      // Update reservation count
+      reservationCount.textContent = `${pendingReservations.flights.length} ${
+        pendingReservations.flights.length === 1 ? 'Flight' : 'Flights'
+      }`;
+    }
+    
+    // Add this function to window scope for the onclick handler
+    window.removeSelectedFlight = function(flightId) {
+      const index = pendingReservations.flights.findIndex(f => f.flight_id === flightId);
+      if (index !== -1) {
+        pendingReservations.flights.splice(index, 1);
+        updatePendingReservationsField();
+        
+        const flightElement = document.querySelector(`.selected-flight-item[data-flight-id="${flightId}"]`);
+        if (flightElement) {
+          flightElement.classList.add('animate__fadeOut');
+          setTimeout(() => {
+            flightElement.remove();
+            
+            // Hide container if no flights
+            if (pendingReservations.flights.length === 0) {
+              const selectedFlightsContainer = document.getElementById('selectedFlightsContainer');
+              selectedFlightsContainer.style.display = 'none';
+              const selectedFlightsList = document.getElementById('selectedFlightsList');
+              selectedFlightsList.innerHTML = `
+                <div class="empty-state text-center py-4">
+                  <i class="fas fa-plane-departure text-muted"></i>
+                  <p class="text-muted mb-0">No flights selected yet</p>
+                </div>
+              `;
+            } else {
+              // Update count
+              const reservationCount = document.querySelector('#selectedFlightsContainer .reservation-count');
+              reservationCount.textContent = `${pendingReservations.flights.length} ${
+                pendingReservations.flights.length === 1 ? 'Flight' : 'Flights'
+              }`;
+            }
+          }, 300);
+        }
+        calculateEstimatedCost();
+      }
+    };
 
   } catch (error) {
     console.error('Error fetching flights:', error);
