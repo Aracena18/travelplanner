@@ -44,8 +44,8 @@ include __DIR__ . '/../includes/header.php';
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link <?= $activeTab === 'reservations' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#reservations">
-                            <i class="fas fa-calendar-check"></i> Reservations
+                        <button class="nav-link <?= $activeTab === 'reservations' ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#reservations" >
+                            <i class="fas fa-calendar-check"></i> Reservations 
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -227,24 +227,18 @@ include __DIR__ . '/../includes/header.php';
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item">
+                                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#carRentalModal">
+                                                    <i class="fas fa-car me-2"></i>Car Rental
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#lodgingModal">
                                                     <i class="fas fa-hotel me-2"></i>Lodging
                                                 </button>
                                             </li>
                                             <li>
-                                                <button class="dropdown-item">
-                                                    <i class="fas fa-car me-2"></i>Rental Car
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item">
+                                                <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#restaurantModal">
                                                     <i class="fas fa-utensils me-2"></i>Restaurant
-                                                </button>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li>
-                                                <button class="dropdown-item">
-                                                    <i class="fas fa-paperclip me-2"></i>Attachment
                                                 </button>
                                             </li>
                                         </ul>
@@ -252,29 +246,40 @@ include __DIR__ . '/../includes/header.php';
                                 </div>
                             </div>
 
-                            <div class="reservation-categories mb-4">
-                                <div class="category-filters d-flex gap-2">
-                                    <button class="category-btn active" data-category="all">
-                                        <i class="fas fa-border-all"></i> All
+                            <div class="reservation-filters mb-4">
+                                <div class="filter-chips d-flex gap-2 flex-wrap">
+                                    <button class="filter-chip active" data-category="all">
+                                        <i class="fas fa-border-all"></i> All Reservations
+                                        <span class="count">0</span>
                                     </button>
-                                    <button class="category-btn" data-category="flights">
+                                    <button class="filter-chip" data-category="flights">
                                         <i class="fas fa-plane"></i> Flights
+                                        <span class="count">0</span>
                                     </button>
-                                    <button class="category-btn" data-category="lodging">
+                                    <button class="filter-chip" data-category="rentalCars">
+                                        <i class="fas fa-car"></i> Car Rentals
+                                        <span class="count">0</span>
+                                    </button>
+                                    <button class="filter-chip" data-category="lodging">
                                         <i class="fas fa-hotel"></i> Lodging
+                                        <span class="count">0</span>
                                     </button>
-                                    <button class="category-btn" data-category="cars">
-                                        <i class="fas fa-car"></i> Cars
-                                    </button>
-                                    <button class="category-btn" data-category="dining">
-                                        <i class="fas fa-utensils"></i> Dining
+                                    <button class="filter-chip" data-category="restaurants">
+                                        <i class="fas fa-utensils"></i> Restaurants
+                                        <span class="count">0</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
 
                         <div id="reservationsTimeline" class="reservations-timeline">
-                            <!-- Dynamic content will be loaded here -->
+                            <!-- Reservations will be loaded here -->
+                            <div class="loading-state text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 text-muted">Loading your reservations...</p>
+                            </div>
                         </div>
                     </div>
                 </div>

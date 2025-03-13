@@ -26,35 +26,34 @@ try {
         if (isset($_GET['type']) && $_GET['type'] === 'reservations') {
             // Fetch all reservations for the trip
             $stmt = $pdo->prepare("
-                SELECT 
-                    r.id,
-                    r.reservation_type AS type,
-                    NULL AS title,
-                    NULL AS description,
-                    NULL AS status,
-                    NULL AS location,
-                    NULL AS confirmation_number,
-                    r.departure_datetime AS start_time,
-                    r.arrival_datetime AS end_time,
-                    r.cost,
-                    r.created_at,
-                    CASE WHEN r.reservation_type = 'flight' THEN r.provider_name ELSE NULL END AS airline,
-                    CASE WHEN r.reservation_type = 'flight' THEN r.departure_city ELSE NULL END AS departure_city,
-                    CASE WHEN r.reservation_type = 'flight' THEN r.arrival_city ELSE NULL END AS arrival_city
-                FROM reservations r
-                WHERE r.trip_id = ?
-                ORDER BY r.departure_datetime ASC
-            ");
+                    SELECT 
+                        f.id,
+                        f.flight_id,
+                        f.airline,
+                        f.airline_logo,
+                        f.departure_city,
+                        f.arrival_city,
+                        f.departure_time AS start_time,
+                        f.arrival_time AS end_time,
+                        f.duration,
+                        f.flight_type AS type,
+                        f.cost,
+                        f.created_at
+                    FROM flights f
+                    WHERE f.trip_id = ?
+                    ORDER BY f.departure_time ASC
+                ");
+
             
-            $stmt->execute([$trip_id]);
-            $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            echo json_encode([
-                'success' => true, 
-                'reservations' => $reservations
-            ]);
-            exit;
-        }
+                $stmt->execute([$trip_id]);
+                $flights = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                echo json_encode([
+                    'success' => true, 
+                    'flights' => $flights
+                ]);
+                exit;
+        }                
         
         // Flight search with real API request
         $departure = $_GET['departure'] ?? '';

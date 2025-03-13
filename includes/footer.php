@@ -4,6 +4,6 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="javascript/edit_trip.js"></script>
   <script src="/travelplanner-master/javascript/save_activity.js"></script>
-  <script src="/travelplanner-master/javascript/load_reservations.js"></script>
+  <script src="javascript/load_reservations.js"></script>
 </body>
 </html>
