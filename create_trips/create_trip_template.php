@@ -533,10 +533,10 @@
               </div>
             </div>
             
-            <!-- Add map container -->
+            <!-- Replace the existing map container div with this updated version -->
             <div class="col-12">
               <div class="location-map-container">
-                <div id="carRentalMap" class="rental-map"></div>
+                <div id="carRentalMap" class="rental-map" style="min-height: 400px;"></div>
                 <div class="map-instructions" id="mapInstructions">
                   Click on the map to set location or use the search box above
                 </div>
