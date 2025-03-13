@@ -8,45 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const carsListContainer = document.getElementById('carsList');
   const carLoadingIndicator = document.getElementById('carLoading');
 
-  // Sample car data (replace with an actual API call if needed)
-  const sampleCars = [
-    {
-      id: 'car1',
-      name: 'Toyota Camry',
-      type: 'economy',
-      image: '/travelplanner-master/assets/images/cars/camry.jpg',
-      seats: '5',
-      bags: '4',
-      transmission: 'Automatic',
-      ac: 'A/C',
-      price: 45,
-      company: {
-        name: 'Enterprise',
-        logo: '/travelplanner-master/assets/images/companies/enterprise.png'
-      }
-    },
-    {
-      id: 'car2',
-      name: 'BMW 5 Series',
-      type: 'luxury',
-      image: '/travelplanner-master/assets/images/cars/bmw.jpg',
-      seats: '5',
-      bags: '4',
-      transmission: 'Automatic',
-      ac: 'A/C',
-      price: 85,
-      company: {
-        name: 'Hertz',
-        logo: '/travelplanner-master/assets/images/companies/hertz.png'
-      }
-    },
-    // Add more sample cars as needed.
-  ];
-
   searchCarsBtn.addEventListener('click', async function() {
     const pickupLocation = document.getElementById('pickupLocation').value;
     const dropoffLocation = document.getElementById('dropoffLocation').value;
-    const pickupDateTime = document.getElementById('pickupDateTime').value;
+    const pickupDateTime = document.getElementById('pickupDateTime').value; // e.g., "2025-03-14T10:00"
     const dropoffDateTime = document.getElementById('dropoffDateTime').value;
     const selectedType = document.querySelector('input[name="carType"]:checked').value;
 
@@ -55,91 +20,231 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Show loading indicator
+    // Retrieve the map markers' coordinates.
+    const pickupLatLng = pickupMarker ? pickupMarker.getLatLng() : null;
+    const dropoffLatLng = dropoffMarker ? dropoffMarker.getLatLng() : null;
+    if (!pickupLatLng || !dropoffLatLng) {
+      alert('Please select both pickup and dropoff locations on the map.');
+      return;
+    }
+
+    // Extract date and time portions.
+    const pickupDate = pickupDateTime.substr(0, 10);   // "YYYY-MM-DD"
+    const dropoffDate = dropoffDateTime.substr(0, 10);   // "YYYY-MM-DD"
+    const pickupTime = pickupDateTime.substr(11, 5);     // "HH:MM"
+    const dropoffTime = dropoffDateTime.substr(11, 5);   // "HH:MM"
+
+    // Construct the API URL for searching car rentals.
+    const url = `https://booking-com15.p.rapidapi.com/api/v1/cars/searchCarRentals?` +
+      `pick_up_latitude=${pickupLatLng.lat}&pick_up_longitude=${pickupLatLng.lng}` +
+      `&drop_off_latitude=${dropoffLatLng.lat}&drop_off_longitude=${dropoffLatLng.lng}` +
+      `&pick_up_date=${pickupDate}&drop_off_date=${dropoffDate}` +
+      `&pick_up_time=${encodeURIComponent(pickupTime)}&drop_off_time=${encodeURIComponent(dropoffTime)}` +
+      `&driver_age=30&currency_code=USD`;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': 'a4f936d18fmsh72c62428617d573p1b6010jsn36884d1c931d',
+        'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
+      }
+    };
+
+    // Show loading indicator and clear any previous results.
     carLoadingIndicator.classList.remove('d-none');
     carsListContainer.innerHTML = '';
 
     try {
-      // Simulate an API call delay.
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await fetch(url, options);
+      const resultData = await response.json();
+      console.log('API Search Response:', resultData);
 
-      // Filter cars based on the selected type.
-      const filteredCars = selectedType === 'all'
-        ? sampleCars
-        : sampleCars.filter(car => car.type === selectedType);
+      carsListContainer.innerHTML = '';
 
-      // Render each car.
-      filteredCars.forEach(car => {
-        const carCard = document.createElement('div');
-        carCard.className = 'car-card';
-        carCard.innerHTML = `
-          <div class="car-image">
-            <img src="${car.image}" alt="${car.name}">
-            <span class="car-type-badge">${car.type}</span>
-          </div>
-          <div class="car-details">
-            <h5 class="car-name">${car.name}</h5>
-            <div class="car-features">
-              <span class="feature"><i class="fas fa-users"></i> ${car.seats} seats</span>
-              <span class="feature"><i class="fas fa-suitcase"></i> ${car.bags} bags</span>
-              <span class="feature"><i class="fas fa-cog"></i> ${car.transmission}</span>
-              <span class="feature"><i class="fas fa-snowflake"></i> ${car.ac}</span>
+      if (resultData.status && resultData.data && resultData.data.search_results) {
+        // Extract the search_key from the search response for later use.
+        const searchKey = resultData.data.search_key;
+        const searchResults = resultData.data.search_results;
+
+        searchResults.forEach(resultItem => {
+          // Use vehicle_info for proper details.
+          const vehicle = resultItem.vehicle_info || {};
+          const vehicleId = resultItem.vehicle_id;
+          const carName = vehicle.v_name || `Car ${vehicleId}`;
+          const carImage = vehicle.image_url || vehicle.image_thumbnail_url || 'default_car_image.jpg';
+          const transmission = vehicle.transmission || 'N/A';
+          const mileage = vehicle.mileage || 'N/A';
+          const seats = vehicle.seats || 'N/A';
+          const doors = vehicle.doors || 'N/A';
+          const suitcasesSmall = vehicle.suitcases ? vehicle.suitcases.small : 'N/A';
+          const suitcasesBig = vehicle.suitcases ? vehicle.suitcases.big : 'N/A';
+          
+          // Supplier details from supplier_info.
+          const supplier = resultItem.supplier_info || {};
+          const companyName = supplier.name || 'Unknown';
+          const companyLogo = supplier.imageUrl || '';
+
+          // Pricing details.
+          const pricing = resultItem.pricing_info || {};
+          const price = pricing.price || 'N/A';
+          const currency = pricing.currency || 'USD';
+
+          // Build the car card layout.
+          const carCard = document.createElement('div');
+          carCard.className = 'car-card';
+          carCard.innerHTML = `
+            <div class="car-image">
+              <img src="${carImage}" alt="${carName}">
+              <span class="car-type-badge">${transmission}</span>
             </div>
-            <div class="rental-company">
-              <img src="${car.company.logo}" alt="${car.company.name}" class="company-logo">
-              <span class="company-name">${car.company.name}</span>
-            </div>
-            <div class="price-section">
-              <div class="price-details">
-                <span class="price-amount">$${car.price}</span>
-                <span class="price-period">per day</span>
+            <div class="car-details">
+              <h5 class="car-name">${carName}</h5>
+              <div class="car-features">
+                <span class="feature"><i class="fas fa-cog"></i> ${transmission}</span>
+                <span class="feature"><i class="fas fa-tachometer-alt"></i> ${mileage}</span>
+                <span class="feature"><i class="fas fa-users"></i> ${seats} seats</span>
+                <span class="feature"><i class="fas fa-door-open"></i> ${doors} doors</span>
               </div>
-              <button class="btn btn-primary select-car-btn" data-car-id="${car.id}">Select</button>
+              <div class="rental-company">
+                <img src="${companyLogo}" alt="${companyName}" class="company-logo">
+                <span class="company-name">${companyName}</span>
+              </div>
+              <div class="price-section">
+                <div class="price-details">
+                  <span class="price-amount">${currency}${price}</span>
+                  <span class="price-period">per day</span>
+                </div>
+                <button class="btn btn-primary select-car-btn" data-car-id="${vehicleId}">Select</button>
+              </div>
             </div>
-          </div>
-        `;
+          `;
 
-        // Bind select button event.
-        carCard.querySelector('.select-car-btn').addEventListener('click', function() {
-          const carId = this.dataset.carId;
-          if (pendingReservations.rentalCars.some(c => c.car_id === carId)) {
-            alert('This car is already added to your reservation.');
-            return;
-          }
+          // Bind select button event to fetch detailed info.
+          carCard.querySelector('.select-car-btn').addEventListener('click', async function() {
+            const carId = this.dataset.carId;
+            if (pendingReservations.rentalCars.some(c => c.car_id === carId)) {
+              alert('This car is already added to your reservation.');
+              return;
+            }
 
-          const carData = {
-            car_id: carId,
-            name: car.name,
-            type: car.type,
-            company: car.company.name,
-            price: car.price,
-            pickup: pickupLocation,
-            dropoff: dropoffLocation,
-            pickupDateTime: pickupDateTime,
-            dropoffDateTime: dropoffDateTime
-          };
+            // Fetch detailed car info using the vehicleDetails API.
+            const carDetails = await fetchCarDetails(carId, searchKey);
+            console.log('Vehicle Details:', carDetails);
 
-          pendingReservations.rentalCars.push(carData);
-          updatePendingReservationsField();
-          calculateEstimatedCost();
+            // Build the reservation data with detailed info if available.
+            const carData = {
+              car_id: carId,
+              name: carDetails && carDetails.carName ? carDetails.carName : carName,
+              image: carDetails && carDetails.carImage ? carDetails.carImage : carImage,
+              transmission: carDetails && carDetails.transmission ? carDetails.transmission : transmission,
+              mileage: carDetails && carDetails.mileage ? carDetails.mileage : mileage,
+              fuelPolicy: carDetails && carDetails.fuelPolicy ? carDetails.fuelPolicy : 'N/A',
+              numberOfDoors: carDetails && carDetails.numberOfDoors ? carDetails.numberOfDoors : doors,
+              smallSuitcases: carDetails && carDetails.smallSuitcases ? carDetails.smallSuitcases : suitcasesSmall,
+              bigSuitcases: carDetails && carDetails.bigSuitcases ? carDetails.bigSuitcases : suitcasesBig,
+              numberOfSeats: carDetails && carDetails.numberOfSeats ? carDetails.numberOfSeats : seats,
+              airConditioning: carDetails && carDetails.airConditioning ? carDetails.airConditioning : 'N/A',
+              carClass: carDetails && carDetails.carClass ? carDetails.carClass : 'N/A',
+              company: companyName,
+              price: carDetails && carDetails.priceValue ? carDetails.priceValue : price,
+              currency: carDetails && carDetails.currency ? carDetails.currency : currency,
+              details: carDetails,  // Store all detailed info.
+              pickup: pickupLocation,
+              dropoff: dropoffLocation,
+              pickupDateTime: pickupDateTime,
+              dropoffDateTime: dropoffDateTime
+            };
 
-          // Close modal.
-          bootstrap.Modal.getInstance(document.getElementById('carRentalModal')).hide();
+            pendingReservations.rentalCars.push(carData);
+            updatePendingReservationsField();
+            calculateEstimatedCost();
+
+            // Close modal.
+            bootstrap.Modal.getInstance(document.getElementById('carRentalModal')).hide();
+          });
+
+          carsListContainer.appendChild(carCard);
         });
-
-        carsListContainer.appendChild(carCard);
-      });
-
+      } else {
+        carsListContainer.innerHTML = `<p>No cars found</p>`;
+      }
     } catch (error) {
-      console.error('Error fetching cars:', error);
-      alert('An error occurred while fetching available cars. Please try again.');
+      console.error('Error fetching car rentals:', error);
+      alert('An error occurred while fetching available car rentals. Please try again.');
     } finally {
       carLoadingIndicator.classList.add('d-none');
     }
   });
 });
 
-// Global map variables
+/**
+ * Fetch detailed information for a vehicle.
+ * @param {string} vehicleId - The vehicle_id from the search result.
+ * @param {string} searchKey - The search_key from the search response.
+ * @returns {Promise<object|null>} - The extracted vehicle details or null on error.
+ */
+async function fetchCarDetails(vehicleId, searchKey) {
+  const url = `https://booking-com15.p.rapidapi.com/api/v1/cars/vehicleDetails?` +
+    `vehicle_id=${vehicleId}&search_key=${encodeURIComponent(searchKey)}` +
+    `&units=metric&currency_code=USD&languagecode=en-us`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': 'a4f936d18fmsh72c62428617d573p1b6010jsn36884d1c931d',
+      'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
+    }
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const detailsData = await response.json();
+    console.log('API Details Response:', detailsData);
+    if (detailsData.status && detailsData.data) {
+      const data = detailsData.data;
+      const vehicle = data.vehicle || {};
+      const carName = vehicle.makeAndModel || 'Unknown Model';
+      const carImage = data.imageUrl || 'default_car_image.jpg';
+      const spec = vehicle.specification || {};
+      const fuelPolicy = spec.fuelPolicy || 'N/A';
+      const mileage = spec.mileage || 'N/A';
+      const transmission = spec.transmission || 'N/A';
+      const numberOfDoors = spec.numberOfDoors || 'N/A';
+      const smallSuitcases = spec.smallSuitcases || 'N/A';
+      const bigSuitcases = spec.bigSuitcases || 'N/A';
+      const numberOfSeats = spec.numberOfSeats || 'N/A';
+      const airConditioning = spec.airConditioning ? 'A/C' : 'No A/C';
+      const carClass = spec.carClass || 'N/A';
+      const priceValue = data.price && data.price.driveAway ? data.price.driveAway.value : 'N/A';
+      const currency = data.price && data.price.driveAway ? data.price.driveAway.currency : 'USD';
+
+      return {
+        carName,
+        carImage,
+        fuelPolicy,
+        mileage,
+        transmission,
+        numberOfDoors,
+        smallSuitcases,
+        bigSuitcases,
+        numberOfSeats,
+        airConditioning,
+        carClass,
+        priceValue,
+        currency
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching car details:', error);
+    return null;
+  }
+}
+
+
+// --------------------------
+// Map & Location functions (unchanged)
+// --------------------------
+
 let rentalMap;
 let pickupMarker;
 let dropoffMarker;
@@ -178,11 +283,9 @@ function initializeRentalMap() {
       keepBuffer: 2
     }).addTo(rentalMap);
 
-    // Force immediate resize and log result
     console.log('Invalidating map size...');
     rentalMap.invalidateSize(true);
 
-    // Initialize map features
     console.log('Initializing map features...');
     initializeMapFeatures();
     
@@ -194,21 +297,16 @@ function initializeRentalMap() {
 }
 
 function initializeMapFeatures() {
-  // Initialize geocoding provider
   const provider = new GeoSearch.OpenStreetMapProvider();
-
-  // Initialize search controls
   initializeLocationSearch('pickup', provider);
   initializeLocationSearch('dropoff', provider);
 
-  // Map click handler
   rentalMap.on('click', function(e) {
     if (activeLocationType) {
       setLocation(e.latlng, activeLocationType);
     }
   });
 
-  // Initialize location picker buttons
   initializeLocationPickers();
 }
 
@@ -217,12 +315,9 @@ function initializeLocationPickers() {
     btn.addEventListener('click', function() {
       const type = this.dataset.type;
       activeLocationType = activeLocationType === type ? null : type;
-
-      // Update button states
       document.querySelectorAll('.btn-pick-map').forEach(b => {
         b.classList.toggle('active', b.dataset.type === activeLocationType);
       });
-
       updateMapInstructions();
     });
   });
@@ -238,7 +333,6 @@ function updateMapInstructions() {
   }
 }
 
-// Update modal event listeners with debugging
 const carRentalModal = document.getElementById('carRentalModal');
 if (carRentalModal) {
   carRentalModal.addEventListener('show.bs.modal', function() {
@@ -249,8 +343,6 @@ if (carRentalModal) {
   carRentalModal.addEventListener('shown.bs.modal', function() {
     console.log('Modal shown event triggered');
     console.log('Modal visibility:', window.getComputedStyle(carRentalModal).display);
-    
-    // Add a small delay and check container size
     setTimeout(() => {
       const mapContainer = document.getElementById('carRentalMap');
       console.log('Map container size before initialization:', {
@@ -267,7 +359,6 @@ if (carRentalModal) {
   });
 }
 
-// Improved cleanup function with debugging
 function cleanupMap() {
   if (routeLayer) {
     routeLayer.remove();
@@ -301,29 +392,24 @@ function initializeLocationSearch(type, provider) {
   input.addEventListener('input', async function() {
     clearTimeout(searchTimeout);
     const query = this.value;
-
     if (query.length < 3) {
       resultsContainer.style.display = 'none';
       return;
     }
-
     searchTimeout = setTimeout(async () => {
       try {
         const results = await provider.search({ query });
         resultsContainer.innerHTML = '';
-        
         if (results.length > 0) {
           results.slice(0, 5).forEach(result => {
             const item = document.createElement('div');
             item.className = 'search-result-item';
             item.innerHTML = `<i class="fas fa-map-marker-alt"></i>${result.label}`;
-            
             item.addEventListener('click', () => {
               setLocation({ lat: result.y, lng: result.x }, type);
               input.value = result.label;
               resultsContainer.style.display = 'none';
             });
-            
             resultsContainer.appendChild(item);
           });
           resultsContainer.style.display = 'block';
@@ -334,7 +420,6 @@ function initializeLocationSearch(type, provider) {
     }, 300);
   });
 
-  // Hide results when clicking outside
   document.addEventListener('click', function(e) {
     if (!input.contains(e.target) && !resultsContainer.contains(e.target)) {
       resultsContainer.style.display = 'none';
@@ -344,16 +429,12 @@ function initializeLocationSearch(type, provider) {
 
 async function setLocation(latlng, type) {
   const input = document.getElementById(`${type}Location`);
-
-  // Remove existing marker
   if (type === 'pickup' && pickupMarker) {
     pickupMarker.remove();
   }
   if (type === 'dropoff' && dropoffMarker) {
     dropoffMarker.remove();
   }
-
-  // Create new marker
   const newMarker = L.marker(latlng, {
     icon: L.divIcon({
       className: `location-marker ${type}`,
@@ -363,42 +444,31 @@ async function setLocation(latlng, type) {
       popupAnchor: [0, -40]
     })
   }).addTo(rentalMap);
-
-  // Store marker reference
   if (type === 'pickup') {
     pickupMarker = newMarker;
   } else {
     dropoffMarker = newMarker;
   }
-
-  // Update input with reverse geocoded address
   const address = await reverseGeocode(latlng);
   input.value = address;
-
-  // If both markers exist, draw route
   if (pickupMarker && dropoffMarker) {
     drawRoute(pickupMarker.getLatLng(), dropoffMarker.getLatLng());
   }
 }
 
-// Add these new functions for route handling
 let routeLayer = null;
 
 async function drawRoute(start, end) {
   if (routeLayer) {
     routeLayer.remove();
   }
-
   try {
     const response = await fetch(
       `https://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`
     );
     const data = await response.json();
-
     if (data.routes && data.routes.length > 0) {
       const route = data.routes[0];
-      
-      // Draw the route line
       routeLayer = L.geoJSON(route.geometry, {
         style: {
           color: '#2563eb',
@@ -409,11 +479,7 @@ async function drawRoute(start, end) {
           dashArray: '8,12'
         }
       }).addTo(rentalMap);
-
-      // Fit map to show the entire route
       rentalMap.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
-
-      // Update route info panel
       updateRouteInfo(route);
     }
   } catch (error) {
@@ -423,9 +489,8 @@ async function drawRoute(start, end) {
 
 function updateRouteInfo(route) {
   const routeInfoPanel = document.querySelector('.route-info-panel');
-  const distance = (route.distance / 1000).toFixed(1); // Convert to km
-  const duration = Math.round(route.duration / 60); // Convert to minutes
-
+  const distance = (route.distance / 1000).toFixed(1);
+  const duration = Math.round(route.duration / 60);
   routeInfoPanel.innerHTML = `
     <h5 class="mb-3">Route Information</h5>
     <div class="route-stats">
