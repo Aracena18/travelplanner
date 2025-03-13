@@ -1,7 +1,7 @@
 // carRental.js
 
-import { initializeCarRentalSearch } from '/carRentalSearch.js';
-import { cleanupMap, initializeRentalMap } from '/mapUtils.js';
+import { initializeCarRentalSearch } from './carSearch.js';
+import { cleanupMap, initializeRentalMap } from './mapUtils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize car rental search functionality.
