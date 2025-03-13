@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
+  <link rel="stylesheet" href="/travelplanner-master/css/car_rental.css">
   
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
@@ -494,76 +495,72 @@
 </template>
 
 <!-- Car Rental Modal -->
-<div class="modal fade" id="carRentalModal" tabindex="-1" aria-labelledby="carRentalModalLabel" aria-hidden="true">
+<div class="modal fade car-rental-modal" id="carRentalModal" tabindex="-1" aria-labelledby="carRentalModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header border-0 pb-0">
-        <h4 class="modal-title fw-bold" id="carRentalModalLabel">
-          <i class="fas fa-car text-primary me-2"></i>Find Your Perfect Rental Car
+      <div class="modal-header">
+        <h4 class="modal-title" id="carRentalModalLabel">
+          <i class="fas fa-car"></i>
+          Find Your Perfect Rental Car
         </h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="car-search-container">
-          <div class="row g-4">
-            <div class="col-md-6">
-              <div class="location-search-group">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="pickupLocation" placeholder="Pickup Location">
-                  <label for="pickupLocation">
-                    <i class="fas fa-map-marker-alt text-primary me-2"></i>Pickup Location
-                  </label>
-                </div>
-                <button class="btn btn-outline-primary btn-pick-map" data-type="pickup">
-                  <i class="fas fa-map-pin"></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="location-search-group">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="dropoffLocation" placeholder="Drop-off Location">
-                  <label for="dropoffLocation">
-                    <i class="fas fa-map-marker-alt text-primary me-2"></i>Drop-off Location
-                  </label>
-                </div>
-                <button class="btn btn-outline-primary btn-pick-map" data-type="dropoff">
-                  <i class="fas fa-map-pin"></i>
-                </button>
-              </div>
-            </div>
-            
-            <!-- Replace the existing map container div with this updated version -->
-            <div class="col-12">
-              <div class="location-map-container">
-                <div id="carRentalMap" class="rental-map" style="min-height: 400px;"></div>
-                <div class="map-instructions" id="mapInstructions">
-                  Click on the map to set location or use the search box above
+        <div class="search-section">
+          <div class="car-search-container">
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label class="form-label"><i class="fas fa-map-marker-alt text-primary me-2"></i>Pickup Location</label>
+                <div class="location-search-group">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="pickupLocation" placeholder="Enter pickup location">
+                    <label for="pickupLocation">Search location...</label>
+                  </div>
+                  <button class="btn btn-outline-primary btn-pick-map" data-type="pickup">
+                    <i class="fas fa-map-pin"></i>
+                  </button>
                 </div>
               </div>
-            </div>
+              <div class="col-md-6">
+                <label class="form-label"><i class="fas fa-map-marker-alt text-primary me-2"></i>Drop-off Location</label>
+                <div class="location-search-group">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="dropoffLocation" placeholder="Enter drop-off location">
+                    <label for="dropoffLocation">Search location...</label>
+                  </div>
+                  <button class="btn btn-outline-primary btn-pick-map" data-type="dropoff">
+                    <i class="fas fa-map-pin"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="col-12">
+                <div class="location-map-container">
+                  <div id="carRentalMap" class="rental-map"></div>
+                  <div class="map-instructions" id="mapInstructions">
+                    Use the search boxes or map pins to set your locations
+                  </div>
+                </div>
+                <div class="route-info-panel"></div>
+              </div>
 
-            <!-- Continue with existing datetime inputs -->
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input type="datetime-local" class="form-control" id="pickupDateTime">
-                <label for="pickupDateTime">
-                  <i class="far fa-calendar-alt text-primary me-2"></i>Pickup Date & Time
-                </label>
+              <div class="col-md-6">
+                <label class="form-label"><i class="far fa-calendar-alt text-primary me-2"></i>Pickup Date & Time</label>
+                <div class="form-floating">
+                  <input type="datetime-local" class="form-control" id="pickupDateTime">
+                  <label for="pickupDateTime">Select pickup date and time</label>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating">
-                <input type="datetime-local" class="form-control" id="dropoffDateTime">
-                <label for="dropoffDateTime">
-                  <i class="far fa-calendar-alt text-primary me-2"></i>Drop-off Date & Time
-                </label>
+              <div class="col-md-6">
+                <label class="form-label"><i class="far fa-calendar-alt text-primary me-2"></i>Drop-off Date & Time</label>
+                <div class="form-floating">
+                  <input type="datetime-local" class="form-control" id="dropoffDateTime">
+                  <label for="dropoffDateTime">Select drop-off date and time</label>
+                </div>
               </div>
-            </div>
 
-            <div class="col-12">
-              <div class="car-filters mb-4">
-                <div class="btn-group" role="group" aria-label="Car type filters">
+              <div class="col-12">
+                <div class="car-filters">
                   <input type="radio" class="btn-check" name="carType" id="allCars" value="all" checked>
                   <label class="btn btn-outline-primary" for="allCars">All Cars</label>
 
@@ -577,14 +574,14 @@
                   <label class="btn btn-outline-primary" for="suv">SUV</label>
                 </div>
               </div>
-            </div>
 
-            <div class="col-12">
-              <button class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2" 
-                      id="searchCars">
-                <i class="fas fa-search"></i>
-                <span>Search Available Cars</span>
-              </button>
+              <div class="col-12">
+                <button class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center gap-2" 
+                        id="searchCars">
+                  <i class="fas fa-search"></i>
+                  <span>Search Available Cars</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -594,10 +591,10 @@
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <p class="text-muted mt-3">Searching for available cars...</p>
+          <p class="text-muted mt-3">Searching for the best cars...</p>
         </div>
 
-        <!-- Cars List Container -->
+        <!-- Results Container -->
         <div id="carsList" class="car-results mt-4">
           <!-- Car cards will be populated here -->
         </div>
