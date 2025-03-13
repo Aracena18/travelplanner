@@ -146,32 +146,51 @@ let dropoffMarker;
 let activeLocationType = null;
 
 function initializeRentalMap() {
-  // Set default center (e.g., New York)
-  const defaultCenter = [40.7128, -74.0060];
+  console.log('Starting map initialization...');
+  
   const mapContainer = document.getElementById('carRentalMap');
-  if (!mapContainer) return;
+  if (!mapContainer) {
+    console.error('Map container not found! ID: carRentalMap');
+    return;
+  }
 
-  // Create map instance with fadeAnimation disabled for better performance
-  rentalMap = L.map('carRentalMap', {
-    fadeAnimation: false,
-    zoomAnimation: false
-  }).setView(defaultCenter, 13);
-
-  // Add tile layer with loading optimization
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 19,
-    updateWhenIdle: true,
-    keepBuffer: 2
-  }).addTo(rentalMap);
-
-  // Use requestAnimationFrame for smoother map initialization
-  requestAnimationFrame(() => {
-    rentalMap.invalidateSize();
+  console.log('Map container dimensions:', {
+    width: mapContainer.offsetWidth,
+    height: mapContainer.offsetHeight,
+    visibility: window.getComputedStyle(mapContainer).visibility,
+    display: window.getComputedStyle(mapContainer).display
   });
 
-  // Initialize the rest of the map features
-  initializeMapFeatures();
+  try {
+    console.log('Creating map instance...');
+    rentalMap = L.map('carRentalMap', {
+      fadeAnimation: false,
+      zoomAnimation: false,
+      center: [40.7128, -74.0060],
+      zoom: 13
+    });
+
+    console.log('Adding tile layer...');
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19,
+      updateWhenIdle: true,
+      keepBuffer: 2
+    }).addTo(rentalMap);
+
+    // Force immediate resize and log result
+    console.log('Invalidating map size...');
+    rentalMap.invalidateSize(true);
+
+    // Initialize map features
+    console.log('Initializing map features...');
+    initializeMapFeatures();
+    
+    console.log('Map initialization completed successfully');
+  } catch (error) {
+    console.error('Error during map initialization:', error);
+    console.log('Map container state:', mapContainer.innerHTML);
+  }
 }
 
 function initializeMapFeatures() {
@@ -219,31 +238,50 @@ function updateMapInstructions() {
   }
 }
 
-// Update modal event listeners
+// Update modal event listeners with debugging
 const carRentalModal = document.getElementById('carRentalModal');
 if (carRentalModal) {
   carRentalModal.addEventListener('show.bs.modal', function() {
-    // Clear any existing map
+    console.log('Modal show event triggered');
     cleanupMap();
   });
 
   carRentalModal.addEventListener('shown.bs.modal', function() {
-    // Initialize map after modal is fully visible
-    initializeRentalMap();
+    console.log('Modal shown event triggered');
+    console.log('Modal visibility:', window.getComputedStyle(carRentalModal).display);
+    
+    // Add a small delay and check container size
+    setTimeout(() => {
+      const mapContainer = document.getElementById('carRentalMap');
+      console.log('Map container size before initialization:', {
+        width: mapContainer.offsetWidth,
+        height: mapContainer.offsetHeight
+      });
+      initializeRentalMap();
+    }, 100);
   });
 
-  carRentalModal.addEventListener('hide.bs.modal', cleanupMap);
+  carRentalModal.addEventListener('hide.bs.modal', function() {
+    console.log('Modal hide event triggered');
+    cleanupMap();
+  });
 }
 
-// Improved cleanup function
+// Improved cleanup function with debugging
 function cleanupMap() {
+  console.log('Cleaning up map...');
   if (rentalMap) {
-    rentalMap.off();
-    rentalMap.remove();
-    rentalMap = null;
-    pickupMarker = null;
-    dropoffMarker = null;
-    activeLocationType = null;
+    try {
+      rentalMap.off();
+      rentalMap.remove();
+      rentalMap = null;
+      pickupMarker = null;
+      dropoffMarker = null;
+      activeLocationType = null;
+      console.log('Map cleanup completed');
+    } catch (error) {
+      console.error('Error during map cleanup:', error);
+    }
   }
 }
 
