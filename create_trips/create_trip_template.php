@@ -13,6 +13,14 @@
   <!-- Choices.js CSS for searchable dropdown -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <link rel="stylesheet" href="selected-flights.css">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
+  
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
+
 </head>
 
 <body>
@@ -499,21 +507,43 @@
         <div class="car-search-container">
           <div class="row g-4">
             <div class="col-md-6">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="pickupLocation" placeholder="Pickup Location">
-                <label for="pickupLocation">
-                  <i class="fas fa-map-marker-alt text-primary me-2"></i>Pickup Location
-                </label>
+              <div class="location-search-group">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="pickupLocation" placeholder="Pickup Location">
+                  <label for="pickupLocation">
+                    <i class="fas fa-map-marker-alt text-primary me-2"></i>Pickup Location
+                  </label>
+                </div>
+                <button class="btn btn-outline-primary btn-pick-map" data-type="pickup">
+                  <i class="fas fa-map-pin"></i>
+                </button>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="form-floating">
-                <input type="text" class="form-control" id="dropoffLocation" placeholder="Drop-off Location">
-                <label for="dropoffLocation">
-                  <i class="fas fa-map-marker-alt text-primary me-2"></i>Drop-off Location
-                </label>
+              <div class="location-search-group">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="dropoffLocation" placeholder="Drop-off Location">
+                  <label for="dropoffLocation">
+                    <i class="fas fa-map-marker-alt text-primary me-2"></i>Drop-off Location
+                  </label>
+                </div>
+                <button class="btn btn-outline-primary btn-pick-map" data-type="dropoff">
+                  <i class="fas fa-map-pin"></i>
+                </button>
               </div>
             </div>
+            
+            <!-- Add map container -->
+            <div class="col-12">
+              <div class="location-map-container">
+                <div id="carRentalMap" class="rental-map"></div>
+                <div class="map-instructions" id="mapInstructions">
+                  Click on the map to set location or use the search box above
+                </div>
+              </div>
+            </div>
+
+            <!-- Continue with existing datetime inputs -->
             <div class="col-md-6">
               <div class="form-floating">
                 <input type="datetime-local" class="form-control" id="pickupDateTime">
@@ -652,6 +682,7 @@
     });
   </script>
 
+  <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
   <!-- Custom JS file -->
   <script type="module" src="/travelplanner-master/javascript/create_trips_folder/main.js"></script>
 

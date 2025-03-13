@@ -695,3 +695,160 @@
 #activity-form {
   padding: 1rem;
 }
+
+/* Car Rental Map Styles */
+.location-search-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.location-search-group .form-floating {
+  flex: 1;
+}
+
+.btn-pick-map {
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+}
+
+.location-map-container {
+  position: relative;
+  margin: 1rem 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+.rental-map {
+  height: 400px;
+  width: 100%;
+  background: var(--gray-100);
+}
+
+.map-instructions {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.map-instructions.hidden {
+  opacity: 0;
+}
+
+.location-marker {
+  padding: 0.5rem 1rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+  font-size: 0.9rem;
+}
+
+.location-marker.pickup {
+  border-left: 4px solid var(--primary-color);
+}
+
+.location-marker.dropoff {
+  border-left: 4px solid var(--success-color);
+}
+
+/* Map Container Styles */
+.rental-map {
+  height: 400px !important; /* Force height */
+  width: 100%;
+  border-radius: 0.5rem;
+  z-index: 1;
+}
+
+.location-marker {
+  background: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-marker.pickup {
+  border-left: 4px solid var(--primary-color);
+}
+
+.location-marker.dropoff {
+  border-left: 4px solid var(--success-color);
+}
+
+.btn-pick-map.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.map-instructions {
+  z-index: 1000;
+}
+
+/* Ensure modal map is visible */
+#carRentalModal .modal-body {
+  overflow: visible;
+}
+
+#carRentalModal .location-map-container {
+  margin: 1rem 0;
+  position: relative;
+}
+
+#carRentalModal .modal-dialog {
+  max-width: 95%;
+  height: 90vh;
+}
+
+#carRentalModal .modal-content {
+  height: 100%;
+}
+
+#carRentalModal .modal-body {
+  overflow: visible;
+  position: relative;
+}
+
+.location-map-container {
+  position: relative;
+  height: 400px;
+  margin: 1rem 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+.rental-map {
+  height: 100% !important;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Adjust marker and button styles for better visibility */
+.leaflet-marker-icon.location-marker {
+  background: white;
+  border: 2px solid var(--primary-color);
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  font-weight: 500;
+  z-index: 1000;
+}
+
+.btn-pick-map {
+  z-index: 2;
+}

@@ -60,10 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="bg-element element-3"></div>
     </div>
 
-    <div class="current-time">
-        <i class="fas fa-clock"></i> <?php echo date('Y-m-d H:i:s'); ?>
-    </div>
-
     <div class="login-wrapper">
         <div class="login-container">
             <div class="login-header">

@@ -138,3 +138,186 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+let rentalMap;
+let pickupMarker;
+let dropoffMarker;
+let activeLocationType = null;
+
+function initializeRentalMap() {
+  // Set default center to a reasonable location (e.g., New York)
+  const defaultCenter = [40.7128, -74.0060];
+  
+  // Initialize map only if container exists
+  const mapContainer = document.getElementById('carRentalMap');
+  if (!mapContainer) return;
+
+  // Create map instance
+  rentalMap = L.map('carRentalMap').setView(defaultCenter, 13);
+  
+  // Add tile layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19
+  }).addTo(rentalMap);
+
+  // Force a resize to ensure map renders correctly in modal
+  setTimeout(() => {
+    rentalMap.invalidateSize();
+  }, 250);
+
+  // Map click handler
+  rentalMap.on('click', function(e) {
+    if (activeLocationType) {
+      setLocation(e.latlng, activeLocationType);
+    }
+  });
+
+  // Initialize location picker buttons
+  document.querySelectorAll('.btn-pick-map').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const type = this.dataset.type;
+      activeLocationType = activeLocationType === type ? null : type;
+      
+      // Update button states
+      document.querySelectorAll('.btn-pick-map').forEach(b => {
+        b.classList.toggle('active', b.dataset.type === activeLocationType);
+      });
+      
+      // Update instructions visibility
+      const instructions = document.getElementById('mapInstructions');
+      if (instructions) {
+        instructions.classList.toggle('hidden', !activeLocationType);
+        if (activeLocationType) {
+          instructions.textContent = `Click on the map to set ${activeLocationType} location`;
+        }
+      }
+    });
+  });
+
+  // Initialize Geocoding provider
+  const provider = new GeoSearch.OpenStreetMapProvider();
+
+  // Add search functionality to location inputs
+  ['pickup', 'dropoff'].forEach(type => {
+    const input = document.getElementById(`${type}Location`);
+    if (!input) return;
+
+    input.addEventListener('change', async function() {
+      try {
+        const results = await provider.search({ query: this.value });
+        if (results.length > 0) {
+          const location = results[0];
+          setLocation({ lat: location.y, lng: location.x }, type);
+        }
+      } catch (error) {
+        console.error('Location search error:', error);
+      }
+    });
+  });
+}
+
+// Clean up function to avoid memory leaks
+function cleanupMap() {
+  if (rentalMap) {
+    rentalMap.remove();
+    rentalMap = null;
+    pickupMarker = null;
+    dropoffMarker = null;
+    activeLocationType = null;
+  }
+}
+
+// Modal event handlers
+document.getElementById('carRentalModal').addEventListener('shown.bs.modal', function() {
+  initializeRentalMap();
+});
+
+document.getElementById('carRentalModal').addEventListener('hidden.bs.modal', function() {
+  cleanupMap();
+});
+
+function initializeLocationSearch() {
+  const searchInputs = ['pickupLocation', 'dropoffLocation'];
+  
+  searchInputs.forEach(inputId => {
+    const input = document.getElementById(inputId);
+    const type = inputId.includes('pickup') ? 'pickup' : 'dropoff';
+    
+    // Initialize geocoding search
+    const searchControl = new GeoSearch.GeoSearchControl({
+      provider: new GeoSearch.OpenStreetMapProvider(),
+      showMarker: false,
+      autoComplete: true,
+      autoCompleteDelay: 250,
+    });
+
+    input.addEventListener('change', async function() {
+      try {
+        const results = await searchControl.provider.search({ query: this.value });
+        if (results.length > 0) {
+          const location = results[0];
+          setLocation({ lat: location.y, lng: location.x }, type);
+        }
+      } catch (error) {
+        console.error('Location search error:', error);
+      }
+    });
+  });
+}
+
+function setLocation(latlng, type) {
+  const marker = type === 'pickup' ? pickupMarker : dropoffMarker;
+  const input = document.getElementById(`${type}Location`);
+  
+  // Remove existing marker if any
+  if (marker) {
+    marker.remove();
+  }
+
+  // Create new marker
+  const newMarker = L.marker(latlng, {
+    icon: L.divIcon({
+      className: `location-marker ${type}`,
+      html: `<i class="fas fa-map-marker-alt"></i> ${type === 'pickup' ? 'Pickup' : 'Drop-off'} Location`
+    })
+  }).addTo(rentalMap);
+
+  // Store marker reference
+  if (type === 'pickup') {
+    pickupMarker = newMarker;
+  } else {
+    dropoffMarker = newMarker;
+  }
+
+  // Update input field with reverse geocoded address
+  reverseGeocode(latlng).then(address => {
+    input.value = address;
+  });
+
+  // Fit map bounds to show both markers
+  if (pickupMarker && dropoffMarker) {
+    const bounds = L.latLngBounds([pickupMarker.getLatLng(), dropoffMarker.getLatLng()]);
+    rentalMap.fitBounds(bounds, { padding: [50, 50] });
+  }
+}
+
+async function reverseGeocode(latlng) {
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${latlng.lat}&lon=${latlng.lng}&format=json`
+    );
+    const data = await response.json();
+    return data.display_name;
+  } catch (error) {
+    console.error('Reverse geocoding error:', error);
+    return `${latlng.lat}, ${latlng.lng}`;
+  }
+}
+
+// Initialize map when modal opens
+document.getElementById('carRentalModal').addEventListener('shown.bs.modal', function() {
+  if (!rentalMap) {
+    initializeRentalMap();
+  }
+});
