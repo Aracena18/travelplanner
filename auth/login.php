@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
             $_SESSION['is_admin'] = false;
-            header("Location: ../index.php");
+            header("Location: ../homepage.php");
             exit();
         } else {
             $error = "Invalid password.";
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>TravelPlanner - Login</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/travelplanner-master/css/auth.css">
+    <link rel="stylesheet" href="../css/auth.css">
 </head>
 
 <body>

@@ -1,0 +1,148 @@
+.selected-reservations {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    overflow: hidden;
+    margin: 1.5rem 0;
+}
+
+.reservation-header {
+    padding: 1.5rem;
+    background: linear-gradient(145deg, #f8f9fa, #ffffff);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.reservation-header h5 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #2d3436;
+    font-weight: 600;
+}
+
+.selected-items-list {
+    padding: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.selected-flight-item {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.selected-flight-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(149, 157, 165, 0.1);
+    border-color: #0d6efd;
+}
+
+.flight-info-compact {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+.airline-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.airline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f0f7ff;
+    border-radius: 30px;
+    color: #0d6efd;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.flight-route-compact {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.flight-path-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e9ecef;
+    z-index: 1;
+}
+
+.flight-path-plane {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 0.5rem;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.2);
+    color: #0d6efd;
+    animation: floatPlane 3s infinite ease-in-out;
+}
+
+@keyframes floatPlane {
+    0%, 100% { transform: translateY(0) rotate(90deg); }
+    50% { transform: translateY(-5px) rotate(90deg); }
+}
+
+.route-point {
+    text-align: center;
+    z-index: 2;
+    background: #fff;
+    padding: 0.5rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #dee2e6;
+}
+
+.remove-flight {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #dc3545;
+    padding: 0.5rem;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.selected-flight-item:hover .remove-flight {
+    opacity: 1;
+}
+
+.remove-flight:hover {
+    background: rgba(220, 53, 69, 0.1);
+    transform: scale(1.1);
+}

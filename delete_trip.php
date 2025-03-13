@@ -41,7 +41,7 @@ try {
     $pdo->commit();
 
     // Redirect to index
-    header('Location: index.php');
+    header('Location: homepage.php');
     exit;
 } catch (Exception $e) {
     // Rollback transaction in case of error

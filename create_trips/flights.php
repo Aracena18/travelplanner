@@ -89,6 +89,52 @@ try {
 
         $flights = json_decode($response, true);
         echo json_encode(['success' => true, 'flights' => $flights]);
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Handle flight selection
+        $flightData = json_decode(file_get_contents('php://input'), true);
+        
+        if (isset($flightData['action']) && $flightData['action'] === 'select_flight') {
+            $trip_id = $flightData['trip_id'];
+            $flight_details = $flightData['flight_details'];
+            
+            // Store flight reservation
+            $stmt = $pdo->prepare("
+                INSERT INTO reservations (
+                    trip_id, 
+                    reservation_type,
+                    provider_name,
+                    departure_city,
+                    arrival_city,
+                    departure_datetime,
+                    arrival_datetime,
+                    cost
+                ) VALUES (?, 'flight', ?, ?, ?, ?, ?, ?)
+            ");
+            
+            try {
+                $stmt->execute([
+                    $trip_id,
+                    $flight_details['airline'],
+                    $flight_details['departure_city'],
+                    $flight_details['arrival_city'],
+                    $flight_details['departure_datetime'],
+                    $flight_details['arrival_datetime'],
+                    $flight_details['cost']
+                ]);
+                
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Flight selected successfully',
+                    'reservation_id' => $pdo->lastInsertId()
+                ]);
+            } catch (PDOException $e) {
+                echo json_encode([
+                    'success' => false,
+                    'error' => 'Failed to save flight reservation'
+                ]);
+            }
+            exit;
+        }
     }
 } catch (Exception $e) {
     echo json_encode([

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- Choices.js CSS for searchable dropdown -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <link rel="stylesheet" href="selected-flights.css">
 </head>
 
 <body>
@@ -154,6 +155,21 @@
                   <label for="end_date">End Date</label>
                 </div>
               </div>
+
+              <!-- 
+              <div id="selectedFlightsContainer" class="selected-reservations mb-4">
+                <div class="reservation-header">
+                  <h5 class="mb-0">
+                    <i class="fas fa-plane text-primary me-2"></i>Selected Flights
+                  </h5>
+                </div>
+                <div id="selectedFlightsList" class="selected-items-list">
+                  <div class="empty-state text-center py-4">
+                    <i class="fas fa-plane-departure text-muted"></i>
+                    <p class="text-muted mb-0">No flights selected yet</p>
+                  </div>
+                </div>
+              </div>-->
 
               <!-- Reservations and Attachments -->
               <div class="col-12 mt-4">

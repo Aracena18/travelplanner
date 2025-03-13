@@ -318,3 +318,87 @@
     [location] => Okeyy
 )
 
+[10-Mar-2025 16:38:38 Europe/Berlin] DEBUG: add_activity - trip_id: 809600
+[10-Mar-2025 16:38:38 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[10-Mar-2025 16:38:38 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 809600
+    [user_id] => 5
+    [trip_name] => Trip to Rome
+    [destination] => 5
+    [hotel] => Hotel L
+    [adults_num] => 3
+    [childs_num] => 2
+    [start_date] => 2025-03-11
+    [end_date] => 2025-03-12
+    [estimated_cost] => 338
+)
+
+[10-Mar-2025 16:38:38 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"809600","name":"Running","type":"tour","start_time":"2025-03-12T23:38","cost":0,"description":"Running","location":"Park"}
+[10-Mar-2025 16:38:38 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => tour
+    [start_time] => 2025-03-12T23:38
+    [cost] => 0.00
+    [description] => Running
+    [location] => Park
+)
+
+[10-Mar-2025 17:32:38 Europe/Berlin] DEBUG: add_activity - trip_id: 491085
+[10-Mar-2025 17:32:38 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[10-Mar-2025 17:32:38 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 491085
+    [user_id] => 5
+    [trip_name] => Trip to London
+    [destination] => 4
+    [hotel] => Hotel J
+    [adults_num] => 1
+    [childs_num] => 2
+    [start_date] => 2025-03-11
+    [end_date] => 2025-03-13
+    [estimated_cost] => 780
+)
+
+[10-Mar-2025 17:32:38 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"491085","name":"Running","type":"tour","start_time":"2025-03-12T00:32","cost":0,"description":"none","location":"Park"}
+[10-Mar-2025 17:32:38 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => tour
+    [start_time] => 2025-03-12T00:32
+    [cost] => 0.00
+    [description] => none
+    [location] => Park
+)
+
+[10-Mar-2025 18:03:23 Europe/Berlin] DEBUG: add_activity - trip_id: 370210
+[10-Mar-2025 18:03:23 Europe/Berlin] DEBUG: add_activity - session user_id: 5
+[10-Mar-2025 18:03:23 Europe/Berlin] DEBUG: Trip found: Array
+(
+    [trip_id] => 370210
+    [user_id] => 5
+    [trip_name] => Trip to London
+    [destination] => 4
+    [hotel] => Hotel K
+    [adults_num] => 4
+    [childs_num] => 1
+    [start_date] => 2025-03-13
+    [end_date] => 2025-03-15
+    [estimated_cost] => 360
+)
+
+[10-Mar-2025 18:03:23 Europe/Berlin] DEBUG: Attempting to insert activity with data: {"trip_id":"370210","name":"Running","type":"tour","start_time":"2025-03-12T14:02","cost":0,"description":"HJDSjfksakd","location":"Part"}
+[10-Mar-2025 18:03:23 Europe/Berlin] DEBUG: Activity inserted successfully with ID 0: Array
+(
+    [id] => 0
+    [name] => Running
+    [type] => tour
+    [start_time] => 2025-03-12T14:02
+    [cost] => 0.00
+    [description] => HJDSjfksakd
+    [location] => Part
+)
+

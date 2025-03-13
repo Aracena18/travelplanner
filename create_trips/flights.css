@@ -323,7 +323,7 @@
 .price-amount {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #198754;
+    color: #000000;
 }
 
 .price-label {
@@ -553,4 +553,361 @@
 
 .btn-details:hover {
     background: rgba(13, 110, 253, 0.1);
+}
+
+/* Selected Flights Display */
+.selected-reservations {
+    display: none; /* Hidden by default */
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin: 1.5rem 0;
+}
+
+.selected-reservations.active {
+    display: block;
+}
+
+.reservation-header {
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+    border-bottom: 1px solid #e9ecef;
+}
+
+.reservation-header h5 {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.selected-items-list {
+    padding: 1.25rem;
+}
+
+.selected-flight-item {
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.selected-flight-item:last-child {
+    margin-bottom: 0;
+}
+
+.selected-flight-item:hover {
+    background: #fff;
+    border-color: #0d6efd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.1);
+}
+
+.flight-info-compact {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2rem;
+    align-items: center;
+}
+
+.airline-info h6 {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.flight-route-compact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+}
+
+.flight-path-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #0d6efd;
+    position: relative;
+}
+
+.flight-path-compact::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    right: -10px;
+    height: 2px;
+    background: #e9ecef;
+    z-index: 0;
+}
+
+.flight-path-compact i {
+    background: #fff;
+    padding: 0.5rem;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1;
+}
+
+.compact-city-code {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.compact-time {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.remove-flight {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #dc3545;
+    padding: 0.5rem;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.selected-flight-item:hover .remove-flight {
+    opacity: 1;
+}
+
+.remove-flight:hover {
+    background: rgba(220, 53, 69, 0.1);
+    transform: scale(1.1);
+}
+
+.price-section {
+    text-align: right;
+}
+
+.price-amount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #198754;
+    display: block;
+}
+
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Selected Flights Display */
+.selected-reservations {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.reservation-header {
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.selected-items-list {
+    padding: 1rem;
+}
+
+.selected-flight-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.selected-flight-item:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 2px 12px rgba(13, 110, 253, 0.1);
+}
+
+.flight-info-compact {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.flight-route-compact {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.compact-city-code {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.compact-time {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.flight-path-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0d6efd;
+}
+
+.remove-flight {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: #dc3545;
+    padding: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.selected-flight-item:hover .remove-flight {
+    opacity: 1;
+}
+
+.empty-state {
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Flight card selection state */
+.flight-card.selected {
+    border: 2px solid #0d6efd;
+}
+
+.flight-card.selected .select-flight-btn {
+    background: #198754;
+}
+
+/* Selected Flights Container Enhanced Styles */
+.selected-flight-item {
+    background: linear-gradient(to right, #ffffff, #f8f9fa);
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.selected-flight-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.1);
+    border-color: #0d6efd;
+}
+
+.flight-path-compact {
+    position: relative;
+    padding: 0 2rem;
+}
+
+.path-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e9ecef;
+    z-index: 1;
+}
+
+.flight-path-compact i {
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding: 0.5rem;
+    color: #0d6efd;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.2);
+}
+
+.duration-badge {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f8f9fa;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.compact-city-code {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 0.25rem;
+}
+
+.compact-time {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.price-amount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Animation classes */
+.animate__animated {
+    animation-duration: 0.3s;
+}
+
+.animate__fadeIn {
+    animation-name: fadeIn;
+}
+
+.animate__fadeOut {
+    animation-name: fadeOut;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(10px); }
 }

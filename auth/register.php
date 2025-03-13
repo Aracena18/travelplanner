@@ -39,7 +39,7 @@ $conn->close();
     <title>TravelPlanner - Register</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/travelplanner-master/css/auth.css">
+    <link rel="stylesheet" href="../css/auth.css">
 </head>
 <body>
     <div class="bg-elements">
