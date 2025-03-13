@@ -690,6 +690,8 @@
   <!-- Custom JS file -->
   <script type="module" src="/travelplanner-master/javascript/create_trips_folder/main.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-polylinedecorator/1.7.0/leaflet.polylineDecorator.min.js"></script>
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {

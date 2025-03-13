@@ -80,7 +80,7 @@ export function initializeCarRentalSearch() {
           
           const supplier = resultItem.supplier_info || {};
           const companyName = supplier.name || 'Unknown';
-          const companyLogo = supplier.imageUrl || '';
+          const companyLogo = supplier.logo_url || '';
 
           const pricing = resultItem.pricing_info || {};
           const price = pricing.price || 'N/A';
