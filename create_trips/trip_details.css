@@ -828,3 +828,343 @@
   margin-right: 0.5rem;
   color: var(--primary-color);
 }
+
+/* Enhanced Car Rental Modal Styles */
+.car-search-container {
+  background: var(--gray-100);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.location-search-group {
+  position: relative;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.location-search-group:focus-within {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.location-search-group .form-floating input {
+  border: none;
+  background: transparent;
+  height: 60px;
+  padding-left: 3rem;
+}
+
+.location-search-group .form-floating label {
+  padding-left: 3rem;
+}
+
+.location-search-group .form-floating label i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn-pick-map {
+  border: none;
+  width: 60px;
+  background: var(--gray-100);
+  border-radius: 0 1rem 1rem 0;
+}
+
+.btn-pick-map:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.car-filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+
+.btn-group .btn-check + .btn-outline-primary {
+  border-radius: 2rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--gray-200);
+  background: white;
+  color: var(--text-dark);
+}
+
+.btn-group .btn-check:checked + .btn-outline-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.car-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.car-card {
+  background: white;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+}
+
+.car-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.car-type-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.car-details {
+  padding: 1.5rem;
+}
+
+.car-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.car-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-dark);
+  font-size: 0.875rem;
+}
+
+.rental-company {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  margin-bottom: 1rem;
+}
+
+.company-logo {
+  height: 30px;
+  width: auto;
+}
+
+.price-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-amount {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.price-period {
+  font-size: 0.875rem;
+  color: var(--text-dark);
+  opacity: 0.7;
+}
+
+.select-car-btn {
+  padding: 0.75rem 2rem;
+  border-radius: 2rem;
+  font-weight: 500;
+}
+
+.location-search-results {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 60px;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+  z-index: 1000;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.search-result-item:hover {
+  background: var(--gray-100);
+}
+
+.map-instructions {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--gray-200);
+}
+
+/* Loading animation for car search */
+.car-loading-spinner {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .car-results {
+    grid-template-columns: 1fr;
+  }
+  
+  .car-search-container {
+    padding: 1rem;
+  }
+  
+  .location-search-group .form-floating input {
+    height: 50px;
+  }
+}
+
+/* Enhanced Car Rental Modal Styles */
+#carRentalModal .modal-content {
+  border: none;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+#carRentalModal .modal-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 1.5rem 2rem;
+  border: none;
+}
+
+#carRentalModal .modal-body {
+  padding: 0;
+}
+
+.car-search-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  height: calc(100vh - 200px);
+  max-height: 800px;
+}
+
+.car-search-form {
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.map-side-panel {
+  background: var(--gray-100);
+  position: relative;
+}
+
+.route-info-panel {
+  position: absolute;
+  bottom: 2rem;
+  left: 1rem;
+  right: 1rem;
+  background: var(--map-overlay-bg);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: var(--card-shadow);
+  z-index: 1000;
+}
+
+.route-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.route-stat-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-dark);
+  opacity: 0.7;
+}
+
+.location-search-group {
+  margin-bottom: 1.5rem;
+}
+
+.route-line {
+  stroke: var(--primary-color);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 8 12;
+  animation: dash 1.5s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .car-search-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .map-side-panel {
+    height: 400px;
+  }
+}

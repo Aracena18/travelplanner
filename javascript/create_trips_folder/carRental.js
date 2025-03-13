@@ -269,6 +269,10 @@ if (carRentalModal) {
 
 // Improved cleanup function with debugging
 function cleanupMap() {
+  if (routeLayer) {
+    routeLayer.remove();
+    routeLayer = null;
+  }
   console.log('Cleaning up map...');
   if (rentalMap) {
     try {
@@ -338,7 +342,7 @@ function initializeLocationSearch(type, provider) {
   });
 }
 
-function setLocation(latlng, type) {
+async function setLocation(latlng, type) {
   const input = document.getElementById(`${type}Location`);
 
   // Remove existing marker
@@ -349,7 +353,7 @@ function setLocation(latlng, type) {
     dropoffMarker.remove();
   }
 
-  // Create new marker with custom icon and label
+  // Create new marker
   const newMarker = L.marker(latlng, {
     icon: L.divIcon({
       className: `location-marker ${type}`,
@@ -360,9 +364,6 @@ function setLocation(latlng, type) {
     })
   }).addTo(rentalMap);
 
-  // Add popup with location info
-  newMarker.bindPopup(`<b>${type.charAt(0).toUpperCase() + type.slice(1)} Location</b>`).openPopup();
-
   // Store marker reference
   if (type === 'pickup') {
     pickupMarker = newMarker;
@@ -371,17 +372,73 @@ function setLocation(latlng, type) {
   }
 
   // Update input with reverse geocoded address
-  reverseGeocode(latlng).then(address => {
-    input.value = address;
-  });
+  const address = await reverseGeocode(latlng);
+  input.value = address;
 
-  // Fit bounds if both markers exist
+  // If both markers exist, draw route
   if (pickupMarker && dropoffMarker) {
-    const bounds = L.latLngBounds([pickupMarker.getLatLng(), dropoffMarker.getLatLng()]);
-    rentalMap.fitBounds(bounds, { padding: [50, 50] });
-  } else {
-    rentalMap.setView(latlng, 13);
+    drawRoute(pickupMarker.getLatLng(), dropoffMarker.getLatLng());
   }
+}
+
+// Add these new functions for route handling
+let routeLayer = null;
+
+async function drawRoute(start, end) {
+  if (routeLayer) {
+    routeLayer.remove();
+  }
+
+  try {
+    const response = await fetch(
+      `https://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full&geometries=geojson`
+    );
+    const data = await response.json();
+
+    if (data.routes && data.routes.length > 0) {
+      const route = data.routes[0];
+      
+      // Draw the route line
+      routeLayer = L.geoJSON(route.geometry, {
+        style: {
+          color: '#2563eb',
+          weight: 4,
+          opacity: 0.8,
+          lineCap: 'round',
+          lineJoin: 'round',
+          dashArray: '8,12'
+        }
+      }).addTo(rentalMap);
+
+      // Fit map to show the entire route
+      rentalMap.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
+
+      // Update route info panel
+      updateRouteInfo(route);
+    }
+  } catch (error) {
+    console.error('Error drawing route:', error);
+  }
+}
+
+function updateRouteInfo(route) {
+  const routeInfoPanel = document.querySelector('.route-info-panel');
+  const distance = (route.distance / 1000).toFixed(1); // Convert to km
+  const duration = Math.round(route.duration / 60); // Convert to minutes
+
+  routeInfoPanel.innerHTML = `
+    <h5 class="mb-3">Route Information</h5>
+    <div class="route-stats">
+      <div class="route-stat-item">
+        <div class="stat-value">${distance} km</div>
+        <div class="stat-label">Distance</div>
+      </div>
+      <div class="route-stat-item">
+        <div class="stat-value">${duration} min</div>
+        <div class="stat-label">Est. Drive Time</div>
+      </div>
+    </div>
+  `;
 }
 
 async function reverseGeocode(latlng) {
