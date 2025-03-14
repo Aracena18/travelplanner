@@ -1,6 +1,3 @@
-Here is a draft for your README file:
-
----
 Travelplanner
 
 Travelplanner is a web-based platform designed to simplify and enhance the travel planning experience. It provides users with a centralized tool to organize all aspects of their trips, from flights and accommodations to car rentals and activities.
